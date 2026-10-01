@@ -301,8 +301,27 @@ window.DB = (function () {
 
   function guardarPagoClub(pago) {
     // El ID lo genera el servidor si no viene de bootstrap
-    cache.pagosClub = [...cache.pagosClub, pago];
-    post('pagosClub/agregar', pago);
+    const copia = Object.assign({}, pago, { id: null });
+    cache.pagosClub = [...cache.pagosClub, copia];
+    return post('pagosClub/agregar', pago);
+  }
+
+  async function actualizarPagoUsuario(id, fechaVencimiento, telefono, metodoPago) {
+    const res = await post('usuarios/actualizarPago', { id, fechaVencimiento, telefono, metodoPago });
+    if (res && res.ok !== false) {
+      const u = cache.usuarios.find(x => x.id === id);
+      if (u) { u.fechaVencimiento = fechaVencimiento; }
+    }
+    return res;
+  }
+
+  async function bloquearUsuario(id, bloqueado) {
+    const res = await post('usuarios/bloquear', { id, bloqueado: bloqueado ? 1 : 0 });
+    if (res && res.ok !== false) {
+      const u = cache.usuarios.find(x => x.id === id);
+      if (u) { u.bloqueado = bloqueado ? 1 : 0; }
+    }
+    return res;
   }
 
   function obtenerPagosClub() { return cache.pagosClub; }
@@ -404,6 +423,7 @@ window.DB = (function () {
     guardarJugadorReciclado, obtenerJugadorReciclado, quitarJugadorReciclado,
     registrarEntrenador, obtenerEntrenadores, editarEntrenador, eliminarEntrenador,
     guardarPagoClub, obtenerPagosClub,
+    actualizarPagoUsuario, bloquearUsuario,
     guardarComprobante, obtenerComprobantes, validarComprobante,
     guardarPagoPadre, obtenerPagosPadre,
     guardarPagoPlataforma, obtenerPagosPlataforma,

@@ -1299,19 +1299,42 @@ document.addEventListener('alpine:init', () => {
       cerrarModalPago() {
           this.modalPagoActivo = false;
       },
-      guardarPagoModal() {
+      async guardarPagoModal() {
           if(!this.pagoActual.id) return;
           const padre = this.listaPadres.find(p => p.id == this.pagoActual.id);
           if(!padre) return;
+          const monto = parseFloat(this.pagoActual.monto);
+          if (!isFinite(monto) || monto <= 0) { alert('Ingresa un monto válido mayor a 0.'); return; }
+          if (!this.pagoActual.fecha) { alert('Selecciona la fecha del pago.'); return; }
+          // 1) Registrar el pago en MySQL (el servidor genera el ID y valida rol/CSRF)
+          const resPago = await window.DB.guardarPagoClub({
+              padreId: parseInt(padre.id, 10),
+              concepto: this.pagoActual.concepto || 'mensualidad',
+              monto: monto,
+              fecha: this.pagoActual.fecha,
+              referencia: this.pagoActual.referencia || '',
+              metodo: 'efectivo'
+          });
+          if (resPago && resPago.ok === false) { alert('No se pudo registrar el pago: ' + (resPago.error || 'error desconocido')); return; }
+          // 2) Actualizar el vencimiento del usuario en el servidor
           const f = new Date(this.pagoActual.fecha);
           f.setDate(f.getDate() + 15);
-          padre.fechaVencimiento = this.fechaISOLocal(f);
+          const nuevaFecha = this.fechaISOLocal(f);
+          const resUpd = await window.DB.actualizarPagoUsuario(padre.id, nuevaFecha, padre.telefono, padre.metodoPago);
+          if (resUpd && resUpd.ok === false) { alert('El pago quedó registrado pero no se pudo actualizar el vencimiento.'); return; }
+          // 3) Sincronizar caché local recién tras confirmación del servidor
+          padre.fechaVencimiento = nuevaFecha;
           this.adminPadresVersion++; this.comentariosVersion++;
           alert('Pago registrado correctamente. El estado pasará a VERDE.');
           this.cerrarModalPago();
       },
-      bloquearCuenta(id) {
+      async bloquearCuenta(id) {
           if(!confirm('¿Bloquear la cuenta de esta familia? No podrán acceder a la plataforma.')) return;
+          const res = await window.DB.bloquearUsuario(id, true);
+          if (res && res.ok === false) { alert('No se pudo bloquear la cuenta: ' + (res.error || 'error desconocido')); return; }
+          const u = this.listaPadres.find(p => p.id == id);
+          if (u) u.bloqueado = 1;
+          this.adminPadresVersion++;
           alert('Cuenta bloqueada exitosamente.');
       },
       recordatorioMasivo() {

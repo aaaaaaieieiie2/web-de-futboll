@@ -39,16 +39,51 @@ switch ($op) {
 
 case 'usuarios/guardar':
     auth(['admin']);
-    // La contraseña SIEMPRE se hashea con bcrypt antes de guardar
-    $passPlana = (string)($d['password'] ?? '');
-    if ($passPlana === '') {
+    // Soporta creación (id=null / usuario nuevo) y actualización parcial (id existente).
+    $uid = isset($d['id']) ? (int)$d['id'] : 0;
+    $existente = null;
+    if ($uid > 0) {
+        $rowsU = q("SELECT * FROM usuarios WHERE id = ?", "i", [$uid]);
+        if (count($rowsU) === 0) { salida(['ok' => false, 'error' => 'Usuario no encontrado']); }
+        $existente = $rowsU[0];
+    }
+
+    // Usuario: el cliente envía '' o un hash al editar → conservar el existente.
+    $usuarioIn = trim((string)($d['usuario'] ?? ''));
+    if ($usuarioIn === '' && $existente) { $usuarioIn = $existente['usuario']; }
+    $usuario = limpiar_texto($usuarioIn, 80);
+
+    // Contraseña: nunca re-hashear un hash ya almacenado.
+    $passIn = (string)($d['password'] ?? '');
+    if ($passIn !== '' && strlen($passIn) >= 60 && password_get_info($passIn)['algoName'] !== 'unknown') {
+        // Parece un hash (bcrypt/argon): jamás se guarda como contraseña plana ni se re-hashea.
+        $passIn = '';
+    }
+    if ($passIn !== '') {
+        $hash = password_hash($passIn, PASSWORD_DEFAULT);
+    } elseif ($existente) {
+        $hash = $existente['password']; // edición sin cambio de contraseña
+    } else {
         salida(['ok' => false, 'error' => 'La contraseña es obligatoria']);
     }
-    $hash = password_hash($passPlana, PASSWORD_DEFAULT);
-    chk(q("INSERT INTO usuarios (usuario,password,rol,nombre,hijo_cat,hijo_id,cat_key,cat_label,telefono,metodo_pago,fecha_vencimiento) VALUES (?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE password=VALUES(password), rol=VALUES(rol), nombre=VALUES(nombre), hijo_cat=VALUES(hijo_cat), hijo_id=VALUES(hijo_id), cat_key=VALUES(cat_key), cat_label=VALUES(cat_label), telefono=VALUES(telefono), metodo_pago=VALUES(metodo_pago), fecha_vencimiento=VALUES(fecha_vencimiento)",
-    'ssssissssss', [limpiar_texto($d['usuario'] ?? '', 80), $hash, in_array($d['rol'] ?? 'padre', ['admin','entrenador','padre'], true) ? $d['rol'] : 'padre', limpiar_texto($d['nombre'] ?? '', 150),
-    $d['hijoCat'] ?? null, !empty($d['hijoId']) ? (int)$d['hijoId'] : null, $d['catKey'] ?? null, $d['catLabel'] ?? null,
-    $d['telefono'] ?? null, $d['metodoPago'] ?? 'linea', f_in($d['fechaVencimiento'] ?? null)]));
+
+    $rol = in_array($d['rol'] ?? '', ['admin','entrenador','padre'], true) ? $d['rol'] : ($existente['rol'] ?? 'padre');
+    $nombre = ($d['nombre'] ?? '') !== '' ? limpiar_texto($d['nombre'], 150) : ($existente['nombre'] ?? '');
+    $hijoCat = array_key_exists('hijoCat', $d) ? $d['hijoCat'] : ($existente['hijo_cat'] ?? null);
+    $hijoId = array_key_exists('hijoId', $d) ? (!empty($d['hijoId']) ? (int)$d['hijoId'] : null) : ($existente['hijo_id'] ?? null);
+    $catKey = array_key_exists('catKey', $d) ? $d['catKey'] : ($existente['cat_key'] ?? null);
+    $catLabel = array_key_exists('catLabel', $d) ? $d['catLabel'] : ($existente['cat_label'] ?? null);
+    $telefono = array_key_exists('telefono', $d) ? $d['telefono'] : ($existente['telefono'] ?? null);
+    $metodo = array_key_exists('metodoPago', $d) ? $d['metodoPago'] : ($existente['metodo_pago'] ?? 'linea');
+    $venc = array_key_exists('fechaVencimiento', $d) ? f_in($d['fechaVencimiento']) : ($existente['fecha_vencimiento'] ?? null);
+
+    if ($uid > 0) {
+        chk(q("UPDATE usuarios SET usuario=?, password=?, rol=?, nombre=?, hijo_cat=?, hijo_id=?, cat_key=?, cat_label=?, telefono=?, metodo_pago=?, fecha_vencimiento=? WHERE id=?",
+        'ssssissssssi', [$usuario, $hash, $rol, $nombre, $hijoCat, $hijoId, $catKey, $catLabel, $telefono, $metodo ?: 'linea', $venc, $uid]));
+    } else {
+        chk(q("INSERT INTO usuarios (usuario,password,rol,nombre,hijo_cat,hijo_id,cat_key,cat_label,telefono,metodo_pago,fecha_vencimiento) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+        'ssssissssss', [$usuario, $hash, $rol, $nombre, $hijoCat, $hijoId, $catKey, $catLabel, $telefono, $metodo ?: 'linea', $venc]));
+    }
     break;
 
 case 'usuarios/actualizarPago':

@@ -1,5 +1,5 @@
 <!-- ==================== SECCION 7: MENSAJES ==================== -->
-<div x-show="mainTab === 'mensajes' && esAdmin"" class="space-y-6 anim-entry">
+<div x-show="mainTab === 'mensajes' && esAdmin" class="space-y-6 anim-entry">
 
   <div class="text-center space-y-2">
     <span class="text-xs font-black text-white border border-white/20 bg-black px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">Bandeja de Entrada</span>

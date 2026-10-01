@@ -1,0 +1,11 @@
+# NicoSport - Reglas globales de Apache (aplican a todo el docroot)
+Options -Indexes
+
+# Bloquear acceso directo a archivos sensibles desde la web
+<FilesMatch "\.(sql|json|log|ini|env|md|sh|bak)$">
+    Require all denied
+</FilesMatch>
+
+# Bloquear rutas internas del código fuente
+RedirectMatch 404 ^/(api|core|private)(/|$)
+RedirectMatch 404 ^/(if0_.*|nicosport_actualizado\.sql|temp\.json|actualizar_base_de_datos.*|Dockerfile|docker-compose\.yml)(/|$)

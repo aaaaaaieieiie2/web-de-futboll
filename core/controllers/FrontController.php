@@ -2,9 +2,16 @@
 class FrontController {
     public static function render() {
         require_once __DIR__ . '/../conexion.php';
-        $rol = $_SESSION['ns_rol'] ?? 'publico';
+        $rol = rol_actual();
+
+        // Sanitizar a la salida (defensa en profundidad anti-XSS)
+        if (!function_exists('e')) {
+            function e($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
+        }
 
         include __DIR__ . '/../../private/views/layout/header.php';
+
+        echo '<script>window.CSRF_TOKEN = ' . json_encode(csrf_token()) . ';</script>';
 
         include __DIR__ . '/../../private/views/tabs/historia.php';
         include __DIR__ . '/../../private/views/tabs/categorias.php';

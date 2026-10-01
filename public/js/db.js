@@ -1,7 +1,7 @@
 /* ============================================================
-   db.js ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â CAPA DE DATOS 100% MySQL
-   SIN localStorage. MySQL es la ÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¡NICA fuente de verdad.
-   Escrituras van a api/api.php, lecturas desde el cachÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©
+   db.js — CAPA DE DATOS 100% MySQL
+   SIN localStorage. MySQL es la ÚNICA fuente de verdad.
+   Escrituras van a api/api.php, lecturas desde el caché
    que se llena al arrancar desde api/bootstrap.php.
 ============================================================ */
 window.DB = (function () {
@@ -20,14 +20,19 @@ window.DB = (function () {
     playerStats: [], trofeosCustom: [], trofeosOcultos: [], trofeosEditados: {},
     evalGlobal: null, textos: {}, plantillas: {}, staff: null, torneo: null,
     categorias: null, jugadoresReciclados: [], pagosClub: [], comprobantes: [],
-    pagosPadre: [], pagosPlataforma: []
+    pagosPadre: [], pagosPlataforma: [], configuraciones: {}
   };
+
+  function csrfHeader() {
+    // Prioridad: token recibido del servidor (login/me) > inyectado por el layout PHP
+    return cache.csrf_token || window.CSRF_TOKEN || '';
+  }
 
   function post(op, payload) {
     const url = (typeof API_URL !== 'undefined' ? API_URL : '../api/api.php?op=') + op;
     return fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': window.CSRF_TOKEN || '' },
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeader() },
       body: JSON.stringify(payload || {})
     }).then(r => r.json()).then(res => {
       if (res && res.error) console.error('[DB MySQL] ' + op + ': ' + res.error);
@@ -53,14 +58,18 @@ window.DB = (function () {
 
   function verificarSesion() {
     const url = BOOTSTRAP_URL.replace('bootstrap.php', 'me.php');
-    return fetch(url).then(r => r.json()).then(data => data.success ? data.usuario : null).catch(e => null);
+    return fetch(url).then(r => r.json()).then(data => {
+      if (data.success) { if (data.csrf_token) cache.csrf_token = data.csrf_token; return data.usuario; }
+      return null;
+    }).catch(e => null);
   }
 
   function login(usuario, password) {
     const url = BOOTSTRAP_URL.replace('bootstrap.php', 'login.php');
     return fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': window.CSRF_TOKEN || '' },
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeader() },
       body: JSON.stringify({ usuario, password })
     }).then(r => r.json()).then(data => {
       if (data.success && data.usuario) {
@@ -71,10 +80,16 @@ window.DB = (function () {
     }).catch(e => null);
   }
 
+  // Fecha local en formato ISO YYYY-MM-DD (único formato de fechas del sistema)
+  function hoyISO() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
   function guardarEvaluacion(ev) {
     const t = [...cache.evaluaciones];
     const i = t.findIndex(x => x.catKey === ev.catKey && x.playerId === ev.playerId);
-    ev.fecha = new Date().toLocaleDateString('es-PA');
+    ev.fecha = hoyISO();
     if (i >= 0) t[i] = ev; else t.push(ev);
     cache.evaluaciones = t;
     post('evaluaciones/guardar', ev);
@@ -102,21 +117,27 @@ window.DB = (function () {
   }
 
   function guardarEncuesta(enc) {
-    enc.fecha = new Date().toLocaleDateString('es-PA');
+    enc.fecha = hoyISO();
     cache.encuestas = [...cache.encuestas, enc];
     post('encuestas/guardar', enc);
   }
 
   function obtenerEncuestas() { return cache.encuestas; }
 
-  function registrarPadre(nombre, usuario, password, hijoCat, hijoId) {
+  async function registrarPadre(nombre, usuario, password, hijoCat, hijoId) {
     if (cache.usuarios.find(u => u.usuario === usuario)) return { ok: false, msg: 'El usuario ya existe' };
-    const maxId = cache.usuarios.length > 0 ? Math.max(...cache.usuarios.map(u => u.id)) : 10;
-    const nuevoId = maxId + 1;
-    const nuevo = { id: nuevoId, usuario, password, rol: 'padre', nombre, hijoCat: hijoCat || null, hijoId: hijoId || null, metodoPago: 'linea', fechaVencimiento: null, telefono: null };
-    cache.usuarios = [...cache.usuarios, nuevo];
-    post('usuarios/guardar', nuevo);
-  
+    const nuevo = { id: null, usuario, password, rol: 'padre', nombre, hijoCat: hijoCat || null, hijoId: hijoId || null, metodoPago: 'linea', fechaVencimiento: null, telefono: null };
+    // El ID lo asigna MySQL (AUTO_INCREMENT); nunca se calcula en el cliente.
+    const res = await post('usuarios/guardar', nuevo);
+    if (!res || res.ok === false) return { ok: false, msg: (res && res.error) || 'No se pudo crear la cuenta' };
+    // Recargar desde el servidor para tomar el ID real generado por MySQL
+    try {
+      const data = await fetch(BOOTSTRAP_URL + '?t=' + Date.now()).then(r => r.json());
+      if (data && !data.error && Array.isArray(data.usuarios)) cache.usuarios = data.usuarios;
+    } catch (e) { /* el caché se refrescará al recargar */ }
+    return { ok: true, msg: 'Cuenta familiar creada y vinculada' };
+  }
+
   // COMENTARIOS PADRES
   function obtenerComentarios() { return cache.comentarios || []; }
   async function guardarComentario(c) {
@@ -134,9 +155,6 @@ window.DB = (function () {
           if (c) c.estado = est;
       }
       return await post('comentarios/estado', { id, estado: est });
-  }
-
-  return { ok: true, msg: 'Cuenta familiar creada y vinculada' };
   }
 
   function obtenerPadres() { return cache.usuarios.filter(u => u.rol === 'padre'); }
@@ -178,6 +196,14 @@ window.DB = (function () {
   function guardarEvalGlobal(lista) { cache.evalGlobal = lista; post('documentos/guardar', { key: 'eval_global', value: lista }); }
   function obtenerTextos() { return cache.textos || {}; }
   function guardarTexto(clave, html) { cache.textos[clave] = html; post('textos/guardar', { clave, html }); }
+
+  // CONFIGURACIONES (tarifas oficiales, etc.) — fuente única: tabla MySQL `configuraciones`
+  function obtenerConfiguraciones() { return cache.configuraciones || {}; }
+  async function guardarConfiguracion(clave, valor) {
+    const res = await post('configuraciones/guardarValor', { clave, valor });
+    if (res && res.ok !== false) cache.configuraciones[clave] = String(valor);
+    return res;
+  }
 
   function normalizarPlantilla(catKey, lista) {
     if (!Array.isArray(lista)) return [];
@@ -244,34 +270,18 @@ window.DB = (function () {
     post('reciclados/quitar', { catKey, dorsal });
   }
 
-  function registrarEntrenador(data) {
+  async function registrarEntrenador(data) {
     if (cache.usuarios.find(u => u.usuario === data.usuario)) return { ok: false, msg: 'El usuario ya existe' };
-    const maxId = cache.usuarios.length > 0 ? Math.max(...cache.usuarios.map(u => u.id)) : 10;
-    const nuevoId = maxId + 1;
-    const nuevo = { id: nuevoId, usuario: data.usuario, password: data.password, rol: 'entrenador', nombre: data.nombre, catKey: data.catKey || null, catLabel: data.catLabel || '' };
-    cache.usuarios = [...cache.usuarios, nuevo];
-    post('usuarios/guardar', nuevo);
-  
-  // COMENTARIOS PADRES
-  function obtenerComentarios() { return cache.comentarios || []; }
-  async function guardarComentario(c) {
-      if(!cache.comentarios) cache.comentarios = [];
-      cache.comentarios.unshift(c);
-      return await post('comentarios/guardar', c);
-  }
-  async function borrarComentario(id) {
-      if(cache.comentarios) cache.comentarios = cache.comentarios.filter(x => x.id !== id);
-      return await post('comentarios/borrar', { id });
-  }
-  async function cambiarEstadoComentario(id, est) {
-      if(cache.comentarios) {
-          const c = cache.comentarios.find(x => x.id === id);
-          if (c) c.estado = est;
-      }
-      return await post('comentarios/estado', { id, estado: est });
-  }
-
-  return { ok: true, msg: 'Entrenador registrado correctamente' };
+    // El ID lo asigna MySQL (AUTO_INCREMENT); nunca se calcula en el cliente.
+    const nuevo = { id: null, usuario: data.usuario, password: data.password, rol: 'entrenador', nombre: data.nombre, catKey: data.catKey || null, catLabel: data.catLabel || '' };
+    const res = await post('usuarios/guardar', nuevo);
+    if (!res || res.ok === false) return { ok: false, msg: (res && res.error) || 'No se pudo registrar al entrenador' };
+    // Recargar desde el servidor para tomar el ID real generado por MySQL
+    try {
+      const fresh = await fetch(BOOTSTRAP_URL + '?t=' + Date.now()).then(r => r.json());
+      if (fresh && !fresh.error && Array.isArray(fresh.usuarios)) cache.usuarios = fresh.usuarios;
+    } catch (e) { /* el caché se refrescará al recargar */ }
+    return { ok: true, msg: 'Entrenador registrado correctamente' };
   }
 
   function obtenerEntrenadores() { return cache.usuarios.filter(u => u.rol === 'entrenador'); }
@@ -290,7 +300,7 @@ window.DB = (function () {
   }
 
   function guardarPagoClub(pago) {
-    pago.id = pago.id || Date.now();
+    // El ID lo genera el servidor si no viene de bootstrap
     cache.pagosClub = [...cache.pagosClub, pago];
     post('pagosClub/agregar', pago);
   }
@@ -298,7 +308,7 @@ window.DB = (function () {
   function obtenerPagosClub() { return cache.pagosClub; }
 
   function guardarComprobante(c) {
-    c.id = Date.now(); c.estado = 'pendiente';
+    c.id = null; c.estado = 'pendiente';
     cache.comprobantes = [...cache.comprobantes, c];
     post('comprobantes/agregar', c);
   }
@@ -313,7 +323,7 @@ window.DB = (function () {
     t[i] = validacionData;
     cache.comprobantes = t;
     if (aprobar) {
-      const pago = { id: Date.now(), padreId: t[i].padreId, padreNombre: t[i].padreNombre, concepto: t[i].concepto, monto: t[i].monto, fecha: t[i].fecha, referencia: t[i].referencia || '', metodo: 'digital', estado: 'validado' };
+      const pago = { id: null, padreId: t[i].padreId, padreNombre: t[i].padreNombre, concepto: t[i].concepto, monto: t[i].monto, fecha: t[i].fecha, referencia: t[i].referencia || '', metodo: 'digital', estado: 'validado' };
       cache.pagosClub = [...cache.pagosClub, pago];
       post('comprobantes/validar', { id, aprobar: true, pago });
     } else {
@@ -323,7 +333,7 @@ window.DB = (function () {
   }
 
   function guardarPagoPadre(padreId, pago) {
-    pago.id = Date.now(); pago.padreId = padreId; pago.estado = pago.estado || 'pendiente';
+    pago.id = null; pago.padreId = padreId; pago.estado = pago.estado || 'pendiente';
     cache.pagosPadre = [...cache.pagosPadre, pago];
     post('pagosPadre/agregar', pago);
   }
@@ -333,14 +343,14 @@ window.DB = (function () {
   }
 
   function guardarPagoPlataforma(p) {
-    p.id = Date.now(); p.estado = 'pendiente';
+    p.id = null; p.estado = 'pendiente';
     cache.pagosPlataforma = [...cache.pagosPlataforma, p];
     post('pagosPlataforma/agregar', p);
   }
 
   function obtenerPagosPlataforma() { return cache.pagosPlataforma; }
 
-  // Forzar actualizaciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n silenciosa para invalidar cachÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©
+  // Forzar actualización silenciosa para invalidar caché
   function sincronizar(app) {
     return fetch(BOOTSTRAP_URL + '?t=' + Date.now())
       .then(r => r.json())
@@ -386,6 +396,7 @@ window.DB = (function () {
     obtenerTrofeosEditados, guardarTrofeoEditado,
     obtenerEvalGlobal, guardarEvalGlobal,
     obtenerTextos, guardarTexto,
+    obtenerConfiguraciones, guardarConfiguracion,
     normalizarPlantilla, obtenerPlantilla, guardarPlantilla,
     obtenerStaff, guardarStaff,
     obtenerTorneo, guardarTorneo,

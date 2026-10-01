@@ -1,5 +1,5 @@
 <!-- ==================== SECCIÓN 8: PAGOS DEL CLUB (Estética Mejorada) ==================== -->
-<div x-show="mainTab === 'pagosClub' && esAdmin"" class="space-y-6 anim-entry">
+<div x-show="mainTab === 'pagosClub' && esAdmin" class="space-y-6 anim-entry">
 <div class="text-center space-y-2">
 <span class="text-xs font-black text-white border border-white/20 bg-black px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">Gestión Financiera</span>
 <h3 class="text-2xl font-black text-white uppercase">Pagos del Club</h3>

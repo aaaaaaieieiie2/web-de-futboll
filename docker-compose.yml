@@ -1,32 +1,43 @@
-version: '3.8'
-
 services:
   web:
     build: .
     ports:
       - "8080:80"
     volumes:
-      - .:/var/www/html/
+      - ./uploads:/var/www/html/uploads
     environment:
       - DB_HOST=db
-      - DB_USER=nicosport_user
-      - DB_PASS=nicosport_pass
-      - DB_NAME=nicosport
+      - DB_USER=${DB_USER:-nicosport_user}
+      - DB_PASS=${DB_PASS:?Define DB_PASS en un archivo .env}
+      - DB_NAME=${DB_NAME:-nicosport}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    restart: unless-stopped
 
   db:
     image: mysql:8.0
-    ports:
-      - "3307:3306"
+    # Sin exposición al host: solo la red interna del compose accede a MySQL.
+    # Para administración local puntual, descomentar:
+    # ports:
+    #   - "127.0.0.1:3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: nicosport
-      MYSQL_USER: nicosport_user
-      MYSQL_PASSWORD: nicosport_pass
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Define MYSQL_ROOT_PASSWORD en un archivo .env}
+      MYSQL_DATABASE: ${DB_NAME:-nicosport}
+      MYSQL_USER: ${DB_USER:-nicosport_user}
+      MYSQL_PASSWORD: ${DB_PASS:?Define DB_PASS en un archivo .env}
     volumes:
       - db_data:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
 
 volumes:
   db_data:
-

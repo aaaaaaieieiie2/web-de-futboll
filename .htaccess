@@ -6,6 +6,13 @@ Options -Indexes
     Require all denied
 </FilesMatch>
 
-# Bloquear rutas internas del código fuente
-RedirectMatch 404 ^/(api|core|private)(/|$)
-RedirectMatch 404 ^/(if0_.*|nicosport_actualizado\.sql|temp\.json|actualizar_base_de_datos.*|Dockerfile|docker-compose\.yml)(/|$)
+# Redirigir la raíz al frontend (public/)
+RedirectMatch ^/$ /public/index.php
+
+# Bloquear rutas internas del código fuente.
+# NOTA: /api NO se bloquea porque el frontend lo consume vía fetch
+# (bootstrap.php, api.php, login.php...); su seguridad se aplica en
+# core/security.php (sesión, roles, CSRF, CORS). /core y /private no
+# deben ser accesibles nunca desde la web.
+RedirectMatch 404 ^/(core|private)(/|$)
+RedirectMatch 404 ^/(if0_.*|nicosport_actualizado\.sql|temp\.json|actualizar_base_de_datos.*|Dockerfile|docker-compose\.yml|\.env\.example|\.gitignore)(/|$)

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html/
+    environment:
+      - DB_HOST=db
+      - DB_USER=nicosport_user
+      - DB_PASS=nicosport_pass
+      - DB_NAME=nicosport
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nicosport
+      MYSQL_USER: nicosport_user
+      MYSQL_PASSWORD: nicosport_pass
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+

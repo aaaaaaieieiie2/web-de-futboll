@@ -1,0 +1,68 @@
+Created At: 2026-09-29T21:20:33-05:00
+Completed At: 2026-09-29T21:20:33-05:00
+File Path: `file:///c:/xampp/htdocs/nicosport/public/js/db.js`
+Total Lines: 308
+Total Bytes: 14024
+Showing lines 1 to 60
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: /* ============================================================
+2:    db.js — CAPA DE DATOS 100% MySQL
+3:    SIN localStorage. MySQL es la ÚNICA fuente de verdad.
+4:    Escrituras van a api/api.php, lecturas desde el caché
+5:    que se llena al arrancar desde api/bootstrap.php.
+6: ============================================================ */
+7: window.DB = (function () {
+8:   'use strict';
+9:   const API = '../api/api.php?op=';
+10: 
+11:   const cache = {
+12:     usuarios: [], evaluaciones: [], asistencias: [], encuestas: [], comentarios: [],
+13:     playerStats: [], trofeosCustom: [], trofeosOcultos: [], trofeosEditados: {},
+14:     evalGlobal: null, textos: {}, plantillas: {}, staff: null, torneo: null,
+15:     categorias: null, jugadoresReciclados: [], pagosClub: [], comprobantes: [],
+16:     pagosPadre: [], pagosPlataforma: []
+17:   };
+18: 
+19:   function post(op, payload) {
+20:     return fetch(API + op, {
+21:       method: 'POST',
+22:       headers: { 'Content-Type': 'application/json' },
+23:       body: JSON.stringify(payload || {})
+24:     }).then(r => r.json()).then(res => {
+25:       if (res && res.error) console.error('[DB MySQL] ' + op + ': ' + res.error);
+26:       return res;
+27:     }).catch(e => console.error('[DB MySQL] fallo de red en ' + op, e));
+28:   }
+29: 
+30:   // Limpiar cualquier basura de localStorage que pueda interferir
+31:   try {
+32:     Object.keys(localStorage)
+33:       .filter(k => k.startsWith('nico_'))
+34:       .forEach(k => localStorage.removeItem(k));
+35:   } catch(e) {}
+36: 
+37:   const listo = fetch('../api/bootstrap.php?t=' + Date.now())
+38:     .then(r => r.json())
+39:     .then(data => {
+40:       if (data && data.error) { console.error('[DB MySQL] ' + data.error); return; }
+41:       Object.keys(cache).forEach(k => { if (data[k] !== undefined) cache[k] = data[k]; });
+42:       console.log('[DB MySQL] Cargado. Usuarios:', cache.usuarios.length, '| Padres:', cache.usuarios.filter(u => u.rol === 'padre').length);
+43:     })
+44:     .catch(e => console.error('[DB MySQL] No se pudo cargar bootstrap.php (URL: ../api/bootstrap.php)', e));
+45: 
+46:   function login(usuario, password) {
+47:     return cache.usuarios.find(u => u.usuario === usuario && u.password === password) || null;
+48:   }
+49: 
+50:   function guardarEvaluacion(ev) {
+51:     const t = [...cache.evaluaciones];
+52:     const i = t.findIndex(x => x.catKey === ev.catKey && x.playerId === ev.playerId);
+53:     ev.fecha = new Date().toLocaleDateString('es-PA');
+54:     if (i >= 0) t[i] = ev; else t.push(ev);
+55:     cache.evaluaciones = t;
+56:     post('evaluaciones/guardar', ev);
+57:   }
+58: 
+59:   function obtenerEvaluacion(catKey, playerId) {
+60:     return cache.evaluaciones.find(x => x.catKey === catKey && x.playerId === playerId) || null;
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

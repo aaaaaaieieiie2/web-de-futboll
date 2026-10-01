@@ -1009,9 +1009,9 @@ document.addEventListener('alpine:init', () => {
     },
 
     /* ========== 16) PAGOS DEL CLUB ========== */
-    filtroPagoCat: '', busquedaPagoPadre: '', busquedaPagoPadreEf: '', busquedaPagoPadreLi: '', modalPagoActivo: false, pagoActual: { id: null, concepto: 'mensualidad', monto: 15.00, fecha: this.hoyISO(), referencia: '' },
+    filtroPagoCat: '', busquedaPagoPadre: '', busquedaPagoPadreEf: '', busquedaPagoPadreLi: '', modalPagoActivo: false, pagoActual: { id: null, concepto: 'mensualidad', monto: 0, fecha: '', referencia: '' },
     pagoManualTipo: 'efectivo', // 'efectivo' o 'linea'
-    pagoManual: { padreId: '', concepto: 'mensualidad', monto: 15, fecha: this.hoyISO(), referencia: '', metodo: 'efectivo' },
+    pagoManual: { padreId: '', concepto: 'mensualidad', monto: this.tarifa('mensualidad'), fecha: this.hoyISO(), referencia: '', metodo: 'efectivo' },
     
     get padresParaCobroEfectivo() {
       try {
@@ -1071,19 +1071,6 @@ document.addEventListener('alpine:init', () => {
       } catch(e) { return []; }
     },
 
-    cambiarMetodoPago(padreId, nuevoMetodo) {
-      if (!confirm(`¿Cambiar método de pago a ${nuevoMetodo === "efectivo" ? "Efectivo" : "En Línea"}?`)) return;
-      const padre = this.listaPadres.find(p => p.id == padreId);
-      if (!padre) return;
-      padre.metodoPago = nuevoMetodo;
-      this.adminPadresVersion++; this.comentariosVersion++; 
-      window.DB.post("usuarios/actualizarPago", {
-          id: padre.id,
-          telefono: padre.telefono,
-          metodoPago: nuevoMetodo,
-          fechaVencimiento: padre.fechaVencimiento
-      });
-    },
 
     registrarPagoManual() {
       if (!this.esAdmin) return;
@@ -1121,7 +1108,7 @@ document.addEventListener('alpine:init', () => {
       });
 
       this.adminPadresVersion++; this.comentariosVersion++;
-      this.pagoManual = { padreId: '', concepto: 'mensualidad', monto: 15, fecha: this.hoyISO(), referencia: '', metodo: 'efectivo' };
+      this.pagoManual = { padreId: '', concepto: 'mensualidad', monto: this.tarifa('mensualidad'), fecha: this.hoyISO(), referencia: '', metodo: 'efectivo' };
       alert('Pago registrado correctamente. Próximo vencimiento: ' + nuevaFecha);
     },
     
@@ -1189,7 +1176,7 @@ document.addEventListener('alpine:init', () => {
                         cambiarMetodoPago(padreId, nuevoMetodo) {
           const padre = this.listaPadres.find(p => p.id == padreId);
           if (padre) {
-              padre.metodo_pago = nuevoMetodo;
+              padre.metodoPago = nuevoMetodo;
               if(window.DB.post) {
                   window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: nuevoMetodo });
               }
@@ -1214,7 +1201,7 @@ document.addEventListener('alpine:init', () => {
               f.setDate(f.getDate() - 15);
               padre.fechaVencimiento = this.fechaISOLocal(f);
               if(window.DB.post) {
-                  window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
+                  window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodoPago });
               }
               this.adminPadresVersion++; this.comentariosVersion++;
           }
@@ -1231,7 +1218,7 @@ document.addEventListener('alpine:init', () => {
               padre.fechaVencimiento = this.fechaISOLocal(f);
               // Save to database directly
               if(window.DB.post) {
-                  window.DB.post('usuarios/actualizarPago', { id: padre.id, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
+                  window.DB.post('usuarios/actualizarPago', { id: padre.id, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodoPago });
               }
               this.adminPadresVersion++; this.comentariosVersion++;
               
@@ -1256,7 +1243,7 @@ document.addEventListener('alpine:init', () => {
                   f.setDate(f.getDate() + 15);
                   padre.fechaVencimiento = this.fechaISOLocal(f);
                   if(window.DB.post) {
-                      window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
+                      window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodoPago });
                   }
                   this.adminPadresVersion++; this.comentariosVersion++;
                   // Muestra una notificación rápida sin bloquear (toast)
@@ -1279,7 +1266,7 @@ document.addEventListener('alpine:init', () => {
                   f.setDate(f.getDate() + 15);
                   padre.fechaVencimiento = this.fechaISOLocal(f);
                   if(window.DB.post) {
-                      window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
+                      window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodoPago });
                   }
                   this.adminPadresVersion++; this.comentariosVersion++;
                   alert('Pago aprobado. El estado del padre ha cambiado a Pagado (Al día).');
@@ -1293,7 +1280,7 @@ document.addEventListener('alpine:init', () => {
           return this.estadoDeCuentas.filter(p => p.estadoPago === 'vencido');
       },
       abrirModalPago(id) {
-          this.pagoActual = { id: id, concepto: 'mensualidad', monto: 15.00, fecha: this.hoyISO(), referencia: '' };
+          this.pagoActual = { id: id, concepto: 'mensualidad', monto: this.tarifa('mensualidad'), fecha: this.hoyISO(), referencia: '' };
           this.modalPagoActivo = true;
       },
       cerrarModalPago() {
@@ -1451,6 +1438,12 @@ document.addEventListener('alpine:init', () => {
     /* ========== 19) TARIFAS OFICIALES (fuente única: tabla MySQL `configuraciones`) ========== */
       tarifaOficialMensualidad: 15.00,
       tarifaOficialInscripcion: 15.00,
+      tarifa(concepto) {
+          // Única fuente de verdad: configuraciones MySQL con fallback al default 15
+          const c = String(concepto || '').toLowerCase();
+          if (c === 'inscripcion') return parseFloat(this.tarifaOficialInscripcion) || 15;
+          return parseFloat(this.tarifaOficialMensualidad) || 15;
+      },
       cargarTarifas() {
           const conf = window.DB.obtenerConfiguraciones ? window.DB.obtenerConfiguraciones() : {};
           if(conf['tarifa_mensualidad']) this.tarifaOficialMensualidad = parseFloat(conf['tarifa_mensualidad']);
@@ -1478,7 +1471,7 @@ document.addEventListener('alpine:init', () => {
           document.body.appendChild(toast);
           setTimeout(() => toast.remove(), 3000);
       },
-      reportePago: { concepto: 'Mensualidad', monto: 15, fecha: this.hoyISO(), referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' },
+      reportePago: { concepto: 'Mensualidad', monto: this.tarifa('mensualidad'), fecha: this.hoyISO(), referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' },
     handleComprobantePadre(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -1550,7 +1543,7 @@ document.addEventListener('alpine:init', () => {
         );
         window.open('https://wa.me/50760000000?text=' + msg, '_blank');
         alert(' Reporte enviado + Notificación por WhatsApp al administrador');
-        this.reportePago = { concepto: 'Mensualidad', monto: 15, fecha: fechaActual, referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' };
+        this.reportePago = { concepto: 'Mensualidad', monto: this.tarifa('mensualidad'), fecha: fechaActual, referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' };
         this.adminPadresVersion++; this.comentariosVersion++; // Forzar actualización reactiva en Alpine
       },
       misPagos() {

@@ -110,9 +110,9 @@ $sqls = [
 
 /* ===== SEMILLAS ===== */
 "INSERT IGNORE INTO usuarios (id,usuario,password,rol,nombre,hijo_cat,hijo_id,cat_key,cat_label) VALUES
- (1,'admin','nico2026','admin','Cuerpo Técnico ANS',NULL,NULL,NULL,NULL),
- (2,'familia.aguirre','1234','padre','Familia Aguirre','sub12',4,NULL,NULL),
- (3,'dt.sub6','dt2026','entrenador','DT Sub-6',NULL,NULL,'sub6','Sub-6')",
+ (1,'admin','" . password_hash('nico2026', PASSWORD_DEFAULT) . "','admin','Cuerpo Técnico ANS',NULL,NULL,NULL,NULL),
+ (2,'familia.aguirre','" . password_hash('1234', PASSWORD_DEFAULT) . "','padre','Familia Aguirre','sub12',4,NULL,NULL),
+ (3,'dt.sub6','" . password_hash('dt2026', PASSWORD_DEFAULT) . "','entrenador','DT Sub-6',NULL,NULL,'sub6','Sub-6')",
 
 "INSERT IGNORE INTO categorias (cat_key,label,descripcion,core,orden) VALUES
  ('sub6','Sub-6','Iniciación (4 a 6 años) — Ludotécnica',1,1),

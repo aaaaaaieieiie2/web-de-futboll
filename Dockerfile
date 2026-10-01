@@ -3,8 +3,8 @@ FROM php:8.2-apache
 # Habilitar mod_rewrite y mod_headers (cabeceras de seguridad)
 RUN a2enmod rewrite headers
 
-# Extensiones PHP necesarias
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Extensiones PHP necesarias (mbstring: requerida por core/security.php)
+RUN docker-php-ext-install mysqli pdo pdo_mysql mbstring
 
 # Configuración de producción PHP (no exponer errores)
 RUN { \

@@ -27,3 +27,7 @@ uploads/comprobantes/*
 Thumbs.db
 .idea/
 .vscode/
+
+# ===== Residuos de recuperacion =====
+app_candidate.json*
+nicosport_*.sql

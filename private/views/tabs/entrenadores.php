@@ -1,5 +1,5 @@
 <!-- ==================== SECCIÓN 10: GESTIÓN DE ENTRENADORES ==================== -->
-<div x-show="mainTab === 'entrenadores' && esAdmin"" class="space-y-6 anim-entry">
+<div x-show="mainTab === 'entrenadores' && esAdmin" class="space-y-6 anim-entry">
 <div class="text-center space-y-2">
 <span class="text-xs font-black text-white border border-white/20 bg-black px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">Control de Acceso</span>
 <h3 class="text-2xl font-black text-white uppercase">Gestión de Entrenadores</h3>
@@ -17,7 +17,7 @@
 </select>
 </div>
 <button @click="registrarEntrenador()" class="admin-btn" style="background: linear-gradient(135deg, #0B4F9C, #052a55); box-shadow: 0 0 15px rgba(11,79,156,0.4);"><i class="fas fa-user-tie"></i> Crear Entrenador</button>
-<span class="text-xs font-bold ml-2" :class="entrenadorMsg.includes('?') ? 'text-nico-green' : 'text-nico-red'" x-text="entrenadorMsg" x-show="entrenadorMsg"></span>
+<span class="text-xs font-bold ml-2" :class="entrenadorMsg.includes('✔') ? 'text-nico-green' : 'text-nico-red'" x-text="entrenadorMsg" x-show="entrenadorMsg"></span>
 </div>
 <div class="glass-box p-5 rounded-3xl border border-white/10 space-y-4">
 <h4 class="text-xs font-black text-white uppercase flex items-center gap-2"><i class="fas fa-users"></i> Entrenadores Registrados (<span x-text="listaEntrenadores.length"></span>)</h4>

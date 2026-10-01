@@ -1,10 +1,10 @@
 /* ============================================================
-app.js  LÃ“GICA PRINCIPAL (Alpine.js)
+app.js  LÓGICA PRINCIPAL (Alpine.js)
  MySQL + 5 FIXES:
 1) Registro unificado padre + jugador (crear o elegir)
-2) Fix cachÃ© zombi (valida sesiÃ³n al cargar)
-3) Padre va directo a CategorÃ­as con su hijo
-4) Modal evaluaciÃ³n responsive total
+2) Fix caché zombi (valida sesión al cargar)
+3) Padre va directo a Categorías con su hijo
+4) Modal evaluación responsive total
 5) Recordatorio pago solo rojo si vencido
 ============================================================ */
 document.addEventListener('alpine:init', () => {
@@ -15,12 +15,12 @@ document.addEventListener('alpine:init', () => {
     faseActual: 'ninguna',
     tabla: [
       { nombre: 'Nico Sport ANS', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 },
-      { nombre: 'PrÃ³ximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 },
-      { nombre: 'PrÃ³ximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 },
-      { nombre: 'PrÃ³ximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 }
+      { nombre: 'Próximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 },
+      { nombre: 'Próximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 },
+      { nombre: 'Próximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 }
     ],
-    ultimoResultado: { golesNico: 0, golesRival: 0, rival: 'PrÃ³ximo', goleadores: 'PrÃ³ximo', sede: 'PrÃ³ximo' },
-    proximoPartido: { fecha: 'PrÃ³ximo', condicion: 'PrÃ³ximo', rival: 'PrÃ³ximo', sede: 'PrÃ³ximo' }
+    ultimoResultado: { golesNico: 0, golesRival: 0, rival: 'Próximo', goleadores: 'Próximo', sede: 'Próximo' },
+    proximoPartido: { fecha: 'Próximo', condicion: 'Próximo', rival: 'Próximo', sede: 'Próximo' }
   });
 
   const UI = {
@@ -41,22 +41,22 @@ document.addEventListener('alpine:init', () => {
   const P_SUB6 = [
     { id: 1, catKey: 'sub6', name: 'M. Aguirre', dorsal: 1, pos: 'POR', goles: 0, asistencias: 0, mvp: 2 },
     { id: 2, catKey: 'sub6', name: 'D. Castro', dorsal: 2, pos: 'DEF', goles: 1, asistencias: 3, mvp: 1 },
-    { id: 3, catKey: 'sub6', name: 'S. PÃ©rez', dorsal: 3, pos: 'DEF', goles: 0, asistencias: 2, mvp: 0 },
+    { id: 3, catKey: 'sub6', name: 'S. Pérez', dorsal: 3, pos: 'DEF', goles: 0, asistencias: 2, mvp: 0 },
     { id: 4, catKey: 'sub6', name: 'A. Ruiz', dorsal: 4, pos: 'MED', goles: 5, asistencias: 4, mvp: 3 },
     { id: 5, catKey: 'sub6', name: 'L. Torres', dorsal: 5, pos: 'DEL', goles: 8, asistencias: 2, mvp: 4 },
-    { id: 6, catKey: 'sub6', name: 'J. GÃ³mez', dorsal: 6, pos: 'DEL', goles: 4, asistencias: 1, mvp: 1 },
+    { id: 6, catKey: 'sub6', name: 'J. Gómez', dorsal: 6, pos: 'DEL', goles: 4, asistencias: 1, mvp: 1 },
     { id: 7, catKey: 'sub6', name: 'K. Morales', dorsal: 7, pos: 'MED', goles: 2, asistencias: 5, mvp: 1 },
-    { id: 8, catKey: 'sub6', name: 'E. RÃ­os', dorsal: 8, pos: 'DEF', goles: 0, asistencias: 1, mvp: 0 },
+    { id: 8, catKey: 'sub6', name: 'E. Ríos', dorsal: 8, pos: 'DEF', goles: 0, asistencias: 1, mvp: 0 },
     { id: 9, catKey: 'sub6', name: 'C. Vega', dorsal: 9, pos: 'DEL', goles: 6, asistencias: 2, mvp: 2 },
     { id: 10, catKey: 'sub6', name: 'B. Soto', dorsal: 10, pos: 'MED', goles: 3, asistencias: 6, mvp: 2 },
     { id: 11, catKey: 'sub6', name: 'R. Pinto', dorsal: 11, pos: 'POR', goles: 0, asistencias: 0, mvp: 1 },
     { id: 12, catKey: 'sub6', name: 'G. Navas', dorsal: 12, pos: 'DEF', goles: 1, asistencias: 0, mvp: 0 },
     { id: 13, catKey: 'sub6', name: 'H. Molina', dorsal: 13, pos: 'MED', goles: 2, asistencias: 2, mvp: 0 },
-    { id: 14, catKey: 'sub6', name: 'J. CedeÃ±o', dorsal: 14, pos: 'DEL', goles: 3, asistencias: 1, mvp: 1 },
-    { id: 15, catKey: 'sub6', name: 'F. BenÃ­tez', dorsal: 15, pos: 'DEF', goles: 0, asistencias: 0, mvp: 0 },
+    { id: 14, catKey: 'sub6', name: 'J. Cedeño', dorsal: 14, pos: 'DEL', goles: 3, asistencias: 1, mvp: 1 },
+    { id: 15, catKey: 'sub6', name: 'F. Benítez', dorsal: 15, pos: 'DEF', goles: 0, asistencias: 0, mvp: 0 },
     { id: 16, catKey: 'sub6', name: 'T. Ortega', dorsal: 16, pos: 'MED', goles: 1, asistencias: 3, mvp: 0 },
     { id: 17, catKey: 'sub6', name: 'N. Duarte', dorsal: 17, pos: 'DEL', goles: 2, asistencias: 0, mvp: 0 },
-    { id: 18, catKey: 'sub6', name: 'P. AcuÃ±a', dorsal: 18, pos: 'MED', goles: 1, asistencias: 2, mvp: 0 },
+    { id: 18, catKey: 'sub6', name: 'P. Acuña', dorsal: 18, pos: 'MED', goles: 1, asistencias: 2, mvp: 0 },
     { id: 19, catKey: 'sub6', name: 'I. Vargas', dorsal: 19, pos: 'DEF', goles: 0, asistencias: 1, mvp: 0 },
     { id: 20, catKey: 'sub6', name: 'O. Espino', dorsal: 20, pos: 'DEL', goles: 4, asistencias: 1, mvp: 1 }
   ];
@@ -66,18 +66,18 @@ document.addEventListener('alpine:init', () => {
     { id: 2, catKey: 'sub12', name: 'C. Herrera', dorsal: 2, pos: 'DEF', goles: 2, asistencias: 3, mvp: 2 },
     { id: 3, catKey: 'sub12', name: 'J. Rivera', dorsal: 3, pos: 'MED', goles: 6, asistencias: 8, mvp: 4 },
     { id: 4, catKey: 'sub12', name: 'M. Aguirre', dorsal: 4, pos: 'MED', goles: 12, asistencias: 7, mvp: 6 },
-    { id: 5, catKey: 'sub12', name: 'A. DÃ­az', dorsal: 5, pos: 'DEL', goles: 15, asistencias: 4, mvp: 5 },
+    { id: 5, catKey: 'sub12', name: 'A. Díaz', dorsal: 5, pos: 'DEL', goles: 15, asistencias: 4, mvp: 5 },
     { id: 6, catKey: 'sub12', name: 'F. Silva', dorsal: 6, pos: 'DEL', goles: 9, asistencias: 5, mvp: 2 },
     { id: 7, catKey: 'sub12', name: 'L. Campos', dorsal: 7, pos: 'DEF', goles: 1, asistencias: 2, mvp: 1 },
     { id: 8, catKey: 'sub12', name: 'S. Ramos', dorsal: 8, pos: 'MED', goles: 4, asistencias: 6, mvp: 2 },
     { id: 9, catKey: 'sub12', name: 'D. Paredes', dorsal: 9, pos: 'DEL', goles: 7, asistencias: 3, mvp: 2 },
-    { id: 10, catKey: 'sub12', name: 'K. NuÃ±ez', dorsal: 10, pos: 'POR', goles: 0, asistencias: 0, mvp: 1 },
+    { id: 10, catKey: 'sub12', name: 'K. Nuñez', dorsal: 10, pos: 'POR', goles: 0, asistencias: 0, mvp: 1 },
     { id: 11, catKey: 'sub12', name: 'R. Castillo', dorsal: 11, pos: 'DEF', goles: 0, asistencias: 4, mvp: 1 },
     { id: 12, catKey: 'sub12', name: 'G. Mendoza', dorsal: 12, pos: 'MED', goles: 3, asistencias: 4, mvp: 0 },
     { id: 13, catKey: 'sub12', name: 'H. Rojas', dorsal: 13, pos: 'DEL', goles: 5, asistencias: 2, mvp: 1 },
     { id: 14, catKey: 'sub12', name: 'B. Montero', dorsal: 14, pos: 'DEF', goles: 1, asistencias: 1, mvp: 0 },
     { id: 15, catKey: 'sub12', name: 'V. Quedo', dorsal: 15, pos: 'MED', goles: 2, asistencias: 3, mvp: 0 },
-    { id: 16, catKey: 'sub12', name: 'J. LeÃ³n', dorsal: 16, pos: 'DEL', goles: 4, asistencias: 1, mvp: 1 },
+    { id: 16, catKey: 'sub12', name: 'J. León', dorsal: 16, pos: 'DEL', goles: 4, asistencias: 1, mvp: 1 },
     { id: 17, catKey: 'sub12', name: 'P. Sosa', dorsal: 17, pos: 'DEF', goles: 0, asistencias: 2, mvp: 0 },
     { id: 18, catKey: 'sub12', name: 'N. Garza', dorsal: 18, pos: 'MED', goles: 1, asistencias: 2, mvp: 0 },
     { id: 19, catKey: 'sub12', name: 'T. Ponce', dorsal: 19, pos: 'DEL', goles: 3, asistencias: 0, mvp: 0 },
@@ -88,27 +88,27 @@ document.addEventListener('alpine:init', () => {
     { id: 1, catKey: 'sub16', name: 'G. Vargas', dorsal: 1, pos: 'POR', goles: 0, asistencias: 2, mvp: 4 },
     { id: 2, catKey: 'sub16', name: 'K. Ramos', dorsal: 2, pos: 'DEF', goles: 3, asistencias: 2, mvp: 3 },
     { id: 3, catKey: 'sub16', name: 'R. Delgado', dorsal: 3, pos: 'DEF', goles: 1, asistencias: 4, mvp: 2 },
-    { id: 4, catKey: 'sub16', name: 'B. MartÃ­nez', dorsal: 4, pos: 'MED', goles: 8, asistencias: 10, mvp: 6 },
+    { id: 4, catKey: 'sub16', name: 'B. Martínez', dorsal: 4, pos: 'MED', goles: 8, asistencias: 10, mvp: 6 },
     { id: 5, catKey: 'sub16', name: 'H. Salazar', dorsal: 5, pos: 'DEL', goles: 16, asistencias: 5, mvp: 7 },
     { id: 6, catKey: 'sub16', name: 'N. Vega', dorsal: 6, pos: 'DEL', goles: 11, asistencias: 6, mvp: 4 },
     { id: 7, catKey: 'sub16', name: 'J. Alveo', dorsal: 7, pos: 'MED', goles: 5, asistencias: 8, mvp: 2 },
-    { id: 8, catKey: 'sub16', name: 'S. BultrÃ³n', dorsal: 8, pos: 'DEF', goles: 2, asistencias: 1, mvp: 1 },
+    { id: 8, catKey: 'sub16', name: 'S. Bultrón', dorsal: 8, pos: 'DEF', goles: 2, asistencias: 1, mvp: 1 },
     { id: 9, catKey: 'sub16', name: 'L. Samaniego', dorsal: 9, pos: 'DEL', goles: 7, asistencias: 3, mvp: 2 },
     { id: 10, catKey: 'sub16', name: 'D. Quintero', dorsal: 10, pos: 'MED', goles: 4, asistencias: 6, mvp: 2 },
-    { id: 11, catKey: 'sub16', name: 'M. AraÃºz', dorsal: 11, pos: 'POR', goles: 0, asistencias: 0, mvp: 0 },
+    { id: 11, catKey: 'sub16', name: 'M. Araúz', dorsal: 11, pos: 'POR', goles: 0, asistencias: 0, mvp: 0 },
     { id: 12, catKey: 'sub16', name: 'C. Espinoza', dorsal: 12, pos: 'DEF', goles: 1, asistencias: 2, mvp: 0 },
     { id: 13, catKey: 'sub16', name: 'A. Batista', dorsal: 13, pos: 'MED', goles: 3, asistencias: 3, mvp: 1 },
     { id: 14, catKey: 'sub16', name: 'E. Becker', dorsal: 14, pos: 'DEL', goles: 6, asistencias: 2, mvp: 2 },
-    { id: 15, catKey: 'sub16', name: 'O. JimÃ©nez', dorsal: 15, pos: 'DEF', goles: 0, asistencias: 1, mvp: 0 },
+    { id: 15, catKey: 'sub16', name: 'O. Jiménez', dorsal: 15, pos: 'DEF', goles: 0, asistencias: 1, mvp: 0 },
     { id: 16, catKey: 'sub16', name: 'F. Wong', dorsal: 16, pos: 'MED', goles: 2, asistencias: 4, mvp: 0 },
     { id: 17, catKey: 'sub16', name: 'I. Pimentel', dorsal: 17, pos: 'DEL', goles: 4, asistencias: 1, mvp: 1 },
     { id: 18, catKey: 'sub16', name: 'Y. Mosquera', dorsal: 18, pos: 'DEF', goles: 1, asistencias: 0, mvp: 0 },
-    { id: 19, catKey: 'sub16', name: 'X. ValdÃ©s', dorsal: 19, pos: 'MED', goles: 2, asistencias: 2, mvp: 0 },
+    { id: 19, catKey: 'sub16', name: 'X. Valdés', dorsal: 19, pos: 'MED', goles: 2, asistencias: 2, mvp: 0 },
     { id: 20, catKey: 'sub16', name: 'Z. Guerra', dorsal: 20, pos: 'DEL', goles: 5, asistencias: 2, mvp: 1 }
   ];
 
   const P_SUBMAYOR = [
-    { id: 1, catKey: 'submayor', name: 'V. CÃ³rdoba', dorsal: 1, pos: 'POR', goles: 0, asistencias: 3, mvp: 5 },
+    { id: 1, catKey: 'submayor', name: 'V. Córdoba', dorsal: 1, pos: 'POR', goles: 0, asistencias: 3, mvp: 5 },
     { id: 2, catKey: 'submayor', name: 'O. Paredes', dorsal: 2, pos: 'DEF', goles: 4, asistencias: 2, mvp: 3 },
     { id: 3, catKey: 'submayor', name: 'I. Navarro', dorsal: 3, pos: 'DEF', goles: 2, asistencias: 5, mvp: 3 },
     { id: 4, catKey: 'submayor', name: 'E. Castillo', dorsal: 4, pos: 'MED', goles: 10, asistencias: 12, mvp: 8 },
@@ -119,14 +119,14 @@ document.addEventListener('alpine:init', () => {
     { id: 9, catKey: 'submayor', name: 'L. Melgar', dorsal: 9, pos: 'DEF', goles: 1, asistencias: 3, mvp: 1 },
     { id: 10, catKey: 'submayor', name: 'J. Caballero', dorsal: 10, pos: 'POR', goles: 0, asistencias: 1, mvp: 1 },
     { id: 11, catKey: 'submayor', name: 'S. Bernal', dorsal: 11, pos: 'DEF', goles: 2, asistencias: 1, mvp: 0 },
-    { id: 12, catKey: 'submayor', name: 'A. CÃ¡rdenas', dorsal: 12, pos: 'MED', goles: 4, asistencias: 5, mvp: 1 },
+    { id: 12, catKey: 'submayor', name: 'A. Cárdenas', dorsal: 12, pos: 'MED', goles: 4, asistencias: 5, mvp: 1 },
     { id: 13, catKey: 'submayor', name: 'D. Hurtado', dorsal: 13, pos: 'DEL', goles: 8, asistencias: 3, mvp: 3 },
-    { id: 14, catKey: 'submayor', name: 'F. CedeÃ±o', dorsal: 14, pos: 'DEF', goles: 0, asistencias: 2, mvp: 0 },
-    { id: 15, catKey: 'submayor', name: 'M. PatiÃ±o', dorsal: 15, pos: 'MED', goles: 3, asistencias: 4, mvp: 1 },
-    { id: 16, catKey: 'submayor', name: 'G. SolÃ­s', dorsal: 16, pos: 'DEL', goles: 6, asistencias: 2, mvp: 2 },
-    { id: 17, catKey: 'submayor', name: 'H. MacÃ­as', dorsal: 17, pos: 'DEF', goles: 1, asistencias: 0, mvp: 0 },
+    { id: 14, catKey: 'submayor', name: 'F. Cedeño', dorsal: 14, pos: 'DEF', goles: 0, asistencias: 2, mvp: 0 },
+    { id: 15, catKey: 'submayor', name: 'M. Patiño', dorsal: 15, pos: 'MED', goles: 3, asistencias: 4, mvp: 1 },
+    { id: 16, catKey: 'submayor', name: 'G. Solís', dorsal: 16, pos: 'DEL', goles: 6, asistencias: 2, mvp: 2 },
+    { id: 17, catKey: 'submayor', name: 'H. Macías', dorsal: 17, pos: 'DEF', goles: 1, asistencias: 0, mvp: 0 },
     { id: 18, catKey: 'submayor', name: 'N. Broce', dorsal: 18, pos: 'MED', goles: 2, asistencias: 3, mvp: 0 },
-    { id: 19, catKey: 'submayor', name: 'B. UreÃ±a', dorsal: 19, pos: 'DEL', goles: 5, asistencias: 1, mvp: 1 },
+    { id: 19, catKey: 'submayor', name: 'B. Ureña', dorsal: 19, pos: 'DEL', goles: 5, asistencias: 1, mvp: 1 },
     { id: 20, catKey: 'submayor', name: 'J. Vergara', dorsal: 20, pos: 'MED', goles: 3, asistencias: 4, mvp: 1 }
   ];
 
@@ -195,21 +195,21 @@ document.addEventListener('alpine:init', () => {
     evalVerModal: null,
     plantillasExtra: {},
 
-    /* ========== 02) SESIÃ“N Y ROLES ========== */
+    /* ========== 02) SESIÓN Y ROLES ========== */
     currentUser: null, loginUsuario: '', loginPassword: '', loginError: '',
     evalModal: null, evaluacionesVersion: 0,
     evalDatos: { tecnicos: [0,0,0,0,0,0,0,0,0], tacticos: [0,0,0,0,0,0], fisicos: [0,0,0,0,0], actitudinales: [0,0,0,0,0,0] },
     evalItems: {
-      tecnicos: ['Control de balÃ³n', 'Pase corto', 'Pase largo', 'ConducciÃ³n', 'Regate (1 vs 1)', 'RecepciÃ³n y primer toque', 'Remate a porterÃ­a', 'Cabeceo', 'DefiniciÃ³n'],
-      tacticos: ['Posicionamiento', 'MarcaciÃ³n', 'Desmarque', 'Toma de decisiones', 'VisiÃ³n de juego', 'Trabajo en equipo'],
-      fisicos: ['Velocidad', 'Resistencia', 'CoordinaciÃ³n', 'Equilibrio', 'Agilidad'],
+      tecnicos: ['Control de balón', 'Pase corto', 'Pase largo', 'Conducción', 'Regate (1 vs 1)', 'Recepción y primer toque', 'Remate a portería', 'Cabeceo', 'Definición'],
+      tacticos: ['Posicionamiento', 'Marcación', 'Desmarque', 'Toma de decisiones', 'Visión de juego', 'Trabajo en equipo'],
+      fisicos: ['Velocidad', 'Resistencia', 'Coordinación', 'Equilibrio', 'Agilidad'],
       actitudinales: ['Disciplina', 'Puntualidad', 'Esfuerzo', 'Respeto', 'Compromiso', 'Liderazgo']
     },
     get gruposEval() {
       return [
-        ['tecnicos', 'Aspectos TÃ©cnicos', 'fa-futbol', 'text-nico-orange'],
-        ['tacticos', 'Aspectos TÃ¡cticos', 'fa-chess', 'text-nico-green'],
-        ['fisicos', 'Aspectos FÃ­sicos', 'fa-bolt', 'text-nico-blue'],
+        ['tecnicos', 'Aspectos Técnicos', 'fa-futbol', 'text-nico-orange'],
+        ['tacticos', 'Aspectos Tácticos', 'fa-chess', 'text-nico-green'],
+        ['fisicos', 'Aspectos Físicos', 'fa-bolt', 'text-nico-blue'],
         ['actitudinales', 'Aspectos Actitudinales', 'fa-heart', 'text-amber-400']
       ];
     },
@@ -236,7 +236,7 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    /* ========== 03) MODO EDICIÃ“N (LAPICITO) ========== */
+    /* ========== 03) MODO EDICIÓN (LAPICITO) ========== */
     modoEdicion: false, editMediaModal: { open: false, title: '', url: '', type: 'image', callback: null },
     toggleModoEdicion() {
       this.modoEdicion = !this.modoEdicion;
@@ -347,7 +347,7 @@ document.addEventListener('alpine:init', () => {
     },
     editarDorsal(player) {
       if (!this.esAdmin) return;
-      const v = prompt('Nuevo nÃºmero (dorsal) para ' + player.name + ':', player.dorsal);
+      const v = prompt('Nuevo número (dorsal) para ' + player.name + ':', player.dorsal);
       if (v === null) return;
       const nuevo = parseInt(v); if (!nuevo || nuevo < 1) return;
       const arr = this.playersDe(player.catKey);
@@ -358,7 +358,7 @@ document.addEventListener('alpine:init', () => {
     },
     eliminarJugador(player) {
       if (!this.esAdmin) return;
-      if (!confirm('Â¿Eliminar a ' + player.name + ' de la plantilla?')) return;
+      if (!confirm('¿Eliminar a ' + player.name + ' de la plantilla?')) return;
       window.DB.guardarJugadorReciclado(player);
       const arr = this.playersDe(player.catKey);
       const index = arr.indexOf(player);
@@ -392,17 +392,17 @@ document.addEventListener('alpine:init', () => {
     agregarEquipo(cat) { if (!this.esAdmin) return; cat.tabla.push({ nombre: 'Nuevo Equipo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 }); this.persistTorneo(); },
     eliminarEquipo(cat, team) {
       if (!this.esAdmin) return;
-      if (!confirm('Â¿Eliminar el equipo ' + team.nombre + '?')) return;
+      if (!confirm('¿Eliminar el equipo ' + team.nombre + '?')) return;
       cat.tabla = cat.tabla.filter(t => t !== team); this.persistTorneo();
     },
     persistTorneo() { window.DB.guardarTorneo(this.categoriasTorneo); },
 
-    /* ========== 08) CRUD CUERPO TÃ‰CNICO ========== */
+    /* ========== 08) CRUD CUERPO TÉCNICO ========== */
     staffList: [
-      { id: 1, nombre: 'Profe. Niko', cargo: 'Director TÃ©cnico Principal & Fundador', licencia: 'Licencia A FEPAFUT', exp: '18 AÃ±os de Experiencia', especialidad: 'Financiera', bio: 'Fundador de la Academia Nico Sport en 2008. Ha formado a mÃ¡s de 500 jÃ³venes deportistas y obtenido mÃºltiples tÃ­tulos en torneos locales.', fotoIcon: 'fa-user-tie', color: 'from-nico-orange via-red-600 to-amber-600' },
-      { id: 2, nombre: 'Prof. Luis MuÃ±oz', cargo: 'Preparador FÃ­sico & psicolÃ³gico', licencia: 'Grado en Ciencias del Deporte', exp: '10 AÃ±os de Experiencia', especialidad: 'Resistencia AerÃ³bica, Potencia y PrevenciÃ³n de Lesiones', bio: 'Especialista en acondicionamiento fÃ­sico adaptado a fÃºtbol base y juvenil.', fotoIcon: 'fa-stopwatch-20', color: 'from-nico-green to-emerald-700' },
-      { id: 3, nombre: 'Abdiel Aguirre', cargo: 'Entrenador de TÃ¡ctico', licencia: 'PrÃ³ximamente...', exp: '9 AÃ±os de Experiencia en el deporte', especialidad: 'Reflejos, Juego AÃ©reo y Salida con los Pies', bio: 'Jugador amateur enfocado en perfeccionar la tÃ©cnica de juego, posicionamiento en la cancha y liderazgo.', fotoIcon: 'fa-hands-glove', color: 'from-nico-blue to-cyan-700' },
-      { id: 4, nombre: 'Fernado', cargo: 'PsicÃ³loga Deportiva & FormaciÃ³n Integral', licencia: 'PrÃ³ximamente...', exp: '5 AÃ±os de Experiencia', especialidad: 'GestiÃ³n de la FrustraciÃ³n, Trabajo en Equipo y ConcentraciÃ³n', bio: 'Encargada del desarrollo mental y emocional de los alumnos.', fotoIcon: 'fa-brain', color: 'from-purple-600 to-indigo-800' }
+      { id: 1, nombre: 'Profe. Niko', cargo: 'Director Técnico Principal & Fundador', licencia: 'Licencia A FEPAFUT', exp: '18 Años de Experiencia', especialidad: 'Financiera', bio: 'Fundador de la Academia Nico Sport en 2008. Ha formado a más de 500 jóvenes deportistas y obtenido múltiples títulos en torneos locales.', fotoIcon: 'fa-user-tie', color: 'from-nico-orange via-red-600 to-amber-600' },
+      { id: 2, nombre: 'Prof. Luis Muñoz', cargo: 'Preparador Físico & psicológico', licencia: 'Grado en Ciencias del Deporte', exp: '10 Años de Experiencia', especialidad: 'Resistencia Aeróbica, Potencia y Prevención de Lesiones', bio: 'Especialista en acondicionamiento físico adaptado a fútbol base y juvenil.', fotoIcon: 'fa-stopwatch-20', color: 'from-nico-green to-emerald-700' },
+      { id: 3, nombre: 'Abdiel Aguirre', cargo: 'Entrenador de Táctico', licencia: 'Próximamente...', exp: '9 Años de Experiencia en el deporte', especialidad: 'Reflejos, Juego Aéreo y Salida con los Pies', bio: 'Jugador amateur enfocado en perfeccionar la técnica de juego, posicionamiento en la cancha y liderazgo.', fotoIcon: 'fa-hands-glove', color: 'from-nico-blue to-cyan-700' },
+      { id: 4, nombre: 'Fernado', cargo: 'Psicóloga Deportiva & Formación Integral', licencia: 'Próximamente...', exp: '5 Años de Experiencia', especialidad: 'Gestión de la Frustración, Trabajo en Equipo y Concentración', bio: 'Encargada del desarrollo mental y emocional de los alumnos.', fotoIcon: 'fa-brain', color: 'from-purple-600 to-indigo-800' }
     ],
     editarStaff(s) {
       if (!this.esAdmin) return;
@@ -411,29 +411,29 @@ document.addEventListener('alpine:init', () => {
       const l = prompt('Licencia:', s.licencia); if (l === null) return;
       const e = prompt('Experiencia:', s.exp); if (e === null) return;
       const es = prompt('Especialidad:', s.especialidad); if (es === null) return;
-      const b = prompt('BiografÃ­a:', s.bio); if (b === null) return;
+      const b = prompt('Biografía:', s.bio); if (b === null) return;
       Object.assign(s, { nombre: n, cargo: c, licencia: l, exp: e, especialidad: es, bio: b });
       this.persistStaff();
     },
     eliminarStaff(s) {
       if (!this.esAdmin) return;
-      if (!confirm('Â¿Eliminar a ' + s.nombre + ' del cuerpo tcnico?')) return;
+      if (!confirm('¿Eliminar a ' + s.nombre + ' del cuerpo técnico?')) return;
       this.staffList = this.staffList.filter(x => x.id !== s.id); this.persistStaff();
     },
     agregarStaff() {
       if (!this.esAdmin) return;
       const n = prompt('Nombre del nuevo integrante:'); if (!n) return;
-      this.staffList.push({ id: Date.now() % 1000000, nombre: n, cargo: 'Entrenador', licencia: 'PrÃ³ximamente...', exp: 'Por definir', especialidad: 'Por definir', bio: 'Integrante del cuerpo tcnico de la Academia Nico Sport.', fotoIcon: 'fa-user', color: 'from-nico-orange to-amber-600' });
+      this.staffList.push({ id: Date.now() % 1000000, nombre: n, cargo: 'Entrenador', licencia: 'Próximamente...', exp: 'Por definir', especialidad: 'Por definir', bio: 'Integrante del cuerpo técnico de la Academia Nico Sport.', fotoIcon: 'fa-user', color: 'from-nico-orange to-amber-600' });
       this.persistStaff();
     },
     persistStaff() { window.DB.guardarStaff(this.staffList); },
 
     /* ========== 09) VITRINA DE TROFEOS ========== */
     trofeosBase: [
-      { id: 'trophy-sub12', nombre: 'PrÃ³ximamente Sub-12', catKey: 'sub12', categoria: 'CategorÃ­a Sub-12', 'anio': '...', icono: 'fa-trophy', color: 'text-amber-400', descripcion: 'PrÃ³ximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'PrÃ³ximamente...' } },
-      { id: 'trophy-sub16', nombre: 'PrÃ³ximamente Sub-16', catKey: 'sub16', categoria: 'CategorÃ­a Sub-16', 'anio': '...', icono: 'fa-medal', color: 'text-amber-400', descripcion: 'PrÃ³ximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'PrÃ³ximamente...' } },
-      { id: 'trophy-sub6', nombre: 'PrÃ³ximamente Sub-6', catKey: 'sub6', categoria: 'CategorÃ­a Sub-6', 'anio': '...', icono: 'fa-award', color: 'text-amber-400', descripcion: 'PrÃ³ximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'PrÃ³ximamente...' } },
-      { id: 'trophy-submayor', nombre: 'PrÃ³ximamente Sub-Mayor', catKey: 'submayor', categoria: 'Sub-Mayor', 'anio': '...', icono: 'fa-trophy', color: 'text-nico-blue', descripcion: 'PrÃ³ximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'PrÃ³ximamente...' } }
+      { id: 'trophy-sub12', nombre: 'Próximamente Sub-12', catKey: 'sub12', categoria: 'Categoría Sub-12', 'anio': '...', icono: 'fa-trophy', color: 'text-amber-400', descripcion: 'Próximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'Próximamente...' } },
+      { id: 'trophy-sub16', nombre: 'Próximamente Sub-16', catKey: 'sub16', categoria: 'Categoría Sub-16', 'anio': '...', icono: 'fa-medal', color: 'text-amber-400', descripcion: 'Próximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'Próximamente...' } },
+      { id: 'trophy-sub6', nombre: 'Próximamente Sub-6', catKey: 'sub6', categoria: 'Categoría Sub-6', 'anio': '...', icono: 'fa-award', color: 'text-amber-400', descripcion: 'Próximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'Próximamente...' } },
+      { id: 'trophy-submayor', nombre: 'Próximamente Sub-Mayor', catKey: 'submayor', categoria: 'Sub-Mayor', 'anio': '...', icono: 'fa-trophy', color: 'text-nico-blue', descripcion: 'Próximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'Próximamente...' } }
     ],
     trofeosVersion: 0, mostrarFormTrofeo: false, trofeoEditId: null,
     nuevoTrofeo: { nombre: '', catKey: 'sub6', 'anio': '2026', descripcion: '', rendimientoGlobal: 100, posesion: '', efectividadPases: '', golesAFavor: 0, golesEnContra: 0, disciplina: '', resumenTactico: '' },
@@ -470,7 +470,7 @@ document.addEventListener('alpine:init', () => {
         id: this.trofeoEditId || ('custom-' + Date.now()),
         nombre: this.nuevoTrofeo.nombre.trim() || 'Campeonato Nico Sport',
         catKey: this.nuevoTrofeo.catKey,
-        categoria: nombresCat[this.nuevoTrofeo.catKey] || 'CategorÃ­a',
+        categoria: nombresCat[this.nuevoTrofeo.catKey] || 'Categoría',
         'anio': this.nuevoTrofeo.anio.trim() || '2026',
         icono: 'fa-trophy', color: 'text-amber-400',
         descripcion: this.nuevoTrofeo.descripcion.trim() || 'Campeonato obtenido por el equipo.',
@@ -496,7 +496,7 @@ document.addEventListener('alpine:init', () => {
     agregarTrofeo() { this.guardarTrofeoForm(); },
     eliminarTrofeo(id) {
       if (!this.esAdmin) return;
-      if (!confirm('Â¿Eliminar este trofeo de la vitrina?')) return;
+      if (!confirm('¿Eliminar este trofeo de la vitrina?')) return;
       if (String(id).indexOf('custom-') === 0) window.DB.eliminarTrofeoCustom(id);
       else window.DB.ocultarTrofeoBase(id);
       if (this.selectedTrophy && this.selectedTrophy.id === id) this.selectedTrophy = null;
@@ -513,13 +513,13 @@ document.addEventListener('alpine:init', () => {
       this.selectedTrophy = this.trophiesList.find(x => x.id === t.id) || nuevo;
     },
 
-    /* ========== 10) EVALUACIÃ“N GLOBAL ========== */
+    /* ========== 10) EVALUACIÓN GLOBAL ========== */
     evalGlobalVersion: 0,
     evalGlobalBase: [
-      { id: 1, catKey: 'sub6',     name: 'CategorÃ­a Sub-6 (Semillero)',              desc: 'Eficiencia LudotÃ©cnica', value: 96 },
-      { id: 2, catKey: 'sub12',    name: 'CategorÃ­a Sub-12 (Desarrollo 11vs11)',     desc: 'Rendimiento de Torneo',  value: 94 },
-      { id: 3, catKey: 'sub16',    name: 'CategorÃ­a Sub-16 (CompeticiÃ³n Regional)',  desc: 'Despliegue TÃ¡ctico',     value: 89 },
-      { id: 4, catKey: 'submayor', name: 'Sub-Mayor & Futsal Tecnificado',           desc: 'DinÃ¡mica y PresiÃ³n',     value: 91 }
+      { id: 1, catKey: 'sub6',     name: 'Categoría Sub-6 (Semillero)',              desc: 'Eficiencia Ludotécnica', value: 96 },
+      { id: 2, catKey: 'sub12',    name: 'Categoría Sub-12 (Desarrollo 11vs11)',     desc: 'Rendimiento de Torneo',  value: 94 },
+      { id: 3, catKey: 'sub16',    name: 'Categoría Sub-16 (Competición Regional)',  desc: 'Despliegue Táctico',     value: 89 },
+      { id: 4, catKey: 'submayor', name: 'Sub-Mayor & Futsal Tecnificado',           desc: 'Dinámica y Presión',     value: 91 }
     ],
     get evalCategories() {
       void this.evalGlobalVersion;
@@ -536,7 +536,7 @@ document.addEventListener('alpine:init', () => {
           item = b ? Object.assign({}, b) : null;
         }
         if (!item) {
-          item = { id: 1000 + idx, catKey: cat.key, name: 'CategorÃ­a ' + cat.label, desc: 'Rendimiento General', value: 50 };
+          item = { id: 1000 + idx, catKey: cat.key, name: 'Categoría ' + cat.label, desc: 'Rendimiento General', value: 50 };
         }
         lista.push(item);
       });
@@ -551,14 +551,14 @@ document.addEventListener('alpine:init', () => {
     },
     getColorEval(val) { return 'hsl(' + Math.max(0, Math.min(120, val * 1.2)) + ', 85%, 50%)'; },
 
-    /* ========== 11) CRUD DE CATEGORÃAS ========== */
+    /* ========== 11) CRUD DE CATEGORÍAS ========== */
     catAdminVersion: 0,
     catNueva: { label: '', descripcion: '' },
     categoriasTorneo: [
-      Object.assign({ key: 'sub6',     label: 'Sub-6',      descripcion: 'IniciaciÃ³n (4 a 6 aÃ±os)  LudotÃ©cnica' }, catTorneo()),
-      Object.assign({ key: 'sub12',    label: 'Sub-12',     descripcion: 'Desarrollo (10 a 12 aÃ±os)  Formativa' }, catTorneo()),
-      Object.assign({ key: 'sub16',    label: 'Sub-16',     descripcion: 'CompeticiÃ³n (14 a 16 aÃ±os)  Alto rendimiento' }, catTorneo()),
-      Object.assign({ key: 'submayor', label: 'Sub-Mayor',  descripcion: 'Futsal & TecnificaciÃ³n  EspecializaciÃ³n' }, catTorneo())
+      Object.assign({ key: 'sub6',     label: 'Sub-6',      descripcion: 'Iniciación (4 a 6 años)  Ludotécnica' }, catTorneo()),
+      Object.assign({ key: 'sub12',    label: 'Sub-12',     descripcion: 'Desarrollo (10 a 12 años)  Formativa' }, catTorneo()),
+      Object.assign({ key: 'sub16',    label: 'Sub-16',     descripcion: 'Competición (14 a 16 años)  Alto rendimiento' }, catTorneo()),
+      Object.assign({ key: 'submayor', label: 'Sub-Mayor',  descripcion: 'Futsal & Tecnificación  Especialización' }, catTorneo())
     ],
     playersSub6: JSON.parse(JSON.stringify(P_SUB6)),
     playersSub12: JSON.parse(JSON.stringify(P_SUB12)),
@@ -567,10 +567,10 @@ document.addEventListener('alpine:init', () => {
     get categoriasUI() {
       void this.catAdminVersion;
       const oficiales = {
-        sub6:     { tab: 'CategorÃ­a Sub-6', titulo: 'CATEGORÃA SUB-6', badge: 'IniciaciÃ³n (4 a 6 AÃ±os)', desc: 'CoordinaciÃ³n motriz primaria, psicomotricidad bÃ¡sica, lateralidad y primera adaptaciÃ³n divertida al balÃ³n mediante dinÃ¡micas ludotÃ©cnicas.', torneos: 'Proximante....', horario: 'sÃ¡bado (10:00 AM - 12:00 PM)', cancha: 'El pueblito - Santa Librada', count: '20 Jugadores Inscritos', entrenador: 'Prof. Luis jesus', foto: 'img/sub6.jpg' },
-        sub12:    { tab: 'CategorÃ­a Sub-12', titulo: 'CATEGORÃA SUB-12', badge: 'Desarrollo (10 a 12 AÃ±os)', desc: 'FundamentaciÃ³n tÃ©cnica avanzada: pase orientado, conducciÃ³n en velocidad, perfilamiento tÃ¡ctico y partidos estructurados en formato 11vs11.', torneos: 'Pretemporada...', horario: 'sÃ¡bado (10:00 AM - 12:00 PM)', cancha: 'El pueblito - Santa Librada', count: '20 Jugadores Inscritos', entrenador: 'Prof. Abdiel Aguirre', foto: 'img/sub12.jpg' },
-        sub16:    { tab: 'CategorÃ­a Sub-16', titulo: 'CATEGORÃA SUB-16', badge: 'CompeticiÃ³n (14 a 16 AÃ±os)', desc: 'Alto rendimiento fÃ­sico, tÃ¡ctica colectiva, sistemas de juego (4-3-3 / 4-2-3-1), resistencia aerÃ³bica y preparaciÃ³n para visorÃ­as universitarias o profesionales.', torneos: 'Pretemporada....', horario: 'sÃ¡bado (10:00 AM - 12:00 PM)', cancha: 'El pueblito - Santa Librada', count: '20 Jugadores Inscritos', entrenador: 'Prof. Fernando', foto: 'img/sub16.jpg' },
-        submayor: { tab: 'Sub-Mayor / Futsal', titulo: 'SUB-MAYOR & TECNIFICACIÃ“N FUTSAL', badge: 'Alto Rendimiento & Futsal', desc: 'EspecializaciÃ³n para categorÃ­as mayores, acondicionamiento de alta exigencia, tÃ©cnica de piso, toma de decisiones veloz en espacios reducidos y salidas a presiÃ³n.', torneos: '.......', horario: '......', cancha: '.......', count: '20 Jugadores Seleccionados', entrenador: 'Dra. Elena Ramos', foto: 'img/mayor.jpg' }
+        sub6:     { tab: 'Categoría Sub-6', titulo: 'CATEGORÍA SUB-6', badge: 'Iniciación (4 a 6 Años)', desc: 'Coordinación motriz primaria, psicomotricidad básica, lateralidad y primera adaptación divertida al balón mediante dinámicas ludotécnicas.', torneos: 'Proximante....', horario: 'sábado (10:00 AM - 12:00 PM)', cancha: 'El pueblito - Santa Librada', count: '20 Jugadores Inscritos', entrenador: 'Prof. Luis jesus', foto: 'img/sub6.jpg' },
+        sub12:    { tab: 'Categoría Sub-12', titulo: 'CATEGORÍA SUB-12', badge: 'Desarrollo (10 a 12 Años)', desc: 'Fundamentación técnica avanzada: pase orientado, conducción en velocidad, perfilamiento táctico y partidos estructurados en formato 11vs11.', torneos: 'Pretemporada...', horario: 'sábado (10:00 AM - 12:00 PM)', cancha: 'El pueblito - Santa Librada', count: '20 Jugadores Inscritos', entrenador: 'Prof. Abdiel Aguirre', foto: 'img/sub12.jpg' },
+        sub16:    { tab: 'Categoría Sub-16', titulo: 'CATEGORÍA SUB-16', badge: 'Competición (14 a 16 Años)', desc: 'Alto rendimiento físico, táctica colectiva, sistemas de juego (4-3-3 / 4-2-3-1), resistencia aeróbica y preparación para visorías universitarias o profesionales.', torneos: 'Pretemporada....', horario: 'sábado (10:00 AM - 12:00 PM)', cancha: 'El pueblito - Santa Librada', count: '20 Jugadores Inscritos', entrenador: 'Prof. Fernando', foto: 'img/sub16.jpg' },
+        submayor: { tab: 'Sub-Mayor / Futsal', titulo: 'SUB-MAYOR & TECNIFICACIÓN FUTSAL', badge: 'Alto Rendimiento & Futsal', desc: 'Especialización para categorías mayores, acondicionamiento de alta exigencia, técnica de piso, toma de decisiones veloz en espacios reducidos y salidas a presión.', torneos: '.......', horario: '......', cancha: '.......', count: '20 Jugadores Seleccionados', entrenador: 'Dra. Elena Ramos', foto: 'img/mayor.jpg' }
       };
       let lista = this.categoriasTorneo;
       if (this.esEntrenador && !this.esAdmin) {
@@ -582,9 +582,9 @@ document.addEventListener('alpine:init', () => {
         if (base) return Object.assign({ key: c.key }, col, base);
         return Object.assign({ key: c.key }, col, {
           tab: c.label,
-          titulo: 'CATEGORÃA ' + c.label.toUpperCase(),
-          badge: c.descripcion || 'CategorÃ­a Personalizada',
-          desc: c.descripcion || 'CategorÃ­a personalizada de la Academia Nico Sport. Edita esta descripciÃ³n con el modo ediciÃ³n .',
+          titulo: 'CATEGORÍA ' + c.label.toUpperCase(),
+          badge: c.descripcion || 'Categoría Personalizada',
+          desc: c.descripcion || 'Categoría personalizada de la Academia Nico Sport. Edita esta descripción con el modo edición .',
           torneos: 'Por definir', horario: 'Por definir', cancha: 'Por definir',
           count: (this.playersDe(c.key).length || 0) + ' Jugadores Inscritos',
           entrenador: 'Por asignar',
@@ -615,7 +615,7 @@ document.addEventListener('alpine:init', () => {
     crearCategoria() {
       if (!this.esAdmin) return;
       const label = this.catNueva.label.trim();
-      if (!label) { alert(' Escribe el nombre de la nueva categorÃ­a'); return; }
+      if (!label) { alert(' Escribe el nombre de la nueva categoría'); return; }
       const key = 'cat' + Date.now().toString(36);
       const nueva = Object.assign({ key, label, descripcion: this.catNueva.descripcion.trim() || '' }, catTorneo());
       this.categoriasTorneo.push(nueva);
@@ -626,7 +626,7 @@ document.addEventListener('alpine:init', () => {
       this.catNueva = { label: '', descripcion: '' };
       this.catAdminVersion++;
       this.evalGlobalVersion++;
-      alert(' CategorÃ­a "' + label + '" creada con plantilla automÃ¡tica.');
+      alert(' Categoría "' + label + '" creada con plantilla automática.');
     },
     
     openMediaEditModal(title, currentUrl, type, callback) {
@@ -661,16 +661,16 @@ document.addEventListener('alpine:init', () => {
     },
     editarCategoria(cat) {
       if (!this.esAdmin) return;
-      const label = prompt('Nombre de la categorÃ­a:', cat.label); if (label === null) return;
-      const desc = prompt('DescripciÃ³n:', cat.descripcion); if (desc === null) return;
+      const label = prompt('Nombre de la categoría:', cat.label); if (label === null) return;
+      const desc = prompt('Descripción:', cat.descripcion); if (desc === null) return;
       const t = this.categoriasTorneo.find(c => c.key === cat.key);
       if (t) { t.label = label.trim() || t.label; t.descripcion = desc; }
       this.persistTorneo(); this._syncCategoriasDB(); this.catAdminVersion++;
     },
     eliminarCategoria(cat) {
       if (!this.esAdmin) return;
-      if (cat.core) { alert(' Las 4 categorÃ­as oficiales no se pueden eliminar.'); return; }
-      if (!confirm('Â¿Eliminar la categorÃ­a "' + cat.label + '"?')) return;
+      if (cat.core) { alert(' Las 4 categorías oficiales no se pueden eliminar.'); return; }
+      if (!confirm('¿Eliminar la categoría "' + cat.label + '"?')) return;
       this.categoriasTorneo = this.categoriasTorneo.filter(c => c.key !== cat.key);
       delete this.plantillasExtra[cat.key];
       if (this.currentTorneoIdx >= this.categoriasTorneo.length) this.currentTorneoIdx = 0;
@@ -713,7 +713,7 @@ document.addEventListener('alpine:init', () => {
       { key: 'cuartos', label: 'Cuartos', icon: 'fas fa-medal' },
       { key: 'semis', label: 'Semis', icon: 'fas fa-flag-checkered' },
       { key: 'final', label: 'Final', icon: 'fas fa-crown' },
-      { key: 'campeon', label: 'CampeÃ³n', icon: 'fas fa-award' }
+      { key: 'campeon', label: 'Campeón', icon: 'fas fa-award' }
     ],
     currentTorneoIdx: 0,
     nextTorneo() { this.currentTorneoIdx = (this.currentTorneoIdx + 1) % this.categoriasTorneoVisibles.length; this.particulasBtn(); },
@@ -734,18 +734,18 @@ document.addEventListener('alpine:init', () => {
       return s === 'done' ? 'border-nico-green/40 text-nico-green bg-nico-green/5' : (s === 'current' ? 'border-nico-orange bg-nico-orange/10 text-nico-orange shadow-[0_0_12px_rgba(255,85,0,0.4)]' : 'border-white/10 text-gray-600');
     },
 
-    /* ========== 12) LOGIN / SESIÃ“N + EVALUACIÃ“N ========== */
+    /* ========== 12) LOGIN / SESIÓN + EVALUACIÓN ========== */
     async intentarLogin() {
       this.loginError = 'Conectando...';
       try { await window.DB.listo; } catch(e) {}
-      const u = await window.DB.login(this.loginUsuario.trim(), this.loginPassword.trim());
+      const u = await window.DB.login(this.loginUsuario.trim(), this.loginPassword); // password: NO trim (espacios válidos)
       if (u) {
         this.currentUser = u; localStorage.setItem('ns_currentUser', JSON.stringify(u)); this.loginModal = false; this.loginError = '';
         this.loginUsuario = ''; this.loginPassword = '';
         if (u.rol === 'admin') {
           this.mainTab = 'admin';
         } else if (u.rol === 'padre') {
-          /* FIX 3: Padre va a CategorÃ­as si tiene hijo vinculado */
+          /* FIX 3: Padre va a Categorías si tiene hijo vinculado */
           if (u.hijoCat && u.hijoId) {
             this.mainTab = 'categorias';
             this.catTab = u.hijoCat;
@@ -759,7 +759,7 @@ document.addEventListener('alpine:init', () => {
           this.mainTab = 'historia';
         }
         localStorage.setItem('ns_mainTab', this.mainTab); localStorage.setItem('ns_catTab', this.catTab); window.location.reload();
-      } else this.loginError = 'Usuario o contraseÃ±a incorrectos';
+      } else this.loginError = 'Usuario o contraseña incorrectos';
     },
     cerrarSesion() {
         fetch('../api/logout.php').then(() => window.location.reload());
@@ -799,14 +799,14 @@ document.addEventListener('alpine:init', () => {
 
     /* ========== 13) ASISTENCIA Y ENCUESTAS ========== */
     asistenciaCat: 'sub6',
-    asistenciaFecha: new Date().toISOString().slice(0, 10),
+    asistenciaFecha: this.hoyISO(),
     asistenciaVersion: 0, encuestaVersion: 0,
     encuesta: { aspectos: [0,0,0,0,0,0,0,0,0,0,0], gustaMas: '', mejorar: '', crecimiento: '', crecimientoWhy: '', recomienda: '', recomiendaWhy: '', observaciones: '' },
     encuestaAspectos: [
-      'Calidad de los entrenamientos', 'OrganizaciÃ³n de la academia', 'Puntualidad de los entrenadores',
-      'Trato hacia los jugadores', 'ComunicaciÃ³n con los padres', 'Desarrollo tcnico de mi hijo(a)',
-      'Desarrollo de valores (respeto, disciplina, compaÃ±erismo)', 'Ambiente de entrenamiento',
-      'Seguridad durante las actividades', 'RelaciÃ³n costo-beneficio', 'SatisfacciÃ³n general con la academia'
+      'Calidad de los entrenamientos', 'Organización de la academia', 'Puntualidad de los entrenadores',
+      'Trato hacia los jugadores', 'Comunicación con los padres', 'Desarrollo tcnico de mi hijo(a)',
+      'Desarrollo de valores (respeto, disciplina, compañerismo)', 'Ambiente de entrenamiento',
+      'Seguridad durante las actividades', 'Relación costo-beneficio', 'Satisfacción general con la academia'
     ],
     playersDe(catKey) {
       const map = { sub6: this.playersSub6, sub12: this.playersSub12, sub16: this.playersSub16, submayor: this.playersSubMayor };
@@ -860,11 +860,11 @@ document.addEventListener('alpine:init', () => {
     },
     enviarEncuesta() {
       const enc = JSON.parse(JSON.stringify(this.encuesta));
-      enc.padre = this.currentUser ? this.currentUser.nombre : 'AnÃ³nimo';
+      enc.padre = this.currentUser ? this.currentUser.nombre : 'Anónimo';
       window.DB.guardarEncuesta(enc);
       this.encuestaVersion++;
       this.encuesta = { aspectos: [0,0,0,0,0,0,0,0,0,0,0], gustaMas: '', mejorar: '', crecimiento: '', crecimientoWhy: '', recomienda: '', recomiendaWhy: '', observaciones: '' };
-      alert('Â¡Gracias! Tu evaluaciÃ³n fue enviada ');
+      alert('¡Gracias! Tu evaluación fue enviada ');
     },
     get encuestasPadres() { void this.encuestaVersion; return window.DB.obtenerEncuestas(); },
     get resultadosVozPadres() {
@@ -906,12 +906,21 @@ document.addEventListener('alpine:init', () => {
       return this.dorsalLibre(this.adminRegistro.catKey);
     },
 
-    registrarUnificado() {
+    // Fecha local YYYY-MM-DD sin desfase UTC (Panamá es UTC-5)
+    hoyISO() {
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    },
+    fechaISOLocal(d) {
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    },
+
+    async registrarUnificado() {
       const r = this.adminRegistro;
       
       // 1. Validar Jugador
       if (!r.jugadorNombre.trim() || !r.catKey) {
-        this.adminRegistroMsg = ' Nombre del jugador y categorÃ­a son obligatorios';
+        this.adminRegistroMsg = '❌ Nombre del jugador y categoría son obligatorios';
         setTimeout(() => this.adminRegistroMsg = '', 3000);
         return;
       }
@@ -919,7 +928,7 @@ document.addEventListener('alpine:init', () => {
       // 2. Validar Padre (Si aplica)
       if (r.tipo === 'con_padre') {
         if (!r.padreNombre.trim() || !r.padreUsuario.trim() || !r.padrePassword.trim() || !r.telefonoPadre.trim()) {
-          this.adminRegistroMsg = ' Completa todos los datos de la cuenta familiar';
+          this.adminRegistroMsg = '❌ Completa todos los datos de la cuenta familiar';
           setTimeout(() => this.adminRegistroMsg = '', 3000);
           return;
         }
@@ -930,7 +939,7 @@ document.addEventListener('alpine:init', () => {
       const libre = this.dorsalLibre(r.catKey);
       let dorsal = parseInt(r.jugadorDorsal) || libre;
       
-      // Si el dorsal sugerido estÃ¡ ocupado, usar el libre automÃ¡ticamente.
+      // Si el dorsal sugerido está ocupado, usar el libre automáticamente.
       if (arr.some(pl => pl.dorsal === dorsal)) dorsal = libre;
       
       const player = this.crearOReciclarJugador(r.catKey, r.jugadorNombre, dorsal, r.jugadorPos);
@@ -940,9 +949,9 @@ document.addEventListener('alpine:init', () => {
 
       // 4. Crear Padre y Vincularlo Inmediatamente
       if (r.tipo === 'con_padre') {
-        const res = window.DB.registrarPadre(r.padreNombre.trim(), r.padreUsuario.trim(), r.padrePassword, r.catKey, player.id, r.telefonoPadre.trim());
+        const res = await window.DB.registrarPadre(r.padreNombre.trim(), r.padreUsuario.trim(), r.padrePassword, r.catKey, player.id);
         if (!res.ok) {
-          this.adminRegistroMsg = ' Error al crear cuenta familiar: ' + res.msg;
+          this.adminRegistroMsg = '❌ Error al crear cuenta familiar: ' + res.msg;
           arr.pop(); this.persistPlantilla(r.catKey);
           return;
         }
@@ -950,7 +959,7 @@ document.addEventListener('alpine:init', () => {
       }
 
       // 5. Exito y reset
-      this.adminRegistroMsg = ' ' + player.name + ' registrado exitosamente.';
+      this.adminRegistroMsg = '✅ ' + player.name + ' registrado exitosamente.';
       setTimeout(() => this.adminRegistroMsg = '', 4000);
       
       this.adminRegistro = {
@@ -961,7 +970,7 @@ document.addEventListener('alpine:init', () => {
     },
 
     eliminarPadre(id) {
-      if (!confirm('Â¿Eliminar este perfil familiar? El jugador seguirÃ¡ existiendo en la plantilla.')) return;
+      if (!confirm('¿Eliminar este perfil familiar? El jugador seguirá existiendo en la plantilla.')) return;
       window.DB.eliminarPadre(id);
       this.adminPadresVersion++; this.comentariosVersion++;
     },
@@ -1000,9 +1009,9 @@ document.addEventListener('alpine:init', () => {
     },
 
     /* ========== 16) PAGOS DEL CLUB ========== */
-    filtroPagoCat: '', busquedaPagoPadre: '', busquedaPagoPadreEf: '', busquedaPagoPadreLi: '', modalPagoActivo: false, pagoActual: { id: null, concepto: 'mensualidad', monto: 15.00, fecha: new Date().toISOString().slice(0,10), referencia: '' },
+    filtroPagoCat: '', busquedaPagoPadre: '', busquedaPagoPadreEf: '', busquedaPagoPadreLi: '', modalPagoActivo: false, pagoActual: { id: null, concepto: 'mensualidad', monto: 0, fecha: '', referencia: '' },
     pagoManualTipo: 'efectivo', // 'efectivo' o 'linea'
-    pagoManual: { padreId: '', concepto: 'mensualidad', monto: 15, fecha: new Date().toISOString().slice(0,10), referencia: '', metodo: 'efectivo' },
+    pagoManual: { padreId: '', concepto: 'mensualidad', monto: this.tarifa('mensualidad'), fecha: this.hoyISO(), referencia: '', metodo: 'efectivo' },
     
     get padresParaCobroEfectivo() {
       try {
@@ -1034,7 +1043,7 @@ document.addEventListener('alpine:init', () => {
       try {
         let lista = this.listaPadres.map(p => {
            let estado = 'pendiente';
-           const hoy = new Date().toISOString().slice(0,10);
+           const hoy = this.hoyISO();
            if (p.fechaVencimiento) {
               if (p.fechaVencimiento < hoy) estado = 'vencido';
               else estado = 'aldia';
@@ -1062,28 +1071,15 @@ document.addEventListener('alpine:init', () => {
       } catch(e) { return []; }
     },
 
-    cambiarMetodoPago(padreId, nuevoMetodo) {
-      if (!confirm(`Â¿Cambiar mÃ©todo de pago a ${nuevoMetodo === "efectivo" ? "Efectivo" : "En LÃ­nea"}?`)) return;
-      const padre = this.listaPadres.find(p => p.id == padreId);
-      if (!padre) return;
-      padre.metodoPago = nuevoMetodo;
-      this.adminPadresVersion++; this.comentariosVersion++; 
-      window.DB.post("usuarios/actualizarPago", {
-          id: padre.id,
-          telefono: padre.telefono,
-          metodoPago: nuevoMetodo,
-          fechaVencimiento: padre.fechaVencimiento
-      });
-    },
 
     registrarPagoManual() {
       if (!this.esAdmin) return;
       if (!this.pagoManual.padreId) { alert(' Selecciona un padre'); return; }
-      if (!this.pagoManual.monto || this.pagoManual.monto <= 0) { alert(' Ingresa un monto vÃ¡lido'); return; }
+      if (!this.pagoManual.monto || this.pagoManual.monto <= 0) { alert(' Ingresa un monto válido'); return; }
       const padre = this.listaPadres.find(p => p.id == this.pagoManual.padreId);
       if (!padre) { alert(' Padre no encontrado'); return; }
       
-      const conceptoLabel = this.pagoManual.concepto === 'inscripcion' ? 'InscripciÃ³n' : (this.pagoManual.concepto === 'mensualidad' ? 'Mensualidad' : 'Otro');
+      const conceptoLabel = this.pagoManual.concepto === 'inscripcion' ? 'Inscripción' : (this.pagoManual.concepto === 'mensualidad' ? 'Mensualidad' : 'Otro');
       const metodo = this.pagoManualTipo;
       
       // Guardar el historial de pago
@@ -1098,10 +1094,10 @@ document.addEventListener('alpine:init', () => {
         estado: 'validado'
       });
 
-      // Actualizar fecha de vencimiento +15 dÃ­as
+      // Actualizar fecha de vencimiento +15 días
       const d = new Date(this.pagoManual.fecha);
       d.setDate(d.getDate() + 15);
-      const nuevaFecha = d.toISOString().slice(0,10);
+      const nuevaFecha = this.fechaISOLocal(d);
       
       padre.fechaVencimiento = nuevaFecha;
       padre.metodoPago = metodo;
@@ -1112,24 +1108,24 @@ document.addEventListener('alpine:init', () => {
       });
 
       this.adminPadresVersion++; this.comentariosVersion++;
-      this.pagoManual = { padreId: '', concepto: 'mensualidad', monto: 15, fecha: new Date().toISOString().slice(0,10), referencia: '', metodo: 'efectivo' };
-      alert('Pago registrado correctamente. PrÃ³ximo vencimiento: ' + nuevaFecha);
+      this.pagoManual = { padreId: '', concepto: 'mensualidad', monto: this.tarifa('mensualidad'), fecha: this.hoyISO(), referencia: '', metodo: 'efectivo' };
+      alert('Pago registrado correctamente. Próximo vencimiento: ' + nuevaFecha);
     },
     
     bloquearCuentaPadre(padreId) {
-      if (!confirm('Â¿Bloquear el acceso de esta cuenta a la plataforma? (El niÃ±o solo tendrÃ¡ 1 dÃ­a de entreno)')) return;
+      if (!confirm('¿Bloquear el acceso de esta cuenta a la plataforma? (El niño solo tendrá 1 día de entreno)')) return;
       window.DB.actualizarPadre(padreId, { password: 'BLOQUEADO_' + Date.now() });
       this.adminPadresVersion++; this.comentariosVersion++;
       alert('Cuenta bloqueada exitosamente.');
     },
     
     desbloquearCuentaPadre(padreId) {
-      if (!confirm('Â¿Desbloquear esta cuenta? Se restaurar? su contraseÃ±a a su nÃºmero de usuario (DNI).')) return;
+      if (!confirm('¿Desbloquear esta cuenta? Se restaurar? su contraseña a su número de usuario (DNI).')) return;
       const padre = this.listaPadres.find(p => p.id == padreId);
       if (padre) {
         window.DB.actualizarPadre(padreId, { password: padre.usuario });
         this.adminPadresVersion++; this.comentariosVersion++;
-        alert('Cuenta desbloqueada. Su nueva contraseÃ±a es su nÃºmero de usuario.');
+        alert('Cuenta desbloqueada. Su nueva contraseña es su número de usuario.');
       }
     },
     
@@ -1171,7 +1167,7 @@ document.addEventListener('alpine:init', () => {
           if (comp) {
               this.comprobanteActivo = comp;
           } else {
-              alert('Este padre no tiene comprobantes pendientes de validaciÃ³n.');
+              alert('Este padre no tiene comprobantes pendientes de validación.');
           }
       },
       cerrarComprobante() {
@@ -1180,7 +1176,7 @@ document.addEventListener('alpine:init', () => {
                         cambiarMetodoPago(padreId, nuevoMetodo) {
           const padre = this.listaPadres.find(p => p.id == padreId);
           if (padre) {
-              padre.metodo_pago = nuevoMetodo;
+              padre.metodoPago = nuevoMetodo;
               if(window.DB.post) {
                   window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: nuevoMetodo });
               }
@@ -1198,14 +1194,14 @@ document.addEventListener('alpine:init', () => {
           }
       },
       deshacerPago(padreId) {
-          if (!confirm('Â¿EstÃ¡s seguro de deshacer este pago y marcar al usuario como PENDIENTE?')) return;
+          if (!confirm('¿Estás seguro de deshacer este pago y marcar al usuario como PENDIENTE?')) return;
           const padre = this.listaPadres.find(p => p.id == padreId);
           if (padre) {
               const f = new Date();
               f.setDate(f.getDate() - 15);
-              padre.fechaVencimiento = f.toISOString().slice(0,10);
+              padre.fechaVencimiento = this.fechaISOLocal(f);
               if(window.DB.post) {
-                  window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
+                  window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodoPago });
               }
               this.adminPadresVersion++; this.comentariosVersion++;
           }
@@ -1219,10 +1215,10 @@ document.addEventListener('alpine:init', () => {
           if (padre) {
               const f = new Date();
               f.setDate(f.getDate() + 15);
-              padre.fechaVencimiento = f.toISOString().slice(0,10);
+              padre.fechaVencimiento = this.fechaISOLocal(f);
               // Save to database directly
               if(window.DB.post) {
-                  window.DB.post('usuarios/actualizarPago', { id: padre.id, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
+                  window.DB.post('usuarios/actualizarPago', { id: padre.id, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodoPago });
               }
               this.adminPadresVersion++; this.comentariosVersion++;
               
@@ -1236,7 +1232,7 @@ document.addEventListener('alpine:init', () => {
       procesarComprobanteDirecto(padreId, aprobar) {
           const comp = window.DB.obtenerComprobantes().find(c => c.padreId == padreId && (c.estado === 'en_revision' || c.estado === 'pendiente'));
           if(!comp) return;
-          if(!aprobar && !confirm('Â¿EstÃ¡s seguro de rechazar este pago?')) return;
+          if(!aprobar && !confirm('¿Estás seguro de rechazar este pago?')) return;
           
           window.DB.validarComprobante(comp.id, aprobar);
           
@@ -1245,15 +1241,15 @@ document.addEventListener('alpine:init', () => {
               if (padre) {
                   const f = new Date();
                   f.setDate(f.getDate() + 15);
-                  padre.fechaVencimiento = f.toISOString().slice(0,10);
+                  padre.fechaVencimiento = this.fechaISOLocal(f);
                   if(window.DB.post) {
-                      window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
+                      window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodoPago });
                   }
                   this.adminPadresVersion++; this.comentariosVersion++;
-                  // Muestra una notificaciÃ³n rÃ¡pida sin bloquear (toast)
+                  // Muestra una notificación rápida sin bloquear (toast)
                   const toast = document.createElement('div');
                   toast.className = 'fixed top-4 right-4 bg-nico-green text-white font-bold py-2 px-4 rounded-xl shadow-lg z-50 animate-bounce';
-                  toast.innerText = 'Pago Aprobado (Al DÃ­a)';
+                  toast.innerText = 'Pago Aprobado (Al Día)';
                   document.body.appendChild(toast);
                   setTimeout(() => toast.remove(), 2000);
               }
@@ -1268,15 +1264,15 @@ document.addEventListener('alpine:init', () => {
               if (padre) {
                   const f = new Date();
                   f.setDate(f.getDate() + 15);
-                  padre.fechaVencimiento = f.toISOString().slice(0,10);
+                  padre.fechaVencimiento = this.fechaISOLocal(f);
                   if(window.DB.post) {
-                      window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
+                      window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodoPago });
                   }
                   this.adminPadresVersion++; this.comentariosVersion++;
-                  alert('Pago aprobado. El estado del padre ha cambiado a Pagado (Al dÃ­a).');
+                  alert('Pago aprobado. El estado del padre ha cambiado a Pagado (Al día).');
               }
           } else {
-              alert('Comprobante rechazado. El padre deberÃ¡ subirlo de nuevo.');
+              alert('Comprobante rechazado. El padre deberá subirlo de nuevo.');
           }
           this.cerrarComprobante();
       },
@@ -1284,34 +1280,57 @@ document.addEventListener('alpine:init', () => {
           return this.estadoDeCuentas.filter(p => p.estadoPago === 'vencido');
       },
       abrirModalPago(id) {
-          this.pagoActual = { id: id, concepto: 'mensualidad', monto: 15.00, fecha: new Date().toISOString().slice(0,10), referencia: '' };
+          this.pagoActual = { id: id, concepto: 'mensualidad', monto: this.tarifa('mensualidad'), fecha: this.hoyISO(), referencia: '' };
           this.modalPagoActivo = true;
       },
       cerrarModalPago() {
           this.modalPagoActivo = false;
       },
-      guardarPagoModal() {
+      async guardarPagoModal() {
           if(!this.pagoActual.id) return;
           const padre = this.listaPadres.find(p => p.id == this.pagoActual.id);
           if(!padre) return;
+          const monto = parseFloat(this.pagoActual.monto);
+          if (!isFinite(monto) || monto <= 0) { alert('Ingresa un monto válido mayor a 0.'); return; }
+          if (!this.pagoActual.fecha) { alert('Selecciona la fecha del pago.'); return; }
+          // 1) Registrar el pago en MySQL (el servidor genera el ID y valida rol/CSRF)
+          const resPago = await window.DB.guardarPagoClub({
+              padreId: parseInt(padre.id, 10),
+              concepto: this.pagoActual.concepto || 'mensualidad',
+              monto: monto,
+              fecha: this.pagoActual.fecha,
+              referencia: this.pagoActual.referencia || '',
+              metodo: 'efectivo'
+          });
+          if (resPago && resPago.ok === false) { alert('No se pudo registrar el pago: ' + (resPago.error || 'error desconocido')); return; }
+          // 2) Actualizar el vencimiento del usuario en el servidor
           const f = new Date(this.pagoActual.fecha);
           f.setDate(f.getDate() + 15);
-          padre.fechaVencimiento = f.toISOString().slice(0,10);
+          const nuevaFecha = this.fechaISOLocal(f);
+          const resUpd = await window.DB.actualizarPagoUsuario(padre.id, nuevaFecha, padre.telefono, padre.metodoPago);
+          if (resUpd && resUpd.ok === false) { alert('El pago quedó registrado pero no se pudo actualizar el vencimiento.'); return; }
+          // 3) Sincronizar caché local recién tras confirmación del servidor
+          padre.fechaVencimiento = nuevaFecha;
           this.adminPadresVersion++; this.comentariosVersion++;
-          alert('Pago registrado correctamente. El estado pasarÃ¡ a VERDE.');
+          alert('Pago registrado correctamente. El estado pasará a VERDE.');
           this.cerrarModalPago();
       },
-      bloquearCuenta(id) {
-          if(!confirm('Â¿Bloquear la cuenta de esta familia? No podrÃ¡n acceder a la plataforma.')) return;
+      async bloquearCuenta(id) {
+          if(!confirm('¿Bloquear la cuenta de esta familia? No podrán acceder a la plataforma.')) return;
+          const res = await window.DB.bloquearUsuario(id, true);
+          if (res && res.ok === false) { alert('No se pudo bloquear la cuenta: ' + (res.error || 'error desconocido')); return; }
+          const u = this.listaPadres.find(p => p.id == id);
+          if (u) u.bloqueado = 1;
+          this.adminPadresVersion++;
           alert('Cuenta bloqueada exitosamente.');
       },
       recordatorioMasivo() {
       const padresPendientes = [...this.padresParaCobroEfectivoFiltrados, ...this.padresParaCobroLineaFiltrados].filter(p => p.estadoPago !== 'aldia' && p.estadoPago !== 'amarillo');
       if (padresPendientes.length === 0) { alert('No hay padres con pagos pendientes o vencidos.'); return; }
-      if (!confirm('Se prepararÃ¡n mensajes para ' + padresPendientes.length + ' familias pendientes. Â¿Deseas continuar?')) return;
+      if (!confirm('Se prepararán mensajes para ' + padresPendientes.length + ' familias pendientes. ¿Deseas continuar?')) return;
       let i = 0;
       const next = () => {
-        if (i >= padresPendientes.length) { alert('Â¿Todos los recordatorios fueron preparados!'); return; }
+        if (i >= padresPendientes.length) { alert('¿Todos los recordatorios fueron preparados!'); return; }
         const p = padresPendientes[i];
         this.recordatorioWhatsapp(p.id, 'ambos');
         i++;
@@ -1323,12 +1342,12 @@ document.addEventListener('alpine:init', () => {
           const padre = this.listaPadres.find(p => p.id == padreId);
           if (!padre) return;
           const telf = padre.telefono || '';
-          if (!telf) { alert('Este padre no tiene nÃºmero de telÃ©fono registrado.'); return; }
+          if (!telf) { alert('Este padre no tiene número de teléfono registrado.'); return; }
           let msg = '';
           if (tipo === 'efectivo') {
-              msg = `Hola ${padre.nombre}, le recordamos desde la Academia Nico Sport que su pago estÃ¡ pendiente. Por favor acÃ©rquese a nuestras instalaciones para realizar su pago en efectivo.`;
+              msg = `Hola ${padre.nombre}, le recordamos desde la Academia Nico Sport que su pago está pendiente. Por favor acérquese a nuestras instalaciones para realizar su pago en efectivo.`;
           } else {
-              msg = `Hola ${padre.nombre}, le recordamos desde la Academia Nico Sport que su ciclo de pago estÃ¡ por vencer. Por favor realice su pago en lÃ­nea.`;
+              msg = `Hola ${padre.nombre}, le recordamos desde la Academia Nico Sport que su ciclo de pago está por vencer. Por favor realice su pago en línea.`;
           }
           window.open(`https://wa.me/${telf}?text=${encodeURIComponent(msg)}`, '_blank');
       },
@@ -1336,12 +1355,12 @@ document.addEventListener('alpine:init', () => {
       const padre = this.listaPadres.find(p => p.id == padreId);
       if (!padre) return;
       const telf = padre.telefono || '';
-      if (!telf) { alert('Este padre no tiene nÃºmero de telÃ©fono registrado.'); return; }
-      const msg = `Hola ${padre.nombre}, le recordamos desde la Academia Nico Sport que su fecha de pago ha vencido. Por favor, regularice su situaciÃ³n.`;
+      if (!telf) { alert('Este padre no tiene número de teléfono registrado.'); return; }
+      const msg = `Hola ${padre.nombre}, le recordamos desde la Academia Nico Sport que su fecha de pago ha vencido. Por favor, regularice su situación.`;
       window.open(`https://wa.me/${telf}?text=${encodeURIComponent(msg)}`, '_blank');
     },
     cambiarMetodoPago(padreId, nuevoMetodo) {
-      if (!confirm(`Â¿Cambiar mÃ©todo de pago a ${nuevoMetodo === "efectivo" ? "Efectivo" : "En LÃ­nea"}?`)) return;
+      if (!confirm(`¿Cambiar método de pago a ${nuevoMetodo === "efectivo" ? "Efectivo" : "En Línea"}?`)) return;
       const padre = this.listaPadres.find(p => p.id == padreId);
       if (!padre) return;
       padre.metodoPago = nuevoMetodo;
@@ -1367,7 +1386,7 @@ document.addEventListener('alpine:init', () => {
       return window.DB.obtenerPagosClub().slice().reverse();
     },
 
-    /* ========== 18) GESTIÃ“N DE ENTRENADORES ========== */
+    /* ========== 18) GESTIÓN DE ENTRENADORES ========== */
     nuevoEntrenador: { nombre: '', usuario: '', password: '', catKey: '' },
     entrenadorMsg: '',
     entrenadoresVersion: 0,
@@ -1375,22 +1394,22 @@ document.addEventListener('alpine:init', () => {
       void this.entrenadoresVersion;
       return window.DB.obtenerEntrenadores();
     },
-    registrarEntrenador() {
+    async registrarEntrenador() {
       if (!this.esAdmin) return;
       const d = this.nuevoEntrenador;
       if (!d.nombre.trim() || !d.usuario.trim() || !d.password.trim() || !d.catKey) {
-        this.entrenadorMsg = ' Todos los campos son obligatorios';
+        this.entrenadorMsg = 'Todos los campos son obligatorios';
         return;
       }
       const cat = this.categoriasTorneo.find(c => c.key === d.catKey);
-      const res = window.DB.registrarEntrenador({
+      const res = await window.DB.registrarEntrenador({
         nombre: d.nombre.trim(),
         usuario: d.usuario.trim(),
         password: d.password,
         catKey: d.catKey,
         catLabel: cat ? cat.label : d.catKey
       });
-      this.entrenadorMsg = res.ok ? ' ' + res.msg : ' ' + res.msg;
+      this.entrenadorMsg = res.ok ? '✔ ' + res.msg : '✖ ' + res.msg;
       if (res.ok) {
         this.nuevoEntrenador = { nombre: '', usuario: '', password: '', catKey: '' };
         this.entrenadoresVersion++;
@@ -1400,7 +1419,7 @@ document.addEventListener('alpine:init', () => {
       if (!this.esAdmin) return;
       const nombre = prompt('Nombre:', dt.nombre); if (nombre === null) return;
       const usuario = prompt('Usuario:', dt.usuario); if (usuario === null) return;
-      const password = prompt('ContraseÃ±a (dejar igual para no cambiar):', '');
+      const password = prompt('Contraseña (dejar igual para no cambiar):', '');
       const cat = this.categoriasTorneo.find(c => c.key === dt.catKey);
       const data = { nombre, usuario, catLabel: cat ? cat.label : dt.catKey };
       if (password && password.trim()) data.password = password.trim();
@@ -1410,32 +1429,49 @@ document.addEventListener('alpine:init', () => {
     },
     eliminarEntrenador(id) {
       if (!this.esAdmin) return;
-      if (!confirm('Â¿Eliminar este entrenador?')) return;
+      if (!confirm('¿Eliminar este entrenador?')) return;
       window.DB.eliminarEntrenador(id);
       this.entrenadoresVersion++;
       alert(' Entrenador eliminado');
     },
 
-    /* ========== 19) PORTAL DE PADRES ========== */
-          tarifaOficialMensualidad: 15.00,
+    /* ========== 19) TARIFAS OFICIALES (fuente única: tabla MySQL `configuraciones`) ========== */
+      tarifaOficialMensualidad: 15.00,
       tarifaOficialInscripcion: 15.00,
+      tarifa(concepto) {
+          // Única fuente de verdad: configuraciones MySQL con fallback al default 15
+          const c = String(concepto || '').toLowerCase();
+          if (c === 'inscripcion') return parseFloat(this.tarifaOficialInscripcion) || 15;
+          return parseFloat(this.tarifaOficialMensualidad) || 15;
+      },
       cargarTarifas() {
           const conf = window.DB.obtenerConfiguraciones ? window.DB.obtenerConfiguraciones() : {};
           if(conf['tarifa_mensualidad']) this.tarifaOficialMensualidad = parseFloat(conf['tarifa_mensualidad']);
           if(conf['tarifa_inscripcion']) this.tarifaOficialInscripcion = parseFloat(conf['tarifa_inscripcion']);
       },
-      guardarTarifas() {
-          window.DB.post('configuraciones/guardar', {
-              mensualidad: this.tarifaOficialMensualidad,
-              inscripcion: this.tarifaOficialInscripcion
-          });
+      async guardarTarifas() {
+          const m = parseFloat(this.tarifaOficialMensualidad);
+          const i = parseFloat(this.tarifaOficialInscripcion);
+          if (isNaN(m) || isNaN(i) || m < 0 || i < 0) {
+            alert('Las tarifas deben ser números ≥ 0');
+            return;
+          }
+          const res = await window.DB.post('configuraciones/guardar', { mensualidad: m, inscripcion: i });
+          if (!res || res.ok === false) {
+            alert('No se pudieron guardar las tarifas: ' + ((res && res.error) || 'error de red'));
+            return;
+          }
+          // Actualizar el caché local para sincronización inmediata (sin refrescar)
+          const conf = window.DB.obtenerConfiguraciones();
+          conf['tarifa_mensualidad'] = String(m);
+          conf['tarifa_inscripcion'] = String(i);
           const toast = document.createElement('div');
           toast.className = 'fixed top-4 right-4 bg-nico-green text-white font-bold py-2 px-4 rounded-xl shadow-lg z-50 animate-bounce';
-          toast.innerText = 'Tarifas Guardadas (Refresca para sincronizar global)';
+          toast.innerText = 'Tarifas Guardadas y sincronizadas';
           document.body.appendChild(toast);
           setTimeout(() => toast.remove(), 3000);
       },
-      reportePago: { concepto: 'Mensualidad', monto: 15, fecha: new Date().toISOString().slice(0,10), referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' },
+      reportePago: { concepto: 'Mensualidad', monto: this.tarifa('mensualidad'), fecha: this.hoyISO(), referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' },
     handleComprobantePadre(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -1471,10 +1507,10 @@ document.addEventListener('alpine:init', () => {
       return diff <= 15 ? 'Vigente' : 'Vencido';
     },
           enviarReportePago() {
-        if (!this.currentUser || this.currentUser.rol !== 'padre') { alert(' Inicia sesiÃ³n como padre'); return; }
+        if (!this.currentUser || this.currentUser.rol !== 'padre') { alert(' Inicia sesión como padre'); return; }
         if (!this.reportePago.comprobanteNombre || this.reportePago.comprobanteNombre === 'Subiendo...') { alert(' Adjunta el comprobante'); return; }
         
-        const fechaActual = new Date().toISOString().slice(0,10);
+        const fechaActual = this.hoyISO();
         const montoOficial = this.tarifaOficialMensualidad;
         const conceptoStr = 'Mensualidad';
 
@@ -1503,19 +1539,19 @@ document.addEventListener('alpine:init', () => {
           ' Monto: $' + montoOficial.toFixed(2) + '\n' +
           ' Fecha: ' + new Date().toLocaleDateString('es-PA') + '\n' +
           ' Ref: ' + (this.reportePago.referencia || '') + '\n' +
-          ' Comprobante enviado. Pendiente de validaciÃ³n.'
+          ' Comprobante enviado. Pendiente de validación.'
         );
         window.open('https://wa.me/50760000000?text=' + msg, '_blank');
-        alert(' Reporte enviado + NotificaciÃ³n por WhatsApp al administrador');
-        this.reportePago = { concepto: 'Mensualidad', monto: 15, fecha: fechaActual, referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' };
-        this.adminPadresVersion++; this.comentariosVersion++; // Forzar actualizaciÃ³n reactiva en Alpine
+        alert(' Reporte enviado + Notificación por WhatsApp al administrador');
+        this.reportePago = { concepto: 'Mensualidad', monto: this.tarifa('mensualidad'), fecha: fechaActual, referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' };
+        this.adminPadresVersion++; this.comentariosVersion++; // Forzar actualización reactiva en Alpine
       },
       misPagos() {
       if (!this.currentUser || this.currentUser.rol !== 'padre') return [];
       return window.DB.obtenerPagosPadre(this.padreIdActual).slice().reverse();
     },
 
-    /* ========== 20) NAVEGACIÃ“N Y CARGA ========== */
+    /* ========== 20) NAVEGACIÓN Y CARGA ========== */
     switchTab(tab, event) {
       this.mainTab = tab;
       if (event && window.triggerParticles && event.clientX !== undefined) window.triggerParticles(event.clientX, event.clientY);
@@ -1534,6 +1570,8 @@ document.addEventListener('alpine:init', () => {
       });
     },
     cargarPersistidos() {
+      // Tarifas oficiales desde MySQL (caché ya cargado tras DB.listo)
+      this.cargarTarifas();
       const t = window.DB.obtenerTorneo();
       if (t && t.length) {
         this.categoriasTorneo = t.map(c => Object.assign(catTorneo(), c));
@@ -1546,8 +1584,8 @@ document.addEventListener('alpine:init', () => {
         const p = window.DB.obtenerPlantilla(c.key);
         if (p && p.length) { p.sort((a, b) => a.dorsal - b.dorsal); this._setPlantilla(c.key, p); }
       });
-      // FIX REACTIVO: forzar que Alpine re-evalÃºe listaPadres y categorÃ­as
-      // despuÃ©s de que la BD cargÃ³ asÃ­ncronamente
+      // FIX REACTIVO: forzar que Alpine re-evalúe listaPadres y categorías
+      // después de que la BD cargó asíncronamente
       this.adminPadresVersion++; this.comentariosVersion++;
       this.catAdminVersion++;
     },
@@ -1563,7 +1601,7 @@ document.addEventListener('alpine:init', () => {
             return; 
         }
         if(!this.feedbackForm.asunto.trim()) { 
-            this.mostrarFeedback('Ingresa un asunto o tÃ­tulo', true); 
+            this.mostrarFeedback('Ingresa un asunto o título', true); 
             return; 
         }
         if(!this.feedbackForm.mensaje.trim()) { 
@@ -1585,7 +1623,7 @@ document.addEventListener('alpine:init', () => {
         window.DB.guardarComentario(f); this.comentariosVersion++;
         
         this.feedbackForm = { tipo: '', asunto: '', mensaje: '', es_anonimo: false };
-        this.mostrarFeedback('Â¡Mensaje enviado con Ã©xito al club! Gracias por tus comentarios.', false);
+        this.mostrarFeedback('¡Mensaje enviado con éxito al club! Gracias por tus comentarios.', false);
       },
       mostrarFeedback(msg, error = false) {
           this.feedbackStatus = { show: true, msg, error };
@@ -1593,7 +1631,7 @@ document.addEventListener('alpine:init', () => {
       },
       get comentariosPadres() { void this.comentariosVersion; return window.DB.obtenerComentarios(); },
       borrarComentario(id) {
-        if(confirm('Â¿Seguro que deseas borrar este comentario?')) {
+        if(confirm('¿Seguro que deseas borrar este comentario?')) {
             window.DB.borrarComentario(id); this.comentariosVersion++;
         }
       },

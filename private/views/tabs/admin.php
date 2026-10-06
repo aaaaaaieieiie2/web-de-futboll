@@ -9,12 +9,12 @@
 
   <!-- Pestaa 1: Familias -->
   <div x-show="adminSubTab === 'padres'" x-transition.opacity>
-<!-- ==================== SECCI�?N 12: PANEL ADMIN (NUEVA UNIFICACI�?N) ==================== -->
+<!-- ==================== SECCIÓN 12: PANEL ADMIN (NUEVA UNIFICACIÓN) ==================== -->
 <div>
 <div class="glass-box p-6 rounded-3xl border border-nico-orange/40 text-center space-y-2">
 <span class="text-xs font-black text-white border border-white/20 bg-black px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">Paúnel de Administración</span>
 <h3 class="text-2xl font-black text-white uppercase">Gestión del Club</h3>
-<p class="text-xs text-gray-400">Registro unificado 2 en 1 · edita estadísticas en plaúntillas con el �?�️ lapicito</p>
+<p class="text-xs text-gray-400">Registro unificado 2 en 1 · edita estadísticas en plantillas con el 🖊️ lapicito</p>
 </div>
 <div class="admin-section relative overflow-hidden bg-gradient-to-br from-black to-[#0a0a0a]">
 <div class="absolute top-0 right-0 w-40 h-40 bg-nico-orange/5 blur-[60px] rounded-full pointer-events-none"></div>
@@ -50,7 +50,7 @@
 </div>
 <div class="flex items-center gap-4 flex-wrap pt-2 border-t border-white/10">
 <button class="admin-btn bg-gradient-to-r from-nico-orange to-red-600 px-6 py-2.5 rounded-xl shadow-[0_0_15px_rgba(255,85,0,0.3)] hover:scale-[1.02] transition-transform" @click="registrarUnificado()"><i class="fas fa-check-circle mr-1"></i> Completar Registro</button>
-<div class="text-xs font-bold px-3 py-1.5 rounded-lg border" :class="adminRegistroMsg.includes('�??') ? 'text-nico-green bg-nico-green/10 border-nico-green/30' : 'text-nico-red bg-nico-red/10 border-nico-red/30'" x-text="adminRegistroMsg" x-show="adminRegistroMsg" x-transition></div>
+<div class="text-xs font-bold px-3 py-1.5 rounded-lg border" :class="adminRegistroMsg.includes('✅') ? 'text-nico-green bg-nico-green/10 border-nico-green/30' : 'text-nico-red bg-nico-red/10 border-nico-red/30'" x-text="adminRegistroMsg" x-show="adminRegistroMsg" x-transition></div>
 </div>
 </div>
 <div class="admin-section">

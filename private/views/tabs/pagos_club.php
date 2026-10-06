@@ -1,9 +1,9 @@
 <!-- ==================== SECCIÓN 8: PAGOS DEL CLUB (Estética Mejorada) ==================== -->
-<div x-show="mainTab === 'pagosClub' && esAdmin"" class="space-y-6 anim-entry">
+<div x-show="mainTab === 'pagosClub' && esAdmin" class="space-y-6 anim-entry">
 <div class="text-center space-y-2">
 <span class="text-xs font-black text-white border border-white/20 bg-black px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">Gestión Financiera</span>
 <h3 class="text-2xl font-black text-white uppercase">Pagos del Club</h3>
-<p class="text-xs text-gray-400">Registra cobros presenciales y valida comprobantes digitales · Cuota: $15.00 quincenal</p>
+<p class="text-xs text-gray-400">Registra cobros presenciales y valida comprobantes digitales · Cuota: <span x-text="'$' + Number(tarifaOficialMensualidad).toFixed(2)"></span> quincenal</p>
 </div>
 <div class="timer-box p-5 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
 <div class="flex items-center gap-4">
@@ -15,7 +15,7 @@
 <p class="text-[11px] text-gray-300 mt-1">Próximo corte oficial: <span class="text-white bg-nico-orange/20 px-2 py-0.5 rounded border border-nico-orange/50 font-bold ml-1" x-text="proximaQuincena()"></span></p>
 </div>
 </div>
-<div class="flex items-center gap-3"><button @click="recordatorioMasivo()" class="bg-green-500/20 text-green-500 border border-green-500/50 hover:bg-green-500 hover:text-white transition-colors px-4 py-2 rounded-xl text-[10px] font-black uppercase flex items-center gap-2 shadow-[0_0_15px_rgba(34,197,94,0.3)]" title="Abrir y enviar recordatorios autom�ticamente en pesta�as consecutivas"><i class="fab fa-whatsapp text-base"></i> Recordatorio Masivo</button><div class="text-center bg-black/50 border border-white/10 rounded-2xl px-6 py-2">
+<div class="flex items-center gap-3"><button @click="recordatorioMasivo()" class="bg-green-500/20 text-green-500 border border-green-500/50 hover:bg-green-500 hover:text-white transition-colors px-4 py-2 rounded-xl text-[10px] font-black uppercase flex items-center gap-2 shadow-[0_0_15px_rgba(34,197,94,0.3)]" title="Abrir y enviar recordatorios automáticamente en pestañas consecutivas"><i class="fab fa-whatsapp text-base"></i> Recordatorio Masivo</button><div class="text-center bg-black/50 border border-white/10 rounded-2xl px-6 py-2">
 <div class="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" x-text="diasParaQuincena()"></div>
 <div class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Días restantes</div>
 </div>

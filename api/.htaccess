@@ -1,3 +1,0 @@
-﻿<FilesMatch "^(conexion\.php|install\.php)$">
-    Require all denied
-</FilesMatch>

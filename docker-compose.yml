@@ -1,32 +1,57 @@
-version: '3.8'
-
 services:
   web:
     build: .
+    container_name: nicosport_web
     ports:
-      - "8080:80"
+      - "127.0.0.1:8085:80"
     volumes:
-      - .:/var/www/html/
+      - ./:/var/www/html/
     environment:
       - DB_HOST=db
       - DB_USER=nicosport_user
-      - DB_PASS=nicosport_pass
+      - DB_PASS=Nico#Sport2026#Db9Xp2Lm
       - DB_NAME=nicosport
     depends_on:
       - db
+    networks:
+      - nicosport_network
+    restart: unless-stopped
 
   db:
-    image: mysql:8.0
+    image: mariadb:10.6
+    container_name: nicosport_mysql
+    command: --max-allowed-packet=64M
     ports:
-      - "3307:3306"
+      - "127.0.0.1:3308:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: Root#Nico2026#Kq9Zx4Vb
       MYSQL_DATABASE: nicosport
       MYSQL_USER: nicosport_user
-      MYSQL_PASSWORD: nicosport_pass
+      MYSQL_PASSWORD: Nico#Sport2026#Db9Xp2Lm
     volumes:
-      - db_data:/var/lib/mysql
+      - nicosport_db_data:/var/lib/mysql
+    networks:
+      - nicosport_network
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: nicosport_pma
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: Root#Nico2026#Kq9Zx4Vb
+      UPLOAD_LIMIT: 64M
+    ports:
+      - "127.0.0.1:8086:80"
+    depends_on:
+      - db
+    networks:
+      - nicosport_network
+    restart: unless-stopped
+
+networks:
+  nicosport_network:
+    driver: bridge
 
 volumes:
-  db_data:
-
+  nicosport_db_data:

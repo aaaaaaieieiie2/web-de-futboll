@@ -1,4 +1,4 @@
-﻿<!-- ==================== SECCION: BUZÓN DE PADRES ==================== -->
+<!-- ==================== SECCION: BUZÓN DE PADRES ==================== -->
 <div x-show="mainTab === 'buzon'" class="space-y-6 anim-entry max-w-2xl mx-auto">
   <div class="text-center space-y-2">
     <span class="text-xs font-black text-white border border-white/20 bg-black px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">Contacto Directo</span>
@@ -52,3 +52,5 @@
     </div>
   </div>
 </div>
+
+

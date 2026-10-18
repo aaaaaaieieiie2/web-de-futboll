@@ -23,7 +23,9 @@ class="px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider transi
 </div>
 <div class="flex items-center gap-2">
 <span :class="cat.tabla.length > 0 ? 'bg-nico-green/20 text-nico-green border-nico-green/40' : 'bg-nico-orange/20 text-nico-orange border-nico-orange/40 animate-pulse'" class="text-xs font-extrabold px-3 py-1 rounded-full border" x-text="cat.tabla.length > 0 ? 'EN CURSO' : 'PRÓXIMAMENTE'"></span>
-<button x-show="esAdmin && modoEdicion" @click="agregarEquipo(cat)" class="btn-edit-mini" title="Agregar equipo"><i class="fas fa-plus"></i></button>
+<?php if (!empty($esAdmin)): ?>
+<button x-show="modoEdicion" @click="agregarEquipo(cat)" class="btn-edit-mini" title="Agregar equipo"><i class="fas fa-plus"></i></button>
+<?php endif; ?>
 </div>
 </div>
 <div class="scroll-x-container rounded-2xl border border-white/10">
@@ -35,7 +37,7 @@ class="px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider transi
 </div>
 <div x-show="cat.tabla.length > 0" class="overflow-x-auto">
 <table class="w-full text-left text-xs">
-<thead><tr class="text-gray-500 border-b border-white/10 uppercase font-black text-[10px]"><th class="py-3 px-2">Pos</th><th class="py-3 px-4">Equipo</th><th class="py-3 px-2 text-center">PJ</th><th class="py-3 px-2 text-center">PG</th><th class="py-3 px-2 text-center">PE</th><th class="py-3 px-2 text-center">PP</th><th class="py-3 px-2 text-center">GF</th><th class="py-3 px-2 text-center">GC</th><th class="py-3 px-2 text-center font-bold">PTS</th><th x-show="modoEdicion" class="py-3 px-2"></th></tr></thead>
+<thead><tr class="text-gray-500 border-b border-white/10 uppercase font-black text-[10px]"><th class="py-3 px-2">Pos</th><th class="py-3 px-4">Equipo</th><th class="py-3 px-2 text-center">PJ</th><th class="py-3 px-2 text-center">PG</th><th class="py-3 px-2 text-center">PE</th><th class="py-3 px-2 text-center">PP</th><th class="py-3 px-2 text-center">GF</th><th class="py-3 px-2 text-center">GC</th><th class="py-3 px-2 text-center font-bold">PTS</th><?php if (!empty($esAdmin)): ?><th x-show="modoEdicion" class="py-3 px-2"></th><?php endif; ?></tr></thead>
 <tbody class="divide-y divide-white/5 font-semibold">
 <template x-for="(team, tIdx) in tablaOrdenada(cat)" :key="cat.key + '-' + tIdx">
 <tr :class="team.nombre.includes('Nico Sport') ? 'bg-nico-orange/10 text-white border-l-4 border-l-nico-orange' : 'hover:bg-white/5'" class="transition-colors">
@@ -53,7 +55,7 @@ class="px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider transi
 <td class="py-3 px-2 text-center text-gray-300" :class="(modoEdicion && esAdmin) ? 'cursor-pointer hover:text-nico-orange' : ''" @click="editarNum(team,'gf')" x-text="team.gf"></td>
 <td class="py-3 px-2 text-center text-gray-300" :class="(modoEdicion && esAdmin) ? 'cursor-pointer hover:text-nico-orange' : ''" @click="editarNum(team,'gc')" x-text="team.gc"></td>
 <td class="py-3 px-2 text-center font-black text-white" :class="(modoEdicion && esAdmin) ? 'cursor-pointer hover:text-nico-orange' : ''" @click="editarNum(team,'pts')" x-text="team.pts"></td>
-<td x-show="modoEdicion && esAdmin" class="py-3 px-2"><button class="btn-del-mini" @click="eliminarEquipo(cat, team)" title="Eliminar equipo"><i class="fas fa-trash"></i></button></td>
+<?php if (!empty($esAdmin)): ?><td x-show="modoEdicion" class="py-3 px-2"><button class="btn-del-mini" @click="eliminarEquipo(cat, team)" title="Eliminar equipo"><i class="fas fa-trash"></i></button></td><?php endif; ?>
 </tr>
 </template>
 </tbody>
@@ -115,7 +117,8 @@ class="px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider transi
 <template x-if="!cat.proximoPartido"><div class="text-center text-gray-500 italic py-3"><i class="fas fa-calendar-days text-xl mb-1 block text-gray-600"></i>Por definir (Fecha y rival)</div></template>
 </div>
 </div>
-<div x-show="esAdmin" class="p-4 rounded-2xl border border-nico-orange/30 bg-gradient-to-r from-nico-orange/5 to-transparent space-y-3">
+<?php if (!empty($esAdmin)): ?>
+<div class="p-4 rounded-2xl border border-nico-orange/30 bg-gradient-to-r from-nico-orange/5 to-transparent space-y-3">
 <p class="text-xs text-gray-400 uppercase font-black flex items-center gap-2">
 <i class="fas fa-flag-checkered text-nico-orange"></i> Fase Actual del Torneo — <span class="text-nico-orange" x-text="cat.label"></span>
 </p>
@@ -130,11 +133,13 @@ class="px-2 py-2.5 rounded-xl text-[10px] sm:text-xs font-black border transitio
 </template>
 </div>
 </div>
-<div x-show="!esAdmin" class="p-4 rounded-2xl border border-white/10 bg-black/30">
+<?php else: ?>
+<div class="p-4 rounded-2xl border border-white/10 bg-black/30">
 <p class="text-xs text-gray-400 uppercase font-black flex items-center gap-2">
 <i class="fas fa-flag-checkered text-gray-500"></i> Fase Actual: <span class="text-white" x-text="fasesTorneo.find(f => f.key === cat.faseActual)?.label || 'Sin torneo'"></span>
 </p>
 </div>
+<?php endif; ?>
 <div class="p-4 rounded-2xl border border-amber-400/20 bg-gradient-to-r from-amber-400/5 to-transparent space-y-3">
 <p class="text-xs text-gray-400 uppercase font-black flex items-center gap-2">
 <i class="fas fa-trophy text-amber-400"></i> Camino al Título — <span class="text-nico-orange" x-text="cat.label"></span>
@@ -205,3 +210,4 @@ class="px-2 py-2.5 rounded-xl text-[10px] sm:text-xs font-black border transitio
 <span x-text="currentTorneoIdx + 1"></span> / <span x-text="categoriasTorneoVisibles.length"></span> Categorías
 </div>
 </div>
+

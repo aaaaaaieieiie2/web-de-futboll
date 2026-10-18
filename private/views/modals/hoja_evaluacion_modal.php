@@ -18,20 +18,20 @@ Aún no hay evaluaciones registradas para este jugador.<br>El cuerpo técnico ca
 <div class="space-y-5">
 <div class="flex items-center justify-center gap-3 bg-black/60 p-3 rounded-2xl border border-white/10">
 <span class="text-[10px] text-gray-400 font-bold uppercase">Calificación General:</span>
-<span class="text-2xl font-black" :class="notaJugador(evalVerModal) >= 3.5 ? 'text-nico-green' : (notaJugador(evalVerModal) >= 2.5 ? 'text-amber-400' : 'text-nico-red')" x-text="notaJugador(evalVerModal) ? notaJugador(evalVerModal).toFixed(1) + ' / 5' : '—'"></span>
+<span class="text-2xl font-black" :class="notaJugador(evalVerModal) >= 7.0 ? 'text-nico-green' : (notaJugador(evalVerModal) >= 5.0 ? 'text-amber-400' : 'text-nico-red')" x-text="notaJugador(evalVerModal) ? notaJugador(evalVerModal).toFixed(1) + ' / 10' : '—'"></span>
 </div>
 <template x-for="(grupo, gKey) in gruposEval" :key="'ver-' + gKey">
 <div class="bg-black/40 border border-white/5 rounded-2xl p-4 space-y-2">
 <h4 class="text-xs font-black uppercase flex items-center gap-2" :class="grupo[3]">
 <i class="fas" :class="grupo[2]"></i> <span x-text="grupo[1]"></span>
-<span class="ml-auto text-white" x-text="(evalResumen(evalVerModal) ? evalResumen(evalVerModal)[grupo[0]] : '—') + ' / 5'"></span>
+<span class="ml-auto text-white" x-text="(evalResumen(evalVerModal) ? evalResumen(evalVerModal)[grupo[0]] : '—') + ' / 10'"></span>
 </h4>
 <div class="grid sm:grid-cols-2 gap-1.5">
 <template x-for="(item, i) in evalItems[grupo[0]]" :key="'ver-' + gKey + '-' + i">
 <div class="flex items-center justify-between bg-black/50 border border-white/5 rounded-lg px-3 py-1.5">
 <span class="text-[11px] text-gray-300" x-text="item"></span>
 <span class="text-xs font-black"
-:class="(evalCompleta(evalVerModal)[grupo[0]][i] || 0) >= 4 ? 'text-nico-green' : ((evalCompleta(evalVerModal)[grupo[0]][i] || 0) >= 3 ? 'text-amber-400' : ((evalCompleta(evalVerModal)[grupo[0]][i] || 0) >= 1 ? 'text-nico-red' : 'text-gray-600'))"
+:class="(evalCompleta(evalVerModal)[grupo[0]][i] || 0) >= 8 ? 'text-nico-green' : ((evalCompleta(evalVerModal)[grupo[0]][i] || 0) >= 6 ? 'text-amber-400' : ((evalCompleta(evalVerModal)[grupo[0]][i] || 0) >= 1 ? 'text-nico-red' : 'text-gray-600'))"
 x-text="(evalCompleta(evalVerModal)[grupo[0]][i] || 0) || '—'"></span>
 </div>
 </template>
@@ -45,3 +45,4 @@ x-text="(evalCompleta(evalVerModal)[grupo[0]][i] || 0) || '—'"></span>
 </div>
 </div>
 </div>
+

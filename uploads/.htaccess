@@ -1,0 +1,19 @@
+Options -Indexes -ExecCGI
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+  php_flag engine off
+</IfModule>
+SetHandler default-handler
+
+# Bloqueo total de cualquier script ejecutable
+<FilesMatch "\.(?i:php|php[0-9]?|phtml|phar|pl|py|cgi|sh|bash|asp|aspx|jsp|exe|bin|htaccess)$">
+  Require all denied
+</FilesMatch>
+
+# Cabeceras de seguridad estrictas en uploads: evitar MIME-sniffing y ejecución
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Content-Security-Policy "default-src 'none'; sandbox"
+</IfModule>

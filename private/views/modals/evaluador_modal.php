@@ -10,7 +10,7 @@
 </div>
 <div class="flex items-center justify-center gap-3 bg-black/60 p-3 rounded-2xl border border-white/10 sticky top-0 z-10 backdrop-blur-xl">
 <span class="text-[10px] text-gray-400 font-bold uppercase">Calificación en vivo:</span>
-<span class="text-2xl font-black" :class="evalPromedio >= 3.5 ? 'text-nico-green' : (evalPromedio >= 2.5 ? 'text-amber-400' : 'text-nico-red')" x-text="evalPromedio ? evalPromedio + ' / 5' : '—'"></span>
+<span class="text-2xl font-black" :class="evalPromedio >= 7.0 ? 'text-nico-green' : (evalPromedio >= 5.0 ? 'text-amber-400' : 'text-nico-red')" x-text="evalPromedio ? evalPromedio + ' / 10' : '—'"></span>
 </div>
 <div class="grid md:grid-cols-2 gap-4">
 <template x-for="(grupo, gKey) in gruposEval" :key="'ed-' + gKey">
@@ -18,11 +18,11 @@
 <h4 class="text-xs font-black uppercase mb-2 flex items-center gap-2" :class="grupo[3]"><i class="fas" :class="grupo[2]"></i> <span x-text="grupo[1]"></span></h4>
 <div class="space-y-1.5">
 <template x-for="(item, i) in evalItems[grupo[0]]" :key="'ed-' + gKey + i">
-<div class="flex items-center justify-between bg-black/40 border border-white/5 rounded-lg px-3 py-2">
-<span class="text-[11px] text-gray-300" x-text="item"></span>
-<div class="flex gap-1">
-<template x-for="n in 5" :key="'ed-' + gKey + i + '-' + n">
-<button @click="evalDatos[grupo[0]][i] = n" :class="evalDatos[grupo[0]][i] === n ? 'bg-nico-orange text-white shadow-[0_0_8px_rgba(255,85,0,0.6)]' : 'bg-black/60 text-gray-500 hover:text-white'" class="w-7 h-7 rounded text-[10px] font-black transition-all" x-text="n"></button>
+<div class="flex items-center justify-between bg-black/40 border border-white/5 rounded-lg px-3 py-2 flex-wrap gap-2">
+<span class="text-[11px] text-gray-300 font-bold" x-text="item"></span>
+<div class="flex gap-0.5 sm:gap-1 flex-wrap">
+<template x-for="n in 10" :key="'ed-' + gKey + i + '-' + n">
+<button type="button" @click="evalDatos[grupo[0]][i] = n" :class="evalDatos[grupo[0]][i] === n ? 'bg-nico-orange text-white shadow-[0_0_8px_rgba(255,85,0,0.6)]' : 'bg-black/60 text-gray-500 hover:text-white'" class="w-6 h-6 rounded text-[9px] font-black transition-all cursor-pointer" x-text="n"></button>
 </template>
 </div>
 </div>
@@ -35,3 +35,4 @@
 </div>
 </div>
 </div>
+

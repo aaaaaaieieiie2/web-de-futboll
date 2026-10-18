@@ -3,7 +3,7 @@
 <div class="text-center space-y-2">
 <span class="text-xs font-black text-white border border-white/20 bg-black px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">Gestión Financiera</span>
 <h3 class="text-2xl font-black text-white uppercase">Pagos del Club</h3>
-<p class="text-xs text-gray-400">Registra cobros presenciales y valida comprobantes digitales · Cuota: $15.00 quincenal</p>
+<p class="text-xs text-gray-400">Registra cobros presenciales y valida comprobantes digitales · Cuota: Mensual (Cada día 30 del mes)</p>
 </div>
 <div class="timer-box p-5 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
 <div class="flex items-center gap-4">
@@ -11,11 +11,11 @@
 <i class="fas fa-clock text-white text-2xl"></i>
 </div>
 <div>
-<h4 class="text-sm font-black text-white uppercase tracking-wider">Ciclo de Cobro Quincenal</h4>
+<h4 class="text-sm font-black text-white uppercase tracking-wider">Ciclo de Cobro Mensual (Día 30)</h4>
 <p class="text-[11px] text-gray-300 mt-1">Próximo corte oficial: <span class="text-white bg-nico-orange/20 px-2 py-0.5 rounded border border-nico-orange/50 font-bold ml-1" x-text="proximaQuincena()"></span></p>
 </div>
 </div>
-<div class="flex items-center gap-3"><button @click="recordatorioMasivo()" class="bg-green-500/20 text-green-500 border border-green-500/50 hover:bg-green-500 hover:text-white transition-colors px-4 py-2 rounded-xl text-[10px] font-black uppercase flex items-center gap-2 shadow-[0_0_15px_rgba(34,197,94,0.3)]" title="Abrir y enviar recordatorios autom�ticamente en pesta�as consecutivas"><i class="fab fa-whatsapp text-base"></i> Recordatorio Masivo</button><div class="text-center bg-black/50 border border-white/10 rounded-2xl px-6 py-2">
+<div class="flex items-center gap-3"><button @click="recordatorioMasivo()" class="bg-green-500/20 text-green-500 border border-green-500/50 hover:bg-green-500 hover:text-white transition-colors px-4 py-2 rounded-xl text-[10px] font-black uppercase flex items-center gap-2 shadow-[0_0_15px_rgba(34,197,94,0.3)]" title="Abrir y enviar recordatorios automáticamente en pestañaas consecutivas"><i class="fab fa-whatsapp text-base"></i> Recordatorio Masivo</button><div class="text-center bg-black/50 border border-white/10 rounded-2xl px-6 py-2">
 <div class="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" x-text="diasParaQuincena()"></div>
 <div class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Días restantes</div>
 </div>
@@ -48,11 +48,7 @@
                         </div>
                         <div class="flex gap-1 shrink-0 items-center bg-black/40 p-1 rounded-xl border border-white/5">
                             <button @click="cambiarMetodoPago(p.id, 'linea')" class="text-[9px] text-nico-blue hover:text-white px-2 uppercase font-bold" title="Cambiar a Cobro en Línea">Pasar a Línea <i class="fas fa-arrow-right"></i></button>
-                            <template x-if="p.estadoPago === 'vencido'">
-                                <button @click="toggleBloqueo(p.id)" class="w-8 h-8 rounded transition-colors flex items-center justify-center" :class="p.bloqueado === 1 ? 'bg-gray-500/20 text-gray-400 hover:bg-nico-green/20 hover:text-nico-green' : 'bg-nico-red/20 text-nico-red hover:bg-nico-red hover:text-white'" :title="p.bloqueado === 1 ? 'Desbloquear Acceso' : 'Bloquear Acceso'">
-                                    <i class="fas" :class="p.bloqueado === 1 ? 'fa-unlock' : 'fa-lock'"></i>
-                                </button>
-                            </template>
+                            
                             <template x-if="p.estadoPago !== 'aldia'">
                                 <button @click="abrirModalPago(p.id)" class="w-8 h-8 rounded bg-nico-green/20 text-nico-green hover:bg-nico-green hover:text-white transition-colors flex items-center justify-center" title="Registrar Pago Manual"><i class="fas fa-dollar-sign"></i></button>
                             </template>
@@ -60,6 +56,9 @@
                                 <button @click="deshacerPago(p.id)" class="w-8 h-8 rounded bg-gray-500/20 text-gray-400 hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center" title="Deshacer Pago (Marcar No Pagado)"><i class="fas fa-undo"></i></button>
                             </template>
                             <button @click="recordatorioWhatsapp(p.id, 'efectivo')" class="w-8 h-8 rounded bg-green-500/20 text-green-500 hover:bg-green-500 hover:text-white transition-colors flex items-center justify-center" title="Enviar WhatsApp"><i class="fab fa-whatsapp text-lg"></i></button>
+                            <button @click="bloquearCuenta(p.id, p.bloqueado === 1 ? false : true)" x-show="p.estadoPago !== 'aldia'" class="w-8 h-8 rounded transition-colors flex items-center justify-center" :class="p.bloqueado === 1 ? 'bg-nico-red/20 text-nico-red hover:bg-nico-red hover:text-white' : 'bg-green-500/20 text-green-500 hover:bg-green-500 hover:text-white'" :title="p.bloqueado === 1 ? 'Desbloquear Acceso' : 'Bloquear Acceso'">
+                                <i class="fas" :class="p.bloqueado === 1 ? 'fa-lock' : 'fa-lock-open'"></i>
+                            </button>
                         </div>
                     </div>
                 </template>
@@ -99,12 +98,11 @@
                             <template x-if="p.estadoPago === 'aldia'">
                                 <button @click="deshacerPago(p.id)" class="w-8 h-8 rounded bg-gray-500/20 text-gray-400 hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center" title="Deshacer Pago (Marcar No Pagado)"><i class="fas fa-undo"></i></button>
                             </template>
-                            <template x-if="p.estadoPago === 'vencido'">
-                                <button @click="toggleBloqueo(p.id)" class="w-8 h-8 rounded transition-colors flex items-center justify-center" :class="p.bloqueado === 1 ? 'bg-gray-500/20 text-gray-400 hover:bg-nico-green/20 hover:text-nico-green' : 'bg-nico-red/20 text-nico-red hover:bg-nico-red hover:text-white'" :title="p.bloqueado === 1 ? 'Desbloquear Acceso' : 'Bloquear Acceso'">
-                                    <i class="fas" :class="p.bloqueado === 1 ? 'fa-unlock' : 'fa-lock'"></i>
-                                </button>
-                            </template>
+                            
                               <button @click="recordatorioWhatsapp(p.id, 'linea')" class="w-8 h-8 rounded bg-green-500/20 text-green-500 hover:bg-green-500 hover:text-white transition-colors flex items-center justify-center" title="Enviar WhatsApp"><i class="fab fa-whatsapp text-lg"></i></button>
+                              <button @click="bloquearCuenta(p.id, p.bloqueado === 1 ? false : true)" x-show="p.estadoPago !== 'aldia'" class="w-8 h-8 rounded transition-colors flex items-center justify-center" :class="p.bloqueado === 1 ? 'bg-nico-red/20 text-nico-red hover:bg-nico-red hover:text-white' : 'bg-green-500/20 text-green-500 hover:bg-green-500 hover:text-white'" :title="p.bloqueado === 1 ? 'Desbloquear Acceso' : 'Bloquear Acceso'">
+                                  <i class="fas" :class="p.bloqueado === 1 ? 'fa-lock' : 'fa-lock-open'"></i>
+                              </button>
                         </div>
                     </div>
                 </template>
@@ -141,19 +139,61 @@
         </div>
     </div>
 
-        <!-- CONFIGURACIÓN DE TARIFAS (Compacta inferior) -->
-    <div class="mt-4 bg-black/50 border border-white/10 rounded-2xl p-4 flex flex-col md:flex-row justify-between items-center gap-4">
-        <h4 class="text-xs font-black text-white uppercase flex items-center gap-2"><i class="fas fa-cog text-nico-orange"></i> Configuración Oficial</h4>
-        <div class="flex flex-wrap items-center gap-4">
-            <div class="flex items-center gap-2">
-                <label class="text-[10px] text-gray-400 font-bold uppercase">Mensualidad ($)</label>
-                <input type="number" step="0.01" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1 text-white text-xs w-20 text-center focus:border-nico-green outline-none" x-model.number="tarifaOficialMensualidad">
+        <!-- CONFIGURACIÓN DE TARIFAS Y YAPE -->
+    <div class="mt-4 bg-black/60 border border-white/10 rounded-2xl p-4 space-y-3">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-3 border-b border-white/10 pb-3">
+            <h4 class="text-xs font-black text-white uppercase flex items-center gap-2"><i class="fas fa-cog text-nico-orange"></i> Tarifas Oficiales</h4>
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="flex items-center gap-2">
+                    <label class="text-[10px] text-gray-400 font-bold uppercase">Mensualidad ($)</label>
+                    <input type="number" step="0.01" class="bg-black/80 border border-white/10 rounded-lg px-2 py-1 text-white text-xs w-20 text-center focus:border-nico-green outline-none" x-model.number="tarifaOficialMensualidad">
+                </div>
+                <div class="flex items-center gap-2">
+                    <label class="text-[10px] text-gray-400 font-bold uppercase">Inscripción ($)</label>
+                    <input type="number" step="0.01" class="bg-black/80 border border-white/10 rounded-lg px-2 py-1 text-white text-xs w-20 text-center focus:border-nico-green outline-none" x-model.number="tarifaOficialInscripcion">
+                </div>
+                <button @click="guardarTarifas()" class="bg-nico-green/20 hover:bg-nico-green hover:text-black border border-nico-green/40 text-nico-green font-black px-4 py-1.5 rounded-lg text-[10px] uppercase flex items-center gap-1.5 transition-colors"><i class="fas fa-save"></i> Guardar Tarifas</button>
             </div>
-            <div class="flex items-center gap-2">
-                <label class="text-[10px] text-gray-400 font-bold uppercase">Inscripción ($)</label>
-                <input type="number" step="0.01" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1 text-white text-xs w-20 text-center focus:border-nico-green outline-none" x-model.number="tarifaOficialInscripcion">
+        </div>
+
+        <div class="flex flex-col md:flex-row justify-between items-center gap-3">
+            <h4 class="text-xs font-black text-purple-400 uppercase flex items-center gap-2"><i class="fas fa-mobile-screen-button text-purple-400"></i> Número de Yape Oficial (Pagos Padres)</h4>
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="relative flex items-center">
+                    <input type="text"
+                           id="cfg_numero_yape"
+                           name="cfg_yape_telefono_club"
+                           autocomplete="new-password"
+                           data-lpignore="true"
+                           data-1p-ignore="true"
+                           placeholder="Número de Yape"
+                           class="bg-black/80 border border-white/10 rounded-lg pl-2.5 pr-7 py-1 text-purple-300 font-mono text-xs w-40 focus:border-purple-400 outline-none"
+                           x-model="numeroYape"
+                           @focus="yapeEditando = true"
+                           @input="yapeEditando = true">
+                    <button type="button"
+                            x-show="numeroYape && numeroYape.length > 0"
+                            @click="numeroYape = ''; yapeEditando = true"
+                            class="absolute right-2 text-gray-500 hover:text-white text-xs"
+                            title="Borrar número">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                </div>
+                <input type="text"
+                       id="cfg_titular_yape"
+                       name="cfg_yape_titular_club"
+                       autocomplete="new-password"
+                       data-lpignore="true"
+                       placeholder="Titular Yape"
+                       class="bg-black/80 border border-white/10 rounded-lg px-2.5 py-1 text-white text-xs w-44 focus:border-purple-400 outline-none"
+                       x-model="titularYape"
+                       @focus="yapeEditando = true"
+                       @input="yapeEditando = true">
+                <button @click="guardarYape()" class="bg-purple-600 hover:bg-purple-500 text-white font-black px-4 py-1.5 rounded-lg text-[10px] uppercase flex items-center gap-1.5 transition-colors"><i class="fas fa-save"></i> Guardar Yape</button>
             </div>
-            <button @click="guardarTarifas()" class="bg-white/10 hover:bg-white/20 border border-white/20 hover:border-nico-green transition-colors text-white font-bold px-4 py-1.5 rounded-lg text-[10px] uppercase flex items-center gap-2"><i class="fas fa-save"></i> Guardar</button>
+        </div>
+        <div x-show="yapeGuardadoMsg" x-transition class="text-[10px] text-purple-300 font-bold">
+            <i class="fas fa-check-circle"></i> <span x-text="yapeGuardadoMsg"></span>
         </div>
     </div>
     <!-- MODAL VER COMPROBANTE -->
@@ -217,4 +257,6 @@
             <button @click="guardarPagoModal()" class="w-full bg-nico-green hover:bg-nico-greenDark text-white font-black py-3 rounded-xl text-xs uppercase shadow-[0_0_15px_rgba(16,185,129,0.3)]"><i class="fas fa-check-circle mr-1"></i> Guardar Pago</button>
         </div>
     </div></div>
+
+
 

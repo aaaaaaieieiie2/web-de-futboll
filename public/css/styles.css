@@ -418,8 +418,17 @@ BOTONES MINI, AVISO EDICIÓN Y RESALTADO
 ============================================================ */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-.nav-scroll { scroll-snap-type: x mandatory; }
-.nav-scroll button:active { transform: scale(0.95); }
+.nav-scroll {
+  scroll-snap-type: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-x;
+  scroll-behavior: smooth;
+}
+.nav-scroll a, .nav-scroll button {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.nav-scroll button:active, .nav-scroll a:active { transform: scale(0.95); }
 
 /* RESPONSIVE MEJORADO */
 @media (max-width: 640px) {

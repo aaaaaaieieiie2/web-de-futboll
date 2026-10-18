@@ -1,10 +1,10 @@
 /* ============================================================
-app.js  LÃ“GICA PRINCIPAL (Alpine.js)
+app.js  LÓGICA PRINCIPAL (Alpine.js)
  MySQL + 5 FIXES:
 1) Registro unificado padre + jugador (crear o elegir)
-2) Fix cachÃ© zombi (valida sesiÃ³n al cargar)
-3) Padre va directo a CategorÃ­as con su hijo
-4) Modal evaluaciÃ³n responsive total
+2) Fix caché zombi (valida sesión al cargar)
+3) Padre va directo a Categorias con su hijo
+4) Modal evaluación responsive total
 5) Recordatorio pago solo rojo si vencido
 ============================================================ */
 document.addEventListener('alpine:init', () => {
@@ -15,12 +15,12 @@ document.addEventListener('alpine:init', () => {
     faseActual: 'ninguna',
     tabla: [
       { nombre: 'Nico Sport ANS', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 },
-      { nombre: 'PrÃ³ximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 },
-      { nombre: 'PrÃ³ximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 },
-      { nombre: 'PrÃ³ximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 }
+      { nombre: 'Próximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 },
+      { nombre: 'Próximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 },
+      { nombre: 'Próximo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 }
     ],
-    ultimoResultado: { golesNico: 0, golesRival: 0, rival: 'PrÃ³ximo', goleadores: 'PrÃ³ximo', sede: 'PrÃ³ximo' },
-    proximoPartido: { fecha: 'PrÃ³ximo', condicion: 'PrÃ³ximo', rival: 'PrÃ³ximo', sede: 'PrÃ³ximo' }
+    ultimoResultado: { golesNico: 0, golesRival: 0, rival: 'Próximo', goleadores: 'Próximo', sede: 'Próximo' },
+    proximoPartido: { fecha: 'Próximo', condicion: 'Próximo', rival: 'Próximo', sede: 'Próximo' }
   });
 
   const UI = {
@@ -38,97 +38,27 @@ document.addEventListener('alpine:init', () => {
     { text: 'text-rose-400',   badgeBorder: 'border-rose-400/30',   boxBorder: 'border-rose-400/40' }
   ];
 
-  const P_SUB6 = [
-    { id: 1, catKey: 'sub6', name: 'M. Aguirre', dorsal: 1, pos: 'POR', goles: 0, asistencias: 0, mvp: 2 },
-    { id: 2, catKey: 'sub6', name: 'D. Castro', dorsal: 2, pos: 'DEF', goles: 1, asistencias: 3, mvp: 1 },
-    { id: 3, catKey: 'sub6', name: 'S. PÃ©rez', dorsal: 3, pos: 'DEF', goles: 0, asistencias: 2, mvp: 0 },
-    { id: 4, catKey: 'sub6', name: 'A. Ruiz', dorsal: 4, pos: 'MED', goles: 5, asistencias: 4, mvp: 3 },
-    { id: 5, catKey: 'sub6', name: 'L. Torres', dorsal: 5, pos: 'DEL', goles: 8, asistencias: 2, mvp: 4 },
-    { id: 6, catKey: 'sub6', name: 'J. GÃ³mez', dorsal: 6, pos: 'DEL', goles: 4, asistencias: 1, mvp: 1 },
-    { id: 7, catKey: 'sub6', name: 'K. Morales', dorsal: 7, pos: 'MED', goles: 2, asistencias: 5, mvp: 1 },
-    { id: 8, catKey: 'sub6', name: 'E. RÃ­os', dorsal: 8, pos: 'DEF', goles: 0, asistencias: 1, mvp: 0 },
-    { id: 9, catKey: 'sub6', name: 'C. Vega', dorsal: 9, pos: 'DEL', goles: 6, asistencias: 2, mvp: 2 },
-    { id: 10, catKey: 'sub6', name: 'B. Soto', dorsal: 10, pos: 'MED', goles: 3, asistencias: 6, mvp: 2 },
-    { id: 11, catKey: 'sub6', name: 'R. Pinto', dorsal: 11, pos: 'POR', goles: 0, asistencias: 0, mvp: 1 },
-    { id: 12, catKey: 'sub6', name: 'G. Navas', dorsal: 12, pos: 'DEF', goles: 1, asistencias: 0, mvp: 0 },
-    { id: 13, catKey: 'sub6', name: 'H. Molina', dorsal: 13, pos: 'MED', goles: 2, asistencias: 2, mvp: 0 },
-    { id: 14, catKey: 'sub6', name: 'J. CedeÃ±o', dorsal: 14, pos: 'DEL', goles: 3, asistencias: 1, mvp: 1 },
-    { id: 15, catKey: 'sub6', name: 'F. BenÃ­tez', dorsal: 15, pos: 'DEF', goles: 0, asistencias: 0, mvp: 0 },
-    { id: 16, catKey: 'sub6', name: 'T. Ortega', dorsal: 16, pos: 'MED', goles: 1, asistencias: 3, mvp: 0 },
-    { id: 17, catKey: 'sub6', name: 'N. Duarte', dorsal: 17, pos: 'DEL', goles: 2, asistencias: 0, mvp: 0 },
-    { id: 18, catKey: 'sub6', name: 'P. AcuÃ±a', dorsal: 18, pos: 'MED', goles: 1, asistencias: 2, mvp: 0 },
-    { id: 19, catKey: 'sub6', name: 'I. Vargas', dorsal: 19, pos: 'DEF', goles: 0, asistencias: 1, mvp: 0 },
-    { id: 20, catKey: 'sub6', name: 'O. Espino', dorsal: 20, pos: 'DEL', goles: 4, asistencias: 1, mvp: 1 }
-  ];
-
-  const P_SUB12 = [
-    { id: 1, catKey: 'sub12', name: 'E. Morales', dorsal: 1, pos: 'POR', goles: 0, asistencias: 1, mvp: 3 },
-    { id: 2, catKey: 'sub12', name: 'C. Herrera', dorsal: 2, pos: 'DEF', goles: 2, asistencias: 3, mvp: 2 },
-    { id: 3, catKey: 'sub12', name: 'J. Rivera', dorsal: 3, pos: 'MED', goles: 6, asistencias: 8, mvp: 4 },
-    { id: 4, catKey: 'sub12', name: 'M. Aguirre', dorsal: 4, pos: 'MED', goles: 12, asistencias: 7, mvp: 6 },
-    { id: 5, catKey: 'sub12', name: 'A. DÃ­az', dorsal: 5, pos: 'DEL', goles: 15, asistencias: 4, mvp: 5 },
-    { id: 6, catKey: 'sub12', name: 'F. Silva', dorsal: 6, pos: 'DEL', goles: 9, asistencias: 5, mvp: 2 },
-    { id: 7, catKey: 'sub12', name: 'L. Campos', dorsal: 7, pos: 'DEF', goles: 1, asistencias: 2, mvp: 1 },
-    { id: 8, catKey: 'sub12', name: 'S. Ramos', dorsal: 8, pos: 'MED', goles: 4, asistencias: 6, mvp: 2 },
-    { id: 9, catKey: 'sub12', name: 'D. Paredes', dorsal: 9, pos: 'DEL', goles: 7, asistencias: 3, mvp: 2 },
-    { id: 10, catKey: 'sub12', name: 'K. NuÃ±ez', dorsal: 10, pos: 'POR', goles: 0, asistencias: 0, mvp: 1 },
-    { id: 11, catKey: 'sub12', name: 'R. Castillo', dorsal: 11, pos: 'DEF', goles: 0, asistencias: 4, mvp: 1 },
-    { id: 12, catKey: 'sub12', name: 'G. Mendoza', dorsal: 12, pos: 'MED', goles: 3, asistencias: 4, mvp: 0 },
-    { id: 13, catKey: 'sub12', name: 'H. Rojas', dorsal: 13, pos: 'DEL', goles: 5, asistencias: 2, mvp: 1 },
-    { id: 14, catKey: 'sub12', name: 'B. Montero', dorsal: 14, pos: 'DEF', goles: 1, asistencias: 1, mvp: 0 },
-    { id: 15, catKey: 'sub12', name: 'V. Quedo', dorsal: 15, pos: 'MED', goles: 2, asistencias: 3, mvp: 0 },
-    { id: 16, catKey: 'sub12', name: 'J. LeÃ³n', dorsal: 16, pos: 'DEL', goles: 4, asistencias: 1, mvp: 1 },
-    { id: 17, catKey: 'sub12', name: 'P. Sosa', dorsal: 17, pos: 'DEF', goles: 0, asistencias: 2, mvp: 0 },
-    { id: 18, catKey: 'sub12', name: 'N. Garza', dorsal: 18, pos: 'MED', goles: 1, asistencias: 2, mvp: 0 },
-    { id: 19, catKey: 'sub12', name: 'T. Ponce', dorsal: 19, pos: 'DEL', goles: 3, asistencias: 0, mvp: 0 },
-    { id: 20, catKey: 'sub12', name: 'W. Cordero', dorsal: 20, pos: 'POR', goles: 0, asistencias: 0, mvp: 0 }
-  ];
-
-  const P_SUB16 = [
-    { id: 1, catKey: 'sub16', name: 'G. Vargas', dorsal: 1, pos: 'POR', goles: 0, asistencias: 2, mvp: 4 },
-    { id: 2, catKey: 'sub16', name: 'K. Ramos', dorsal: 2, pos: 'DEF', goles: 3, asistencias: 2, mvp: 3 },
-    { id: 3, catKey: 'sub16', name: 'R. Delgado', dorsal: 3, pos: 'DEF', goles: 1, asistencias: 4, mvp: 2 },
-    { id: 4, catKey: 'sub16', name: 'B. MartÃ­nez', dorsal: 4, pos: 'MED', goles: 8, asistencias: 10, mvp: 6 },
-    { id: 5, catKey: 'sub16', name: 'H. Salazar', dorsal: 5, pos: 'DEL', goles: 16, asistencias: 5, mvp: 7 },
-    { id: 6, catKey: 'sub16', name: 'N. Vega', dorsal: 6, pos: 'DEL', goles: 11, asistencias: 6, mvp: 4 },
-    { id: 7, catKey: 'sub16', name: 'J. Alveo', dorsal: 7, pos: 'MED', goles: 5, asistencias: 8, mvp: 2 },
-    { id: 8, catKey: 'sub16', name: 'S. BultrÃ³n', dorsal: 8, pos: 'DEF', goles: 2, asistencias: 1, mvp: 1 },
-    { id: 9, catKey: 'sub16', name: 'L. Samaniego', dorsal: 9, pos: 'DEL', goles: 7, asistencias: 3, mvp: 2 },
-    { id: 10, catKey: 'sub16', name: 'D. Quintero', dorsal: 10, pos: 'MED', goles: 4, asistencias: 6, mvp: 2 },
-    { id: 11, catKey: 'sub16', name: 'M. AraÃºz', dorsal: 11, pos: 'POR', goles: 0, asistencias: 0, mvp: 0 },
-    { id: 12, catKey: 'sub16', name: 'C. Espinoza', dorsal: 12, pos: 'DEF', goles: 1, asistencias: 2, mvp: 0 },
-    { id: 13, catKey: 'sub16', name: 'A. Batista', dorsal: 13, pos: 'MED', goles: 3, asistencias: 3, mvp: 1 },
-    { id: 14, catKey: 'sub16', name: 'E. Becker', dorsal: 14, pos: 'DEL', goles: 6, asistencias: 2, mvp: 2 },
-    { id: 15, catKey: 'sub16', name: 'O. JimÃ©nez', dorsal: 15, pos: 'DEF', goles: 0, asistencias: 1, mvp: 0 },
-    { id: 16, catKey: 'sub16', name: 'F. Wong', dorsal: 16, pos: 'MED', goles: 2, asistencias: 4, mvp: 0 },
-    { id: 17, catKey: 'sub16', name: 'I. Pimentel', dorsal: 17, pos: 'DEL', goles: 4, asistencias: 1, mvp: 1 },
-    { id: 18, catKey: 'sub16', name: 'Y. Mosquera', dorsal: 18, pos: 'DEF', goles: 1, asistencias: 0, mvp: 0 },
-    { id: 19, catKey: 'sub16', name: 'X. ValdÃ©s', dorsal: 19, pos: 'MED', goles: 2, asistencias: 2, mvp: 0 },
-    { id: 20, catKey: 'sub16', name: 'Z. Guerra', dorsal: 20, pos: 'DEL', goles: 5, asistencias: 2, mvp: 1 }
-  ];
-
-  const P_SUBMAYOR = [
-    { id: 1, catKey: 'submayor', name: 'V. CÃ³rdoba', dorsal: 1, pos: 'POR', goles: 0, asistencias: 3, mvp: 5 },
-    { id: 2, catKey: 'submayor', name: 'O. Paredes', dorsal: 2, pos: 'DEF', goles: 4, asistencias: 2, mvp: 3 },
-    { id: 3, catKey: 'submayor', name: 'I. Navarro', dorsal: 3, pos: 'DEF', goles: 2, asistencias: 5, mvp: 3 },
-    { id: 4, catKey: 'submayor', name: 'E. Castillo', dorsal: 4, pos: 'MED', goles: 10, asistencias: 12, mvp: 8 },
-    { id: 5, catKey: 'submayor', name: 'T. Meza', dorsal: 5, pos: 'MED', goles: 7, asistencias: 9, mvp: 4 },
-    { id: 6, catKey: 'submayor', name: 'P. Fuentes', dorsal: 6, pos: 'DEL', goles: 18, asistencias: 4, mvp: 9 },
-    { id: 7, catKey: 'submayor', name: 'R. Jaramillo', dorsal: 7, pos: 'DEL', goles: 12, asistencias: 7, mvp: 5 },
-    { id: 8, catKey: 'submayor', name: 'K. Grimaldo', dorsal: 8, pos: 'MED', goles: 5, asistencias: 8, mvp: 2 },
-    { id: 9, catKey: 'submayor', name: 'L. Melgar', dorsal: 9, pos: 'DEF', goles: 1, asistencias: 3, mvp: 1 },
-    { id: 10, catKey: 'submayor', name: 'J. Caballero', dorsal: 10, pos: 'POR', goles: 0, asistencias: 1, mvp: 1 },
-    { id: 11, catKey: 'submayor', name: 'S. Bernal', dorsal: 11, pos: 'DEF', goles: 2, asistencias: 1, mvp: 0 },
-    { id: 12, catKey: 'submayor', name: 'A. CÃ¡rdenas', dorsal: 12, pos: 'MED', goles: 4, asistencias: 5, mvp: 1 },
-    { id: 13, catKey: 'submayor', name: 'D. Hurtado', dorsal: 13, pos: 'DEL', goles: 8, asistencias: 3, mvp: 3 },
-    { id: 14, catKey: 'submayor', name: 'F. CedeÃ±o', dorsal: 14, pos: 'DEF', goles: 0, asistencias: 2, mvp: 0 },
-    { id: 15, catKey: 'submayor', name: 'M. PatiÃ±o', dorsal: 15, pos: 'MED', goles: 3, asistencias: 4, mvp: 1 },
-    { id: 16, catKey: 'submayor', name: 'G. SolÃ­s', dorsal: 16, pos: 'DEL', goles: 6, asistencias: 2, mvp: 2 },
-    { id: 17, catKey: 'submayor', name: 'H. MacÃ­as', dorsal: 17, pos: 'DEF', goles: 1, asistencias: 0, mvp: 0 },
-    { id: 18, catKey: 'submayor', name: 'N. Broce', dorsal: 18, pos: 'MED', goles: 2, asistencias: 3, mvp: 0 },
-    { id: 19, catKey: 'submayor', name: 'B. UreÃ±a', dorsal: 19, pos: 'DEL', goles: 5, asistencias: 1, mvp: 1 },
-    { id: 20, catKey: 'submayor', name: 'J. Vergara', dorsal: 20, pos: 'MED', goles: 3, asistencias: 4, mvp: 1 }
-  ];
+  window.obtenerCategoriaParaEdad = function(edad) {
+    const ed = parseInt(edad, 10);
+    if (isNaN(ed) || ed <= 0) return 'sub6';
+    const cats = (window.DB && typeof window.DB.obtenerCategorias === 'function' ? window.DB.obtenerCategorias() : []);
+    const numCats = [];
+    cats.forEach(c => {
+      const m = (c.key || '').match(/^sub(\d+)$/i);
+      if (m) numCats.push({ key: c.key, maxEdad: parseInt(m[1], 10) });
+    });
+    if (numCats.length > 0) {
+      numCats.sort((a, b) => a.maxEdad - b.maxEdad);
+      for (const nc of numCats) {
+        if (ed <= nc.maxEdad) return nc.key;
+      }
+      return 'submayor';
+    }
+    if (ed <= 6) return 'sub6';
+    if (ed <= 12) return 'sub12';
+    if (ed <= 16) return 'sub16';
+    return 'submayor';
+  };
 
   Alpine.data('nicoApp', () => ({
 
@@ -155,25 +85,50 @@ document.addEventListener('alpine:init', () => {
           const t = window.DB.obtenerTextos()[clave];
           return this.getMediaUrl(t || defaultUrl);
       },
-            renderMediaGlobal(clave, defaultUrl, cssClass, reactTrigger = 0) {
+      renderMediaGlobal(clave, defaultUrl, cssClass, reactTrigger = 0) {
           const url = this.obtenerTextoMedia(clave, defaultUrl);
           const canEdit = this.esAdmin && this.modoEdicion;
-          const pointer = canEdit ? 'cursor-pointer border-2 border-dashed border-nico-orange hover:border-solid hover:bg-white/5 transition-all' : '';
+          const pointer = canEdit ? 'cursor-pointer ring-2 ring-dashed ring-nico-orange hover:ring-solid transition-all' : '';
           const fullClass = `${cssClass} ${pointer}`;
           const isVideo = url.match(/\.(mp4|webm|ogg)$/i);
           const isYoutube = url.includes('youtube.com') || url.includes('youtu.be');
-          
-          const clickAction = canEdit ? `onclick="if(window.nicoAppAdmin) window.nicoAppAdmin.editarTextoMediaGlobal('${clave}', '${defaultUrl}')"` : '';
-          
+          const dataAttrs = `data-ns-media="${clave}" data-ns-default="${defaultUrl}"`;
+
           if (isVideo) {
-              return `<video src="${url}" controls class="${fullClass}" ${clickAction}></video>`;
+              if (canEdit) {
+                  return `<div class="relative group/media inline-block w-full h-full cursor-pointer" ${dataAttrs}>
+                      <video src="${url}" controls class="${fullClass}" ${dataAttrs}></video>
+                      <button type="button" class="absolute top-2 right-2 bg-black/90 hover:bg-nico-orange text-white text-[11px] font-black px-3 py-1.5 rounded-xl z-30 shadow-2xl flex items-center gap-1.5 border border-white/20 transition-all cursor-pointer" ${dataAttrs}>
+                          <i class="fas fa-edit text-nico-orange hover:text-white"></i> <span>Cambiar Video</span>
+                      </button>
+                  </div>`;
+              }
+              return `<video src="${url}" controls class="${fullClass}"></video>`;
           } else if (isYoutube) {
               let embedUrl = url.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/');
-              const overlayBtn = canEdit ? `<div class="cursor-pointer absolute top-0 left-0 w-8 h-8 bg-black/80 text-white flex items-center justify-center rounded-br-lg z-10 hover:bg-nico-orange" ${clickAction} title="Editar Video URL"><i class="fas fa-edit"></i></div>` : '';
+              const overlayBtn = canEdit ? `<button type="button" class="cursor-pointer absolute top-2 right-2 bg-black/90 text-white flex items-center gap-1.5 px-3 py-1.5 rounded-xl z-30 hover:bg-nico-orange border border-white/20 text-[11px] font-black shadow-2xl transition-all" ${dataAttrs} title="Editar Video URL"><i class="fas fa-edit text-nico-orange"></i> <span>Cambiar Video</span></button>` : '';
               return `<div class="relative ${fullClass}" style="padding-bottom: 56.25%; height: 0;"><iframe src="${embedUrl}" class="absolute top-0 left-0 w-full h-full rounded-lg" frameborder="0" allowfullscreen></iframe>${overlayBtn}</div>`;
           } else {
-              return `<img src="${url}" class="${fullClass}" ${clickAction} alt="Media">`;
+              if (canEdit) {
+                  return `<div class="relative group/media inline-block w-full h-full cursor-pointer" ${dataAttrs}>
+                      <img src="${url}" class="${fullClass}" alt="Media" ${dataAttrs}>
+                      <button type="button" class="absolute top-2 right-2 bg-black/90 hover:bg-nico-orange text-white text-[11px] font-black px-3 py-1.5 rounded-xl z-30 shadow-2xl flex items-center gap-1.5 border border-white/20 transition-all cursor-pointer" ${dataAttrs}>
+                          <i class="fas fa-camera text-nico-orange hover:text-white"></i> <span>Cambiar Imagen</span>
+                      </button>
+                  </div>`;
+              }
+              return `<img src="${url}" class="${fullClass}" alt="Media">`;
           }
+      },
+      guardarTextoGlobal(clave, val) {
+        if (!this.esAdmin) return;
+        if (window.DB && typeof window.DB.guardarTexto === 'function') {
+          window.DB.guardarTexto(clave, val);
+        }
+        if (window.DB && typeof window.DB.obtenerTextos === 'function') {
+          const t = window.DB.obtenerTextos();
+          if (t) t[clave] = val;
+        }
       },
       editarTextoMediaGlobal(clave, defaultUrl) { this.editarTextoMedia(clave, defaultUrl); },
       editarTextoMedia(clave, defaultUrl) {
@@ -188,28 +143,52 @@ document.addEventListener('alpine:init', () => {
     },
 
     /* ========== 01) ESTADO GENERAL Y MODALES ========== */
-    loading: true, progress: 0,
+    loading: true, progress: 0, reloadSpamMsg: '', dbCargado: false,
     mainTab: 'historia', catTab: 'sub6', vitrinaCatTab: 'todos',
     loginModal: false, imageModal: null, staffModal: null,
+    staffFormModal: false,
+    staffForm: {
+      id: 0,
+      nombre: '',
+      cargo: '',
+      licencia: '',
+      exp: '',
+      especialidad: '',
+      bio: '',
+      fotoIcon: 'fa-user-tie',
+      color: 'from-nico-orange to-amber-600'
+    },
     videoModal: false, playerModal: null, selectedTrophy: null,
     evalVerModal: null,
     plantillasExtra: {},
+    ipsBloqueadasWaf: [],
+    ipManualForm: { ip: '', motivo: 'Bloqueo manual por el Administrador', horas: 24 },
+    adminCredsForm: {
+      usuarioNuevo: '',
+      passActual: '',
+      passNuevo: '',
+      passConfirm: '',
+      verPass: false,
+      guardando: false,
+      msg: '',
+      msgTipo: ''
+    },
 
-    /* ========== 02) SESIÃ“N Y ROLES ========== */
-    currentUser: null, loginUsuario: '', loginPassword: '', loginError: '',
+    /* ========== 02) SESIÓN Y ROLES ========== */
+    currentUser: null, loginUsuario: '', loginPassword: '', loginHpTrap: '', loginError: '', esBloqueado: false,
     evalModal: null, evaluacionesVersion: 0,
     evalDatos: { tecnicos: [0,0,0,0,0,0,0,0,0], tacticos: [0,0,0,0,0,0], fisicos: [0,0,0,0,0], actitudinales: [0,0,0,0,0,0] },
     evalItems: {
-      tecnicos: ['Control de balÃ³n', 'Pase corto', 'Pase largo', 'ConducciÃ³n', 'Regate (1 vs 1)', 'RecepciÃ³n y primer toque', 'Remate a porterÃ­a', 'Cabeceo', 'DefiniciÃ³n'],
-      tacticos: ['Posicionamiento', 'MarcaciÃ³n', 'Desmarque', 'Toma de decisiones', 'VisiÃ³n de juego', 'Trabajo en equipo'],
-      fisicos: ['Velocidad', 'Resistencia', 'CoordinaciÃ³n', 'Equilibrio', 'Agilidad'],
+      tecnicos: ['Control de balón', 'Pase corto', 'Pase largo', 'Conducción', 'Regate (1 vs 1)', 'Recepción y primer toque', 'Remate a portería', 'Cabeceo', 'Definición'],
+      tacticos: ['Posicionamiento', 'Marcación', 'Desmarque', 'Toma de decisiones', 'Visión de juego', 'Trabajo en equipo'],
+      fisicos: ['Velocidad', 'Resistencia', 'Coordinación', 'Equilibrio', 'Agilidad'],
       actitudinales: ['Disciplina', 'Puntualidad', 'Esfuerzo', 'Respeto', 'Compromiso', 'Liderazgo']
     },
     get gruposEval() {
       return [
-        ['tecnicos', 'Aspectos TÃ©cnicos', 'fa-futbol', 'text-nico-orange'],
-        ['tacticos', 'Aspectos TÃ¡cticos', 'fa-chess', 'text-nico-green'],
-        ['fisicos', 'Aspectos FÃ­sicos', 'fa-bolt', 'text-nico-blue'],
+        ['tecnicos', 'Aspectos Técnicos', 'fa-futbol', 'text-nico-orange'],
+        ['tacticos', 'Aspectos Tácticos', 'fa-chess', 'text-nico-green'],
+        ['fisicos', 'Aspectos Físicos', 'fa-bolt', 'text-nico-blue'],
         ['actitudinales', 'Aspectos Actitudinales', 'fa-heart', 'text-amber-400']
       ];
     },
@@ -217,18 +196,90 @@ document.addEventListener('alpine:init', () => {
     get esPadre() { return !!this.currentUser && this.currentUser.rol === 'padre'; },
     get esEntrenador() { return !!this.currentUser && this.currentUser.rol === 'entrenador'; },
     get padreIdActual() { return this.currentUser ? (this.currentUser.padreId || this.currentUser.id) : null; },
+    get esSuperAdmin() {
+      if (!this.esAdmin) return false;
+      const u = this.currentUser;
+      return !!u && (Number(u.es_top) === 1 || Number(u.id) === 1 || (u.usuario || '').toLowerCase() === 'admin');
+    },
+    tienePermiso(modulo) {
+      if (!this.esAdmin) return false;
+      if (this.esSuperAdmin) return true;
+      const perms = this.currentUser ? (this.currentUser.permisos || []) : [];
+      if (!Array.isArray(perms)) return false;
+      if (perms.includes('*')) return true;
+      return perms.includes(modulo);
+    },
+
+    // Modales desacoplados de Familias
+    modalTelefonoPadre: false,
+    padreTelefonoForm: { id: null, nombre: '', usuario: '', telefono: '' },
+    msgTelefonoPadre: '',
+
+    modalPasswordPadre: false,
+    padrePasswordForm: { id: null, nombre: '', usuario: '', password: '', mostrar: false },
+    msgPasswordPadre: '',
+
+    // Modal de Edición de Edad del Jugador (Categorías)
+    modalEditarEdad: false,
+    jugadorEdadForm: { id: null, name: '', edad: 10, dorsal: 0, catKey: '', catDestino: '' },
+    msgEdadJugador: '',
+
+    // Modal de Edición de Entrenador (Multi-Sub)
+    modalEditarEntrenador: false,
+    entrenadorEditando: { id: null, nombre: '', usuario: '', telefono: '', catKey: '', categorias: [], nuevaPassword: '', mostrarPass: false },
+    msgEditarEntrenador: '',
+
+    // Modal de Políticas RBAC
+    modalPoliticasAdmin: false,
+    adminEditandoPoliticas: { id: null, nombre: '', usuario: '', permisos: [] },
+    msgPoliticasAdmin: '',
 
     puedeEditarCategoria(catKey) {
       if (this.esAdmin) return true;
-      if (this.esEntrenador && this.currentUser.catKey === catKey) return true;
+      if (this.esEntrenador && this.currentUser) {
+        if (this.currentUser.catKey === catKey) return true;
+        const cats = Array.isArray(this.currentUser.categorias) ? this.currentUser.categorias : [];
+        if (cats.includes(catKey)) return true;
+      }
       return false;
+    },
+
+    navTabs: [
+      { id:'historia',    icon:'fa-shield-halved',  label:'Escudo & Historia',  short:'Historia',   active:'text-nico-orange', role:'all'   },
+      { id:'categorias',  icon:'fa-users',          label:'Categorías',         short:'Categorías', active:'text-nico-green',  role:'all'   },
+      { id:'staff',       icon:'fa-user-ninja',     label:'Cuerpo Técnico',     short:'Staff',      active:'text-nico-blue',   role:'all'   },
+      { id:'torneo',      icon:'fa-list-ol',        label:'Torneo & Tabla',     short:'Torneo',     active:'text-amber-400',   role:'all'   },
+      { id:'vitrina',     icon:'fa-trophy',         label:'Vitrina Campeonato', short:'Vitrina',    active:'text-amber-400',   role:'all'   },
+      { id:'asistencia',  icon:'fa-clipboard-list', label:'Asistencia',         short:'Asistencia', active:'text-nico-green',  role:'coach' },
+      { id:'mensajes',    icon:'fa-inbox',          label:'Mensajes',           short:'Mensajes',   active:'text-nico-orange', role:'admin' },
+      { id:'pagosClub',   icon:'fa-money-bill-wave',label:'Pagos Club',         short:'Pagos',      active:'text-nico-green',  role:'admin' },
+      { id:'entrenadores',icon:'fa-user-tie',       label:'Entrenadores',       short:'DTs',        active:'text-nico-blue',   role:'admin' },
+      { id:'buzon',      icon:'fa-envelope',        label:'Buzón',            short:'Buzón',      active:'text-nico-orange', role:'padre' },
+      { id:'portal',      icon:'fa-wallet',         label:'Mi Cuenta',          short:'Mi Cuenta',  active:'text-nico-green',  role:'padre' },
+      { id:'admin',       icon:'fa-user-gear',      label:'Panel Admin',        short:'Admin',      active:'text-nico-orange', role:'admin' }
+    ],
+
+    scrollNavLeft() {
+      const el = document.getElementById('mobNavScroll');
+      if (el) el.scrollBy({ left: -220, behavior: 'smooth' });
+    },
+    scrollNavRight() {
+      const el = document.getElementById('mobNavScroll');
+      if (el) el.scrollBy({ left: 220, behavior: 'smooth' });
     },
 
     tabVisible(t) {
       if (!t || !t.role) return true;
       switch (t.role) {
         case 'all': return true;
-        case 'admin': return this.esAdmin;
+        case 'admin':
+          if (!this.esAdmin) return false;
+          if (this.esSuperAdmin) return true;
+          if (t.id === 'mensajes') return this.tienePermiso('mensajes');
+          if (t.id === 'pagosClub') return this.tienePermiso('pagos');
+          if (t.id === 'entrenadores') return this.tienePermiso('entrenadores');
+          if (t.id === 'admin') return this.tienePermiso('admin') || this.tienePermiso('padres') || this.tienePermiso('categorias');
+          return true;
         case 'padre': return this.esPadre;
         case 'coach': return this.esAdmin || this.esEntrenador;
         case 'entrenador': return this.esEntrenador;
@@ -236,27 +287,170 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    /* ========== 03) MODO EDICIÃ“N (LAPICITO) ========== */
+        /* ========== 03) MODO EDICIÓN (LAPICITO) ========== */
     modoEdicion: false, editMediaModal: { open: false, title: '', url: '', type: 'image', callback: null },
-    toggleModoEdicion() {
-      this.modoEdicion = !this.modoEdicion;
-      this.$nextTick(() => {
-        document.querySelectorAll('[data-edit]').forEach(el => {
-          if (this.modoEdicion && this.esAdmin) {
-            el.setAttribute('contenteditable', 'true');
-            el.onblur = () => { window.DB.guardarTexto(el.getAttribute('data-edit'), el.innerHTML); };
-          } else {
-            el.removeAttribute('contenteditable');
-            el.onblur = null;
+    habilitarEdicionEnDOM() {
+      if (!this.esAdmin || !this.modoEdicion) return;
+      document.querySelectorAll('[data-edit]').forEach(el => {
+        el.setAttribute('contenteditable', 'true');
+        el.style.outline = '2px dashed #FF5500';
+        el.style.outlineOffset = '2px';
+        el.style.cursor = 'text';
+        // En cada tecla escrita, actualizar el caché en memoria para que jamás se pierda
+        el.oninput = () => {
+          const clave = el.getAttribute('data-edit');
+          if (clave && window.DB && typeof window.DB.obtenerTextos === 'function') {
+            const txt = window.DB.obtenerTextos();
+            if (txt) txt[clave] = el.innerHTML;
           }
-        });
+        };
+        el.onblur = () => {
+          const clave = el.getAttribute('data-edit');
+          if (clave && window.DB && typeof window.DB.obtenerTextos === 'function') {
+            const txt = window.DB.obtenerTextos();
+            if (txt) txt[clave] = el.innerHTML;
+          }
+        };
       });
     },
+    deshabilitarEdicionEnDOM() {
+      document.querySelectorAll('[data-edit]').forEach(el => {
+        el.removeAttribute('contenteditable');
+        el.style.outline = '';
+        el.style.outlineOffset = '';
+        el.style.cursor = '';
+        el.oninput = null;
+        el.onblur = null;
+      });
+    },
+    async toggleModoEdicion() {
+      if (!this.esAdmin) return;
+      if (this.modoEdicion) {
+        // Al desactivar el lapicito, guardar todos los cambios pendientes en base de datos
+        await this.guardarCambiosCMS(true);
+        this.modoEdicion = false;
+        this.deshabilitarEdicionEnDOM();
+        this.adminPadresVersion++;
+      } else {
+        this.modoEdicion = true;
+        this.adminPadresVersion++;
+        this.$nextTick(() => {
+          this.habilitarEdicionEnDOM();
+        });
+      }
+    },
+    async guardarCambiosCMS(mostrarAviso = true) {
+      if (!this.esAdmin) return;
+      const lote = {};
+      let count = 0;
+      document.querySelectorAll('[data-edit]').forEach(el => {
+        const clave = el.getAttribute('data-edit');
+        if (clave) {
+          let val = (el.innerHTML || '')
+            .replace(/<span[^>]*>/gi, '')
+            .replace(/<\/span>/gi, '')
+            .replace(/style="[^"]*"/gi, '')
+            .replace(/&amp;amp;/gi, '&amp;')
+            .replace(/âœ…/g, '✅')
+            .trim();
+          lote[clave] = val;
+          if (window.DB && typeof window.DB.obtenerTextos === 'function') {
+            const txt = window.DB.obtenerTextos();
+            if (txt) txt[clave] = val;
+          }
+          count++;
+        }
+      });
+      let exito = true;
+      if (count > 0 && typeof window.DB.guardarTextosLote === 'function') {
+        const res = await window.DB.guardarTextosLote(lote);
+        if (res && res.error) exito = false;
+      }
+      if (this.categoriasTorneo) {
+        this.categoriasTorneo.forEach(c => {
+          if (lote[c.key + '-desc'] !== undefined) c.desc = lote[c.key + '-desc'];
+          if (lote[c.key + '-badge'] !== undefined) c.badge = lote[c.key + '-badge'];
+          if (lote[c.key + '-torneos'] !== undefined) c.torneos = lote[c.key + '-torneos'];
+          if (lote[c.key + '-horario'] !== undefined) c.horario = lote[c.key + '-horario'];
+          if (lote[c.key + '-cancha'] !== undefined) c.cancha = lote[c.key + '-cancha'];
+          if (lote[c.key + '-count'] !== undefined) c.count = lote[c.key + '-count'];
+          if (lote[c.key + '-entrenador'] !== undefined) c.entrenador = lote[c.key + '-entrenador'];
+        });
+        window.DB.guardarTorneo(this.categoriasTorneo);
+      }
+      if (this.staffList) {
+        window.DB.guardarStaff(this.staffList);
+      }
+      if (mostrarAviso) {
+        if (exito) {
+          this.mostrarToastCms('¡Éxito! Textos y cambios guardados en base de datos (' + count + ' elementos)');
+        } else {
+          this.mostrarToastCms('Error al guardar en el servidor. Verifica tu conexión.');
+        }
+      }
+    },
+    exportarDatos(formato) {
+      if (!this.esAdmin) return;
+      if (window.DB && typeof window.DB.exportarDatos === 'function') {
+        window.DB.exportarDatos(formato);
+      }
+    },
+    mostrarToastCms(mensaje) {
+      let toast = document.getElementById('cmsToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'cmsToast';
+        toast.style.position = 'fixed';
+        toast.style.bottom = '24px';
+        toast.style.right = '24px';
+        toast.style.zIndex = '9999';
+        toast.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+        toast.style.color = '#000';
+        toast.style.fontWeight = '900';
+        toast.style.fontSize = '13px';
+        toast.style.padding = '12px 20px';
+        toast.style.borderRadius = '14px';
+        toast.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(16,185,129,0.5)';
+        toast.style.display = 'flex';
+        toast.style.alignItems = 'center';
+        toast.style.gap = '10px';
+        toast.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+        toast.style.transform = 'translateY(100px)';
+        toast.style.opacity = '0';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = '<i class="fas fa-circle-check text-base"></i> ' + this.limpiarHtmlSeguro(mensaje);
+      requestAnimationFrame(() => {
+        toast.style.transform = 'translateY(0)';
+        toast.style.opacity = '1';
+      });
+      clearTimeout(this._toastTimer);
+      this._toastTimer = setTimeout(() => {
+        toast.style.transform = 'translateY(100px)';
+        toast.style.opacity = '0';
+      }, 3500);
+    },
+    limpiarHtmlSeguro(html) {
+      if (typeof html !== 'string') return '';
+      if (!/<[a-z][\s\S]*>/i.test(html)) return html;
+      let limpio = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                       .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+                       .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+                       .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '');
+      limpio = limpio.replace(/\son\w+\s*=\s*(['"]).*?\1/gi, '')
+                     .replace(/\son\w+\s*=\s*[^\s>]+/gi, '')
+                     .replace(/javascript\s*:/gi, '');
+      return limpio;
+    },
     aplicarTextos() {
+      if (this.modoEdicion) return; // NUNCA sobreescribir el DOM si el administrador está editando
       const t = window.DB.obtenerTextos();
+      if (!t || typeof t !== 'object') return;
       document.querySelectorAll('[data-edit]').forEach(el => {
         const k = el.getAttribute('data-edit');
-        if (t[k] !== undefined) el.innerHTML = t[k];
+        if (k && t[k] !== undefined && t[k] !== null && t[k] !== '') {
+          el.innerHTML = this.limpiarHtmlSeguro(t[k]);
+        }
       });
     },
 
@@ -325,16 +519,20 @@ document.addEventListener('alpine:init', () => {
       let n = 1; while (usados.includes(n)) n++;
       return n;
     },
-    crearOReciclarJugador(catKey, nombre, dorsal, pos) {
+    crearOReciclarJugador(catKey, nombre, dorsal, pos, edad = 0) {
       const reciclado = window.DB.obtenerJugadorReciclado(catKey, dorsal);
       if (reciclado) {
         reciclado.name = (nombre && nombre.trim()) || reciclado.name;
+        reciclado.edad = parseInt(edad) || reciclado.edad || 0;
         if (pos) reciclado.pos = pos;
         reciclado.catKey = catKey;
         window.DB.quitarJugadorReciclado(catKey, dorsal);
         return reciclado;
       }
-      return { id: Date.now() % 1000000, catKey, name: nombre.trim(), dorsal, pos, goles: 0, asistencias: 0, mvp: 0 };
+      const nuevoId = (window.DB && typeof window.DB.siguienteId === 'function')
+        ? window.DB.siguienteId()
+        : (Date.now() + Math.floor(Math.random() * 90000 + 10000));
+      return { id: nuevoId, catKey, name: nombre.trim(), edad: parseInt(edad) || 0, dorsal, pos, goles: 0, asistencias: 0, mvp: 0 };
     },
     renombrarJugador(player) {
       if (!this.esAdmin) return;
@@ -345,20 +543,93 @@ document.addEventListener('alpine:init', () => {
         this.registrarAccion({ tipo: 'rename', catKey: player.catKey, playerId: player.id, antes, despues: player.name });
       }
     },
-    editarDorsal(player) {
-      if (!this.esAdmin) return;
-      const v = prompt('Nuevo nÃºmero (dorsal) para ' + player.name + ':', player.dorsal);
+    async editarDorsal(player) {
+      if (!player || !this.puedeEditarCategoria(player.catKey)) return;
+      const actual = player.dorsal > 0 ? player.dorsal : '';
+      const v = prompt('Asignar o cambiar dorsal (#) para ' + player.name + ' (Escribe 0 para dejar Sin Número):', actual);
       if (v === null) return;
-      const nuevo = parseInt(v); if (!nuevo || nuevo < 1) return;
+      const nuevo = parseInt(v, 10);
+      if (isNaN(nuevo) || nuevo < 0 || nuevo > 99) {
+        alert(' Ingresa un número de dorsal válido entre 0 y 99.');
+        return;
+      }
       const arr = this.playersDe(player.catKey);
-      if (arr.some(p => p.id !== player.id && p.dorsal === nuevo)) { alert(' El dorsal #' + nuevo + ' ya lo usa otro jugador'); return; }
-      const antes = player.dorsal; player.dorsal = nuevo;
-      this.persistPlantilla(player.catKey);
+      if (nuevo > 0 && arr.some(p => p.id !== player.id && p.dorsal === nuevo)) {
+        alert(' El dorsal #' + nuevo + ' ya lo usa otro jugador en esta categoría.');
+        return;
+      }
+      const res = await window.DB.guardarDorsalJugador(player.catKey, player.id, nuevo);
+      if (res && res.ok === false && res.error) {
+        alert(' ' + res.error);
+        return;
+      }
+      const antes = player.dorsal;
+      player.dorsal = nuevo;
+      arr.sort((a, b) => (a.dorsal === 0 ? 999 : a.dorsal) - (b.dorsal === 0 ? 999 : b.dorsal));
       this.registrarAccion({ tipo: 'dorsal', catKey: player.catKey, playerId: player.id, antes, despues: nuevo });
+    },
+    abrirModalEdad(player) {
+      if (!player) return;
+      if (!this.puedeEditarCategoria(player.catKey)) {
+        alert('⚠️ No tienes permisos para modificar este jugador.');
+        return;
+      }
+      const ed = parseInt(player.edad, 10) || 10;
+      this.jugadorEdadForm = {
+        id: player.id,
+        name: player.name,
+        dorsal: player.dorsal || 0,
+        pos: player.pos || 'MED',
+        edad: ed,
+        catKey: player.catKey,
+        catDestino: this.obtenerCategoriaParaEdad(ed)
+      };
+      this.msgEdadJugador = '';
+      this.modalEditarEdad = true;
+    },
+    async guardarEdadJugador() {
+      if (!this.jugadorEdadForm.id) return;
+      this.msgEdadJugador = '';
+      const nuevaEdad = parseInt(this.jugadorEdadForm.edad, 10);
+      if (isNaN(nuevaEdad) || nuevaEdad < 3 || nuevaEdad > 50) {
+        this.msgEdadJugador = '⚠️ Ingresa una edad válida entre 3 y 50 años.';
+        return;
+      }
+      const catActual = this.jugadorEdadForm.catKey;
+      const catDestino = this.obtenerCategoriaParaEdad(nuevaEdad);
+
+      const res = await window.DB.actualizarJugador({
+        id: this.jugadorEdadForm.id,
+        name: this.jugadorEdadForm.name,
+        edad: nuevaEdad,
+        dorsal: this.jugadorEdadForm.dorsal || 0,
+        pos: this.jugadorEdadForm.pos || 'MED',
+        catOrigen: catActual,
+        catDestino: catDestino
+      });
+
+      if (res && res.ok) {
+        this.msgEdadJugador = '✓ Edad actualizada a ' + nuevaEdad + ' años' + (catActual !== catDestino ? ' y transferido a ' + catDestino.toUpperCase() : '') + '.';
+        if (this.playerModal && this.playerModal.id === this.jugadorEdadForm.id) {
+          this.playerModal.edad = nuevaEdad;
+          this.playerModal.catKey = catDestino;
+        }
+        if (catActual !== catDestino) {
+          this.catTab = catDestino;
+        }
+        if (window.DB.sincronizar) await window.DB.sincronizar(this);
+        this.adminPadresVersion++;
+        setTimeout(() => { this.modalEditarEdad = false; }, 1200);
+      } else {
+        this.msgEdadJugador = '❌ ' + ((res && res.error) || 'Error al actualizar edad.');
+      }
+    },
+    async editarEdadJugadorDirecto(player) {
+      this.abrirModalEdad(player);
     },
     eliminarJugador(player) {
       if (!this.esAdmin) return;
-      if (!confirm('Â¿Eliminar a ' + player.name + ' de la plantilla?')) return;
+      if (!confirm('¿Eliminar a ' + player.name + ' de la plantilla?')) return;
       window.DB.guardarJugadorReciclado(player);
       const arr = this.playersDe(player.catKey);
       const index = arr.indexOf(player);
@@ -392,60 +663,146 @@ document.addEventListener('alpine:init', () => {
     agregarEquipo(cat) { if (!this.esAdmin) return; cat.tabla.push({ nombre: 'Nuevo Equipo', pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 }); this.persistTorneo(); },
     eliminarEquipo(cat, team) {
       if (!this.esAdmin) return;
-      if (!confirm('Â¿Eliminar el equipo ' + team.nombre + '?')) return;
+      if (!confirm('¿Eliminar el equipo ' + team.nombre + '?')) return;
       cat.tabla = cat.tabla.filter(t => t !== team); this.persistTorneo();
     },
     persistTorneo() { window.DB.guardarTorneo(this.categoriasTorneo); },
 
-    /* ========== 08) CRUD CUERPO TÃ‰CNICO ========== */
-    staffList: [
-      { id: 1, nombre: 'Profe. Niko', cargo: 'Director TÃ©cnico Principal & Fundador', licencia: 'Licencia A FEPAFUT', exp: '18 AÃ±os de Experiencia', especialidad: 'Financiera', bio: 'Fundador de la Academia Nico Sport en 2008. Ha formado a mÃ¡s de 500 jÃ³venes deportistas y obtenido mÃºltiples tÃ­tulos en torneos locales.', fotoIcon: 'fa-user-tie', color: 'from-nico-orange via-red-600 to-amber-600' },
-      { id: 2, nombre: 'Prof. Luis MuÃ±oz', cargo: 'Preparador FÃ­sico & psicolÃ³gico', licencia: 'Grado en Ciencias del Deporte', exp: '10 AÃ±os de Experiencia', especialidad: 'Resistencia AerÃ³bica, Potencia y PrevenciÃ³n de Lesiones', bio: 'Especialista en acondicionamiento fÃ­sico adaptado a fÃºtbol base y juvenil.', fotoIcon: 'fa-stopwatch-20', color: 'from-nico-green to-emerald-700' },
-      { id: 3, nombre: 'Abdiel Aguirre', cargo: 'Entrenador de TÃ¡ctico', licencia: 'PrÃ³ximamente...', exp: '9 AÃ±os de Experiencia en el deporte', especialidad: 'Reflejos, Juego AÃ©reo y Salida con los Pies', bio: 'Jugador amateur enfocado en perfeccionar la tÃ©cnica de juego, posicionamiento en la cancha y liderazgo.', fotoIcon: 'fa-hands-glove', color: 'from-nico-blue to-cyan-700' },
-      { id: 4, nombre: 'Fernado', cargo: 'PsicÃ³loga Deportiva & FormaciÃ³n Integral', licencia: 'PrÃ³ximamente...', exp: '5 AÃ±os de Experiencia', especialidad: 'GestiÃ³n de la FrustraciÃ³n, Trabajo en Equipo y ConcentraciÃ³n', bio: 'Encargada del desarrollo mental y emocional de los alumnos.', fotoIcon: 'fa-brain', color: 'from-purple-600 to-indigo-800' }
-    ],
+    /* ========== 08) CRUD CUERPO TÉCNICO ========== */
+    staffList: [],
     editarStaff(s) {
       if (!this.esAdmin) return;
-      const n = prompt('Nombre:', s.nombre); if (n === null) return;
-      const c = prompt('Cargo:', s.cargo); if (c === null) return;
-      const l = prompt('Licencia:', s.licencia); if (l === null) return;
-      const e = prompt('Experiencia:', s.exp); if (e === null) return;
-      const es = prompt('Especialidad:', s.especialidad); if (es === null) return;
-      const b = prompt('BiografÃ­a:', s.bio); if (b === null) return;
-      Object.assign(s, { nombre: n, cargo: c, licencia: l, exp: e, especialidad: es, bio: b });
-      this.persistStaff();
+      this.staffForm = {
+        id: s.id,
+        nombre: s.nombre || '',
+        cargo: s.cargo || '',
+        licencia: s.licencia || '',
+        exp: s.exp || '',
+        especialidad: s.especialidad || '',
+        bio: s.bio || '',
+        fotoIcon: s.fotoIcon || 'fa-user-tie',
+        color: s.color || 'from-nico-orange to-amber-600'
+      };
+      this.staffFormModal = true;
     },
     eliminarStaff(s) {
       if (!this.esAdmin) return;
-      if (!confirm('Â¿Eliminar a ' + s.nombre + ' del cuerpo tcnico?')) return;
-      this.staffList = this.staffList.filter(x => x.id !== s.id); this.persistStaff();
+      if (!confirm('¿Eliminar a ' + s.nombre + ' del cuerpo técnico?')) return;
+      this.staffList = this.staffList.filter(x => x.id !== s.id);
+      this.persistStaff();
     },
     agregarStaff() {
       if (!this.esAdmin) return;
-      const n = prompt('Nombre del nuevo integrante:'); if (!n) return;
-      this.staffList.push({ id: Date.now() % 1000000, nombre: n, cargo: 'Entrenador', licencia: 'PrÃ³ximamente...', exp: 'Por definir', especialidad: 'Por definir', bio: 'Integrante del cuerpo tcnico de la Academia Nico Sport.', fotoIcon: 'fa-user', color: 'from-nico-orange to-amber-600' });
+      this.staffForm = {
+        id: 0,
+        nombre: '',
+        cargo: 'Entrenador',
+        licencia: 'Licencia FEPAFUT',
+        exp: 'Experiencia formativa',
+        especialidad: 'Formación de talentos',
+        bio: 'Integrante del cuerpo técnico de la Academia Nico Sport.',
+        fotoIcon: 'fa-user-tie',
+        color: 'from-nico-orange to-amber-600'
+      };
+      this.staffFormModal = true;
+    },
+    guardarStaffForm() {
+      if (!this.esAdmin) return;
+      const nom = (this.staffForm.nombre || '').trim();
+      const car = (this.staffForm.cargo || '').trim();
+      if (!nom) {
+        alert('Por favor ingrese el nombre del integrante.');
+        return;
+      }
+      if (!car) {
+        alert('Por favor ingrese el cargo.');
+        return;
+      }
+      if (this.staffForm.id) {
+        const target = this.staffList.find(x => x.id === this.staffForm.id);
+        if (target) {
+          Object.assign(target, {
+            nombre: nom,
+            cargo: car,
+            licencia: (this.staffForm.licencia || '').trim(),
+            exp: (this.staffForm.exp || '').trim(),
+            especialidad: (this.staffForm.especialidad || '').trim(),
+            bio: (this.staffForm.bio || '').trim(),
+            fotoIcon: this.staffForm.fotoIcon || 'fa-user-tie',
+            color: this.staffForm.color || 'from-nico-orange to-amber-600'
+          });
+        }
+      } else {
+        const nuevoId = Date.now() % 1000000;
+        this.staffList.push({
+          id: nuevoId,
+          nombre: nom,
+          cargo: car,
+          licencia: (this.staffForm.licencia || '').trim() || 'Licencia en trámite',
+          exp: (this.staffForm.exp || '').trim() || 'Experiencia formativa',
+          especialidad: (this.staffForm.especialidad || '').trim() || 'Fútbol formativo',
+          bio: (this.staffForm.bio || '').trim() || 'Integrante del cuerpo técnico de la Academia Nico Sport.',
+          fotoIcon: this.staffForm.fotoIcon || 'fa-user-tie',
+          color: this.staffForm.color || 'from-nico-orange to-amber-600'
+        });
+      }
       this.persistStaff();
+      this.staffFormModal = false;
     },
     persistStaff() { window.DB.guardarStaff(this.staffList); },
 
     /* ========== 09) VITRINA DE TROFEOS ========== */
-    trofeosBase: [
-      { id: 'trophy-sub12', nombre: 'PrÃ³ximamente Sub-12', catKey: 'sub12', categoria: 'CategorÃ­a Sub-12', 'anio': '...', icono: 'fa-trophy', color: 'text-amber-400', descripcion: 'PrÃ³ximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'PrÃ³ximamente...' } },
-      { id: 'trophy-sub16', nombre: 'PrÃ³ximamente Sub-16', catKey: 'sub16', categoria: 'CategorÃ­a Sub-16', 'anio': '...', icono: 'fa-medal', color: 'text-amber-400', descripcion: 'PrÃ³ximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'PrÃ³ximamente...' } },
-      { id: 'trophy-sub6', nombre: 'PrÃ³ximamente Sub-6', catKey: 'sub6', categoria: 'CategorÃ­a Sub-6', 'anio': '...', icono: 'fa-award', color: 'text-amber-400', descripcion: 'PrÃ³ximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'PrÃ³ximamente...' } },
-      { id: 'trophy-submayor', nombre: 'PrÃ³ximamente Sub-Mayor', catKey: 'submayor', categoria: 'Sub-Mayor', 'anio': '...', icono: 'fa-trophy', color: 'text-nico-blue', descripcion: 'PrÃ³ximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'PrÃ³ximamente...' } }
+        trofeosBase: [
+      { id: 'trophy-sub12', nombre: 'Próximamente Sub-12', catKey: 'sub12', categoria: 'Categoría Sub 12', 'anio': '...', icono: 'fa-trophy', color: 'text-amber-400', descripcion: 'Próximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'Próximamente...' } },
+      { id: 'trophy-sub16', nombre: 'Próximamente Sub-16', catKey: 'sub16', categoria: 'Categoría Sub 16', 'anio': '...', icono: 'fa-medal', color: 'text-amber-400', descripcion: 'Próximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'Próximamente...' } },
+      { id: 'trophy-sub6', nombre: 'Próximamente Sub-6', catKey: 'sub6', categoria: 'Categoría Sub 6', 'anio': '...', icono: 'fa-award', color: 'text-amber-400', descripcion: 'Próximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'Próximamente...' } },
+      { id: 'trophy-submayor', nombre: 'Próximamente Sub-Mayor', catKey: 'submayor', categoria: 'Sub-Mayor', 'anio': '...', icono: 'fa-trophy', color: 'text-nico-blue', descripcion: 'Próximamente en desarrollo...', evaluacion: { rendimientoGlobal: 0, posesion: '0%', efectividadPases: '0%', golesAFavor: 0, golesEnContra: 0, disciplina: 'En Proceso', resumenTactico: 'Próximamente...' } }
     ],
     trofeosVersion: 0, mostrarFormTrofeo: false, trofeoEditId: null,
     nuevoTrofeo: { nombre: '', catKey: 'sub6', 'anio': '2026', descripcion: '', rendimientoGlobal: 100, posesion: '', efectividadPases: '', golesAFavor: 0, golesEnContra: 0, disciplina: '', resumenTactico: '' },
     get trophiesList() {
-      void this.trofeosVersion;
-      const ocultos = window.DB.obtenerTrofeosOcultos();
-      const edits = window.DB.obtenerTrofeosEditados();
-      const custom = window.DB.obtenerTrofeosCustom();
-      const base = this.trofeosBase.filter(t => !ocultos.includes(t.id)).map(t => edits[t.id] ? Object.assign({}, t, edits[t.id]) : t);
-      return base.concat(custom.map(t => edits[t.id] ? Object.assign({}, t, edits[t.id]) : t));
-    },
-    abrirFormTrofeo() {
+        if (!window._trophiesListCache || window._trophiesVersionCache !== this.trofeosVersion) {
+            let ocultos = [];
+            let edits = {};
+            let custom = [];
+            
+            if (window.DB) {
+                ocultos = window.DB.obtenerTrofeosOcultos && window.DB.obtenerTrofeosOcultos() || [];
+                edits = window.DB.obtenerTrofeosEditados && window.DB.obtenerTrofeosEditados() || {};
+                custom = window.DB.obtenerTrofeosCustom && window.DB.obtenerTrofeosCustom() || [];
+            }
+            
+            if (!Array.isArray(ocultos)) ocultos = [];
+            if (!Array.isArray(custom)) custom = [];
+            if (typeof edits !== 'object' || edits === null) edits = {};
+            
+            const baseSafe = Array.isArray(this.trofeosBase) ? this.trofeosBase : [];
+            
+            const base = baseSafe
+                .filter(t => !ocultos.includes(t.id))
+                .map(t => edits[t.id] ? Object.assign({}, t, edits[t.id]) : t);
+                
+            window._trophiesListCache = base.concat(custom.map(t => edits[t.id] ? Object.assign({}, t, edits[t.id]) : t));
+            window._trophiesVersionCache = this.trofeosVersion;
+        }
+        return window._trophiesListCache || [];
+      },
+    calcularRendimientoGlobal() {
+        if (!this.nuevoTrofeo) return;
+        let p = String(this.nuevoTrofeo.posesion).replace(/[^0-9]/g, '');
+        let e = String(this.nuevoTrofeo.efectividadPases).replace(/[^0-9]/g, '');
+        
+        let pVal = parseInt(p) || 0;
+        let eVal = parseInt(e) || 0;
+        if (pVal > 0 && eVal > 0) {
+            this.nuevoTrofeo.rendimientoGlobal = Math.round((pVal + eVal) / 2);
+        } else if (pVal > 0) {
+            this.nuevoTrofeo.rendimientoGlobal = pVal;
+        } else if (eVal > 0) {
+            this.nuevoTrofeo.rendimientoGlobal = eVal;
+        }
+      },
+      abrirFormTrofeo() {
       if (!this.mostrarFormTrofeo) {
         this.trofeoEditId = null;
         this.nuevoTrofeo = { nombre: '', catKey: 'sub6', 'anio': '2026', descripcion: '', rendimientoGlobal: 100, posesion: '', efectividadPases: '', golesAFavor: 0, golesEnContra: 0, disciplina: '', resumenTactico: '' };
@@ -470,7 +827,7 @@ document.addEventListener('alpine:init', () => {
         id: this.trofeoEditId || ('custom-' + Date.now()),
         nombre: this.nuevoTrofeo.nombre.trim() || 'Campeonato Nico Sport',
         catKey: this.nuevoTrofeo.catKey,
-        categoria: nombresCat[this.nuevoTrofeo.catKey] || 'CategorÃ­a',
+        categoria: nombresCat[this.nuevoTrofeo.catKey] || 'Categoría',
         'anio': this.nuevoTrofeo.anio.trim() || '2026',
         icono: 'fa-trophy', color: 'text-amber-400',
         descripcion: this.nuevoTrofeo.descripcion.trim() || 'Campeonato obtenido por el equipo.',
@@ -496,30 +853,47 @@ document.addEventListener('alpine:init', () => {
     agregarTrofeo() { this.guardarTrofeoForm(); },
     eliminarTrofeo(id) {
       if (!this.esAdmin) return;
-      if (!confirm('Â¿Eliminar este trofeo de la vitrina?')) return;
+      if (!confirm('¿Eliminar este trofeo de la vitrina?')) return;
       if (String(id).indexOf('custom-') === 0) window.DB.eliminarTrofeoCustom(id);
       else window.DB.ocultarTrofeoBase(id);
       if (this.selectedTrophy && this.selectedTrophy.id === id) this.selectedTrophy = null;
       this.trofeosVersion++;
     },
     editarAnalisis(campo, label, esNumero) {
-      if (!this.esAdmin || !this.modoEdicion || !this.selectedTrophy) return;
-      const t = this.selectedTrophy;
-      const v = prompt(label, t.evaluacion[campo]);
-      if (v === null) return;
-      const nuevo = Object.assign({}, t, { evaluacion: Object.assign({}, t.evaluacion, { [campo]: esNumero ? (parseInt(v) || 0) : v }) });
-      window.DB.guardarTrofeoEditado(nuevo);
-      this.trofeosVersion++;
-      this.selectedTrophy = this.trophiesList.find(x => x.id === t.id) || nuevo;
-    },
+        if (!this.esAdmin || !this.modoEdicion || !this.selectedTrophy) return;
+        const t = this.selectedTrophy;
+        let v = prompt(label, t.evaluacion[campo]);
+        if (v === null) return;
+        
+        let valToSave = esNumero ? (parseInt(v) || 0) : v;
+        if (campo === 'posesion' || campo === 'efectividadPases') {
+            let n = String(v).replace(/[^0-9]/g, '');
+            if (n) valToSave = n + '%';
+        }
+        
+        let nuevaEvaluacion = Object.assign({}, t.evaluacion, { [campo]: valToSave });
+        
+        if (campo === 'posesion' || campo === 'efectividadPases') {
+            let pVal = parseInt(String(nuevaEvaluacion.posesion || '').replace(/[^0-9]/g, '')) || 0;
+            let eVal = parseInt(String(nuevaEvaluacion.efectividadPases || '').replace(/[^0-9]/g, '')) || 0;
+            if (pVal > 0 && eVal > 0) nuevaEvaluacion.rendimientoGlobal = Math.round((pVal + eVal) / 2);
+            else if (pVal > 0) nuevaEvaluacion.rendimientoGlobal = pVal;
+            else if (eVal > 0) nuevaEvaluacion.rendimientoGlobal = eVal;
+        }
+        
+        const nuevo = Object.assign({}, t, { evaluacion: nuevaEvaluacion });
+        window.DB.guardarTrofeoEditado(nuevo);
+        this.trofeosVersion++;
+        this.selectedTrophy = this.trophiesList.find(x => x.id === t.id) || nuevo;
+      },
 
-    /* ========== 10) EVALUACIÃ“N GLOBAL ========== */
+    /* ========== 10) EVALUACIÓN GLOBAL ========== */
     evalGlobalVersion: 0,
     evalGlobalBase: [
-      { id: 1, catKey: 'sub6',     name: 'CategorÃ­a Sub-6 (Semillero)',              desc: 'Eficiencia LudotÃ©cnica', value: 96 },
-      { id: 2, catKey: 'sub12',    name: 'CategorÃ­a Sub-12 (Desarrollo 11vs11)',     desc: 'Rendimiento de Torneo',  value: 94 },
-      { id: 3, catKey: 'sub16',    name: 'CategorÃ­a Sub-16 (CompeticiÃ³n Regional)',  desc: 'Despliegue TÃ¡ctico',     value: 89 },
-      { id: 4, catKey: 'submayor', name: 'Sub-Mayor & Futsal Tecnificado',           desc: 'DinÃ¡mica y PresiÃ³n',     value: 91 }
+      { id: 1, catKey: 'sub6',     name: 'Categoría Sub 6 ',              desc: 'Eficiencia Ludotécnica', value: 96 },
+      { id: 2, catKey: 'sub12',    name: 'Categoría Sub 12 ',     desc: 'Rendimiento de Torneo',  value: 94 },
+      { id: 3, catKey: 'sub16',    name: 'Categoría Sub 16 ',  desc: 'Despliegue Táctico',     value: 89 },
+      { id: 4, catKey: 'submayor', name: 'Sub Mayor ',           desc: 'Dinámica y Presión',     value: 91 }
     ],
     get evalCategories() {
       void this.evalGlobalVersion;
@@ -536,7 +910,7 @@ document.addEventListener('alpine:init', () => {
           item = b ? Object.assign({}, b) : null;
         }
         if (!item) {
-          item = { id: 1000 + idx, catKey: cat.key, name: 'CategorÃ­a ' + cat.label, desc: 'Rendimiento General', value: 50 };
+          item = { id: 1000 + idx, catKey: cat.key, name: 'Categoría ' + cat.label, desc: 'Rendimiento General', value: 50 };
         }
         lista.push(item);
       });
@@ -551,44 +925,34 @@ document.addEventListener('alpine:init', () => {
     },
     getColorEval(val) { return 'hsl(' + Math.max(0, Math.min(120, val * 1.2)) + ', 85%, 50%)'; },
 
-    /* ========== 11) CRUD DE CATEGORÃAS ========== */
+    /* ========== 11) CRUD DE CATEGORÍAS ========== */
     catAdminVersion: 0,
     catNueva: { label: '', descripcion: '' },
-    categoriasTorneo: [
-      Object.assign({ key: 'sub6',     label: 'Sub-6',      descripcion: 'IniciaciÃ³n (4 a 6 aÃ±os)  LudotÃ©cnica' }, catTorneo()),
-      Object.assign({ key: 'sub12',    label: 'Sub-12',     descripcion: 'Desarrollo (10 a 12 aÃ±os)  Formativa' }, catTorneo()),
-      Object.assign({ key: 'sub16',    label: 'Sub-16',     descripcion: 'CompeticiÃ³n (14 a 16 aÃ±os)  Alto rendimiento' }, catTorneo()),
-      Object.assign({ key: 'submayor', label: 'Sub-Mayor',  descripcion: 'Futsal & TecnificaciÃ³n  EspecializaciÃ³n' }, catTorneo())
-    ],
-    playersSub6: JSON.parse(JSON.stringify(P_SUB6)),
-    playersSub12: JSON.parse(JSON.stringify(P_SUB12)),
-    playersSub16: JSON.parse(JSON.stringify(P_SUB16)),
-    playersSubMayor: JSON.parse(JSON.stringify(P_SUBMAYOR)),
+    categoriasTorneo: [],
+    categoriasVitrinaTabs: [],
+    playersSub6: [],
+    playersSub12: [],
+    playersSub16: [],
+    playersSubMayor: [],
     get categoriasUI() {
       void this.catAdminVersion;
-      const oficiales = {
-        sub6:     { tab: 'CategorÃ­a Sub-6', titulo: 'CATEGORÃA SUB-6', badge: 'IniciaciÃ³n (4 a 6 AÃ±os)', desc: 'CoordinaciÃ³n motriz primaria, psicomotricidad bÃ¡sica, lateralidad y primera adaptaciÃ³n divertida al balÃ³n mediante dinÃ¡micas ludotÃ©cnicas.', torneos: 'Proximante....', horario: 'sÃ¡bado (10:00 AM - 12:00 PM)', cancha: 'El pueblito - Santa Librada', count: '20 Jugadores Inscritos', entrenador: 'Prof. Luis jesus', foto: 'img/sub6.jpg' },
-        sub12:    { tab: 'CategorÃ­a Sub-12', titulo: 'CATEGORÃA SUB-12', badge: 'Desarrollo (10 a 12 AÃ±os)', desc: 'FundamentaciÃ³n tÃ©cnica avanzada: pase orientado, conducciÃ³n en velocidad, perfilamiento tÃ¡ctico y partidos estructurados en formato 11vs11.', torneos: 'Pretemporada...', horario: 'sÃ¡bado (10:00 AM - 12:00 PM)', cancha: 'El pueblito - Santa Librada', count: '20 Jugadores Inscritos', entrenador: 'Prof. Abdiel Aguirre', foto: 'img/sub12.jpg' },
-        sub16:    { tab: 'CategorÃ­a Sub-16', titulo: 'CATEGORÃA SUB-16', badge: 'CompeticiÃ³n (14 a 16 AÃ±os)', desc: 'Alto rendimiento fÃ­sico, tÃ¡ctica colectiva, sistemas de juego (4-3-3 / 4-2-3-1), resistencia aerÃ³bica y preparaciÃ³n para visorÃ­as universitarias o profesionales.', torneos: 'Pretemporada....', horario: 'sÃ¡bado (10:00 AM - 12:00 PM)', cancha: 'El pueblito - Santa Librada', count: '20 Jugadores Inscritos', entrenador: 'Prof. Fernando', foto: 'img/sub16.jpg' },
-        submayor: { tab: 'Sub-Mayor / Futsal', titulo: 'SUB-MAYOR & TECNIFICACIÃ“N FUTSAL', badge: 'Alto Rendimiento & Futsal', desc: 'EspecializaciÃ³n para categorÃ­as mayores, acondicionamiento de alta exigencia, tÃ©cnica de piso, toma de decisiones veloz en espacios reducidos y salidas a presiÃ³n.', torneos: '.......', horario: '......', cancha: '.......', count: '20 Jugadores Seleccionados', entrenador: 'Dra. Elena Ramos', foto: 'img/mayor.jpg' }
-      };
       let lista = this.categoriasTorneo;
       if (this.esEntrenador && !this.esAdmin) {
         lista = lista.filter(c => c.key === this.currentUser.catKey);
       }
       return lista.map((c, i) => {
-        const base = oficiales[c.key];
-        const col = base ? UI[c.key] : PALETA_NUEVOS[i % PALETA_NUEVOS.length];
-        if (base) return Object.assign({ key: c.key }, col, base);
+        const col = UI[c.key] ? UI[c.key] : PALETA_NUEVOS[i % PALETA_NUEVOS.length];
         return Object.assign({ key: c.key }, col, {
-          tab: c.label,
-          titulo: 'CATEGORÃA ' + c.label.toUpperCase(),
-          badge: c.descripcion || 'CategorÃ­a Personalizada',
-          desc: c.descripcion || 'CategorÃ­a personalizada de la Academia Nico Sport. Edita esta descripciÃ³n con el modo ediciÃ³n .',
-          torneos: 'Por definir', horario: 'Por definir', cancha: 'Por definir',
-          count: (this.playersDe(c.key).length || 0) + ' Jugadores Inscritos',
-          entrenador: 'Por asignar',
-          foto: 'img/escudo.png'
+          tab: c.label || 'Sin Categoría',
+          titulo: c.titulo || ('CATEGORÍA ' + (c.label ? c.label.toUpperCase() : '')),
+          badge: c.badge || c.descripcion || '',
+          desc: c.desc || c.descripcion || '',
+          torneos: c.torneos || '',
+          horario: c.horario || '',
+          cancha: c.cancha || '',
+          count: c.count || '',
+          entrenador: c.entrenador || '',
+          foto: c.foto || ''
         });
       });
     },
@@ -615,8 +979,10 @@ document.addEventListener('alpine:init', () => {
     crearCategoria() {
       if (!this.esAdmin) return;
       const label = this.catNueva.label.trim();
-      if (!label) { alert(' Escribe el nombre de la nueva categorÃ­a'); return; }
-      const key = 'cat' + Date.now().toString(36);
+      if (!label) { alert(' Escribe el nombre de la nueva categoría'); return; }
+      let key = label.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/^sub\s*[-_]?\s*(\d+)$/i, 'sub$1').replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+      if (!key) key = 'sub_' + Date.now().toString(36);
+      if (this.categoriasTorneo.some(c => c.key === key)) { alert('Ya existe una categoría con ese nombre'); return; }
       const nueva = Object.assign({ key, label, descripcion: this.catNueva.descripcion.trim() || '' }, catTorneo());
       this.categoriasTorneo.push(nueva);
       this.plantillasExtra[key] = [];
@@ -626,7 +992,7 @@ document.addEventListener('alpine:init', () => {
       this.catNueva = { label: '', descripcion: '' };
       this.catAdminVersion++;
       this.evalGlobalVersion++;
-      alert(' CategorÃ­a "' + label + '" creada con plantilla automÃ¡tica.');
+      alert(' Categoría "' + label + '" creada con plantilla automática.');
     },
     
     openMediaEditModal(title, currentUrl, type, callback) {
@@ -641,7 +1007,7 @@ document.addEventListener('alpine:init', () => {
     },
     editarFotoCategoria(cat) {
       if (!this.esAdmin) return;
-      this.openMediaEditModal('Foto Categora', cat.foto, 'image', (u) => {
+      this.openMediaEditModal('Foto Categoría', cat.foto, 'image', (u) => {
           if (u !== null && u.trim() !== '') {
               const t = this.categoriasTorneo.find(c => c.key === cat.key);
               if (t) { t.foto = u.trim(); }
@@ -661,16 +1027,16 @@ document.addEventListener('alpine:init', () => {
     },
     editarCategoria(cat) {
       if (!this.esAdmin) return;
-      const label = prompt('Nombre de la categorÃ­a:', cat.label); if (label === null) return;
-      const desc = prompt('DescripciÃ³n:', cat.descripcion); if (desc === null) return;
+      const label = prompt('Nombre de la categoría:', cat.label); if (label === null) return;
+      const desc = prompt('Descripción:', cat.descripcion); if (desc === null) return;
       const t = this.categoriasTorneo.find(c => c.key === cat.key);
       if (t) { t.label = label.trim() || t.label; t.descripcion = desc; }
       this.persistTorneo(); this._syncCategoriasDB(); this.catAdminVersion++;
     },
     eliminarCategoria(cat) {
       if (!this.esAdmin) return;
-      if (cat.core) { alert(' Las 4 categorÃ­as oficiales no se pueden eliminar.'); return; }
-      if (!confirm('Â¿Eliminar la categorÃ­a "' + cat.label + '"?')) return;
+      if (cat.core) { alert(' Las 4 categorías oficiales no se pueden eliminar.'); return; }
+      if (!confirm('¿Eliminar la categoría "' + cat.label + '"?')) return;
       this.categoriasTorneo = this.categoriasTorneo.filter(c => c.key !== cat.key);
       delete this.plantillasExtra[cat.key];
       if (this.currentTorneoIdx >= this.categoriasTorneo.length) this.currentTorneoIdx = 0;
@@ -713,7 +1079,7 @@ document.addEventListener('alpine:init', () => {
       { key: 'cuartos', label: 'Cuartos', icon: 'fas fa-medal' },
       { key: 'semis', label: 'Semis', icon: 'fas fa-flag-checkered' },
       { key: 'final', label: 'Final', icon: 'fas fa-crown' },
-      { key: 'campeon', label: 'CampeÃ³n', icon: 'fas fa-award' }
+      { key: 'campeon', label: 'Campeón', icon: 'fas fa-award' }
     ],
     currentTorneoIdx: 0,
     nextTorneo() { this.currentTorneoIdx = (this.currentTorneoIdx + 1) % this.categoriasTorneoVisibles.length; this.particulasBtn(); },
@@ -734,38 +1100,81 @@ document.addEventListener('alpine:init', () => {
       return s === 'done' ? 'border-nico-green/40 text-nico-green bg-nico-green/5' : (s === 'current' ? 'border-nico-orange bg-nico-orange/10 text-nico-orange shadow-[0_0_12px_rgba(255,85,0,0.4)]' : 'border-white/10 text-gray-600');
     },
 
-    /* ========== 12) LOGIN / SESIÃ“N + EVALUACIÃ“N ========== */
+    /* ========== 12) LOGIN / SESIÓN + EVALUACIÓN ========== */
     async intentarLogin() {
       this.loginError = 'Conectando...';
+      this.esBloqueado = false;
       try { await window.DB.listo; } catch(e) {}
-      const u = await window.DB.login(this.loginUsuario.trim(), this.loginPassword.trim());
-      if (u) {
-        this.currentUser = u; localStorage.setItem('ns_currentUser', JSON.stringify(u)); this.loginModal = false; this.loginError = '';
-        this.loginUsuario = ''; this.loginPassword = '';
+      const res = await window.DB.login(this.loginUsuario.trim(), this.loginPassword.trim(), this.loginHpTrap || '');
+      if (res && res.success && res.usuario) {
+        const u = res.usuario;
+        let nextTab = 'historia';
+        let nextCat = this.catTab || 'sub6';
         if (u.rol === 'admin') {
-          this.mainTab = 'admin';
+          nextTab = 'admin';
         } else if (u.rol === 'padre') {
-          /* FIX 3: Padre va a CategorÃ­as si tiene hijo vinculado */
           if (u.hijoCat && u.hijoId) {
-            this.mainTab = 'categorias';
-            this.catTab = u.hijoCat;
+            nextTab = 'categorias';
+            nextCat = u.hijoCat;
           } else {
-            this.mainTab = 'portal';
+            nextTab = 'portal';
           }
         } else if (u.rol === 'entrenador') {
-          this.mainTab = 'categorias';
-          this.catTab = u.catKey || 'sub6';
-        } else {
-          this.mainTab = 'historia';
+          nextTab = 'categorias';
+          nextCat = u.catKey || 'sub6';
         }
-        localStorage.setItem('ns_mainTab', this.mainTab); localStorage.setItem('ns_catTab', this.catTab); window.location.reload();
-      } else this.loginError = 'Usuario o contraseÃ±a incorrectos';
+        this.loginModal = false;
+        this.loading = true;
+        this.progress = 25;
+        localStorage.removeItem('ns_currentUser');
+        localStorage.setItem('ns_mainTab', nextTab);
+        localStorage.setItem('ns_catTab', nextCat);
+        window.location.reload();
+      } else {
+        if (res && res.bloqueado) {
+          this.esBloqueado = true;
+          this.loginError = res.error || 'Cuenta suspendida';
+        } else {
+          this.loginError = res ? (res.error || 'Credenciales inválidas') : 'Error de red';
+        }
+      }
     },
-    cerrarSesion() {
-        fetch('../api/logout.php').then(() => window.location.reload());
-        this.currentUser = null; localStorage.removeItem('ns_currentUser'); localStorage.removeItem('ns_mainTab'); localStorage.removeItem('ns_catTab'); this.mainTab = 'historia';
-      if (this.modoEdicion) this.toggleModoEdicion();
+    async cerrarSesion() {
+      if (this.modoEdicion) {
+        this.modoEdicion = false;
+        if (typeof this.deshabilitarEdicionEnDOM === 'function') {
+          this.deshabilitarEdicionEnDOM();
+        }
+      }
       document.body.classList.remove('is-admin');
+      this.currentUser = null;
+      this.mainTab = 'historia';
+      localStorage.removeItem('ns_currentUser');
+      localStorage.removeItem('ns_mainTab');
+      localStorage.removeItem('ns_catTab');
+      try { sessionStorage.clear(); } catch(e) {}
+      if (window.DB && typeof window.DB.logout === 'function') {
+        try {
+          await window.DB.logout();
+        } catch(e) {}
+      }
+      window.location.replace(window.location.pathname);
+    },
+    obtenerUrlSitio() {
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        let p = window.location.pathname;
+        if (p.match(/\/[^\/]+\.[^\/]+$/)) p = p.substring(0, p.lastIndexOf('/'));
+        if (p.endsWith('/public')) p = p.slice(0, -7);
+        if (!p.endsWith('/')) p += '/';
+        return window.location.origin + p;
+      }
+      return 'https://www.academianicosport.com/';
+    },
+    obtenerEnlaceWhatsappInscripcion() {
+      return 'https://wa.me/50763321779?text=' + encodeURIComponent('¡Hola Academia Nico Sport! ⚽👋 Deseo información para inscribir a mi hijo(a). ¿Cuáles son los requisitos, horarios y categorías disponibles?');
+    },
+    obtenerEnlaceInstagram() {
+      return 'https://www.instagram.com/academia_nicosport?cplk=c3A2dTN1NXhxY2Q0';
     },
     abrirEvaluacion(player) {
       const previa = window.DB.obtenerEvaluacion(player.catKey, player.id);
@@ -783,18 +1192,40 @@ document.addEventListener('alpine:init', () => {
       return window.DB.obtenerEvaluacion(player.catKey, player.id);
     },
     get evalPromedio() {
-      const all = [...this.evalDatos.tecnicos, ...this.evalDatos.tacticos, ...this.evalDatos.fisicos, ...this.evalDatos.actitudinales].filter(n => n > 0);
+      const all = [...this.evalDatos.tecnicos, ...this.evalDatos.tacticos, ...this.evalDatos.fisicos, ...this.evalDatos.actitudinales]
+        .map(v => parseFloat(v))
+        .filter(n => !isNaN(n) && n > 0);
       if (!all.length) return 0;
       return Math.round((all.reduce((a, b) => a + b, 0) / all.length) * 10) / 10;
     },
-    guardarEvaluacion() {},
+    async guardarEvaluacion() {
+      if (!this.evalModal) return;
+      const ev = {
+        catKey: this.evalModal.catKey,
+        playerId: this.evalModal.id,
+        tecnicos: (this.evalDatos.tecnicos || []).map(v => parseFloat(v) || 0),
+        tacticos: (this.evalDatos.tacticos || []).map(v => parseFloat(v) || 0),
+        fisicos: (this.evalDatos.fisicos || []).map(v => parseFloat(v) || 0),
+        actitudinales: (this.evalDatos.actitudinales || []).map(v => parseFloat(v) || 0)
+      };
+      await window.DB.guardarEvaluacion(ev);
+      this.evaluacionesVersion++;
+      this.evalModal = null;
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-4 right-4 bg-nico-green text-black font-black py-2.5 px-4 rounded-xl shadow-2xl z-50 border border-black/20';
+      toast.innerText = '✓ Evaluación guardada correctamente (Escala 1 a 10)';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    },
     notaJugador(player) {
       void this.evaluacionesVersion;
       const ev = window.DB.obtenerEvaluacion(player.catKey, player.id);
       if (!ev) return null;
-      const all = [...ev.tecnicos, ...ev.tacticos, ...ev.fisicos, ...ev.actitudinales].filter(n => n > 0);
+      const all = [...ev.tecnicos, ...ev.tacticos, ...ev.fisicos, ...ev.actitudinales]
+        .map(v => parseFloat(v))
+        .filter(n => !isNaN(n) && n > 0);
       if (!all.length) return null;
-      return all.reduce((a, b) => a + b, 0) / all.length;
+      return Math.round((all.reduce((a, b) => a + b, 0) / all.length) * 10) / 10;
     },
 
     /* ========== 13) ASISTENCIA Y ENCUESTAS ========== */
@@ -803,10 +1234,10 @@ document.addEventListener('alpine:init', () => {
     asistenciaVersion: 0, encuestaVersion: 0,
     encuesta: { aspectos: [0,0,0,0,0,0,0,0,0,0,0], gustaMas: '', mejorar: '', crecimiento: '', crecimientoWhy: '', recomienda: '', recomiendaWhy: '', observaciones: '' },
     encuestaAspectos: [
-      'Calidad de los entrenamientos', 'OrganizaciÃ³n de la academia', 'Puntualidad de los entrenadores',
-      'Trato hacia los jugadores', 'ComunicaciÃ³n con los padres', 'Desarrollo tcnico de mi hijo(a)',
-      'Desarrollo de valores (respeto, disciplina, compaÃ±erismo)', 'Ambiente de entrenamiento',
-      'Seguridad durante las actividades', 'RelaciÃ³n costo-beneficio', 'SatisfacciÃ³n general con la academia'
+      'Calidad de los entrenamientos', 'Organización de la academia', 'Puntualidad de los entrenadores',
+      'Trato hacia los jugadores', 'Comunicación con los padres', 'Desarrollo técnico de mi hijo(a)',
+      'Desarrollo de valores (respeto, disciplina, compañerismo)', 'Ambiente de entrenamiento',
+      'Seguridad durante las actividades', 'Relación costo-beneficio', 'Satisfacción general con la academia'
     ],
     playersDe(catKey) {
       const map = { sub6: this.playersSub6, sub12: this.playersSub12, sub16: this.playersSub16, submayor: this.playersSubMayor };
@@ -855,16 +1286,16 @@ document.addEventListener('alpine:init', () => {
       void this.evaluacionesVersion;
       const ev = window.DB.obtenerEvaluacion(player.catKey, player.id);
       if (!ev) return {};
-      const prom = arr => { const f = arr.filter(n => n > 0); if (!f.length) return 0; return Math.round((f.reduce((a, b) => a + b, 0) / f.length) * 10) / 10; };
+      const prom = arr => { const f = (arr || []).map(v => parseFloat(v)).filter(n => !isNaN(n) && n > 0); if (!f.length) return 0; return Math.round((f.reduce((a, b) => a + b, 0) / f.length) * 10) / 10; };
       return { tecnicos: prom(ev.tecnicos), tacticos: prom(ev.tacticos), fisicos: prom(ev.fisicos), actitudinales: prom(ev.actitudinales), general: this.notaJugador(player) };
     },
     enviarEncuesta() {
       const enc = JSON.parse(JSON.stringify(this.encuesta));
-      enc.padre = this.currentUser ? this.currentUser.nombre : 'AnÃ³nimo';
+      enc.padre = this.currentUser ? this.currentUser.nombre : 'Anónimo';
       window.DB.guardarEncuesta(enc);
       this.encuestaVersion++;
       this.encuesta = { aspectos: [0,0,0,0,0,0,0,0,0,0,0], gustaMas: '', mejorar: '', crecimiento: '', crecimientoWhy: '', recomienda: '', recomiendaWhy: '', observaciones: '' };
-      alert('Â¡Gracias! Tu evaluaciÃ³n fue enviada ');
+      alert('¡Gracias! Tu evaluación fue enviada ');
     },
     get encuestasPadres() { void this.encuestaVersion; return window.DB.obtenerEncuestas(); },
     get resultadosVozPadres() {
@@ -882,119 +1313,987 @@ document.addEventListener('alpine:init', () => {
     },
 
     /* ========== 14) PANEL ADMIN: REGISTRO UNIFICADO JUGADOR/PADRE ========== */
+    subDestinoTransfer: '',
+    hijoActivoIndex: 0,
     adminRegistro: {
       tipo: 'con_padre',
-      jugadorNombre: '', catKey: '', jugadorDorsal: '', jugadorPos: 'MED',
+      hijos: [
+        { nombre: '', edad: '', catKey: '', pos: 'MED' }
+      ],
+      jugadorNombre: '', jugadorEdad: '', catKey: '', jugadorDorsal: '', jugadorPos: 'MED',
       padreNombre: '', padreUsuario: '', padrePassword: '', telefonoPadre: ''
     },
     adminRegistroMsg: '', adminPadresVersion: 0, comentariosVersion: 0,
+    padreEditando: null,
+    modalEditarPadre: false,
+    mostrarPassPadreEdit: false,
+    editPadreMsg: '',
+    nuevoAdmin: { nombre: '', usuario: '', password: '', usuarioManual: false },
+    nuevoAdminMsg: '',
+    mostrarPassNuevoAdmin: false,
+    linkRegistroVersion: 0, copiadoLinkMsg: '', copiadoTokenMsg: '',
+    get infoLinkRegistro() {
+      void this.linkRegistroVersion;
+      void this.adminPadresVersion;
+      return (window.DB && window.DB.obtenerRegistroLinkTemp) ? window.DB.obtenerRegistroLinkTemp() : null;
+    },
+    get linkRegistroActivo() {
+      const info = this.infoLinkRegistro;
+      return !!(info && info.activo && info.token);
+    },
+    get linkRegistroExpiraStr() {
+      const info = this.infoLinkRegistro;
+      return (info && info.expiraStr) ? info.expiraStr : '';
+    },
+    get linkRegistroCodigoAcademia() {
+      const info = this.infoLinkRegistro;
+      return (info && info.codigoAcademia) ? info.codigoAcademia : 'NS-0000';
+    },
+    get urlLinkRegistroPadres() {
+      let base = window.location.origin + window.location.pathname;
+      base = base.replace(/\/index\.php$/i, '');
+      if (!base.endsWith('/')) base += '/';
+      return base + 'registro.php';
+    },
+    async generarLinkRegistroPadres(horas = 168) {
+      if (!confirm('¿Deseas rotar y generar un nuevo código semanal de verificación ahora?')) return;
+      const res = await window.DB.generarRegistroLinkTemp(168);
+      if (res && res.ok) {
+        this.linkRegistroVersion++;
+        if (typeof this.mostrarToast === 'function') {
+          this.mostrarToast('Código de verificación rotado con éxito.', 'exito');
+        }
+      } else if (res && res.error) {
+        alert(res.error);
+      }
+    },
+    async desactivarLinkRegistroPadres() {
+      return this.generarLinkRegistroPadres(168);
+    },
+    copiarLinkRegistroPadres() {
+      const url = this.urlLinkRegistroPadres;
+      if (!url) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url);
+      }
+      this.copiadoLinkMsg = '¡Copiado!';
+      setTimeout(() => { this.copiadoLinkMsg = ''; }, 2500);
+    },
+    copiarCodigoAcademia() {
+      const cod = this.linkRegistroCodigoAcademia;
+      if (!cod) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cod);
+      }
+      this.copiadoTokenMsg = '¡Copiado!';
+      setTimeout(() => { this.copiadoTokenMsg = ''; }, 2500);
+    },
+
+    async cambiarCredencialesAdmin() {
+      if (!this.esAdmin || !this.currentUser) return;
+      const f = this.adminCredsForm;
+      f.msg = '';
+      f.msgTipo = '';
+
+      if (!f.passActual) {
+        f.msg = 'Debes ingresar tu contraseña actual para autorizar los cambios.';
+        f.msgTipo = 'error';
+        return;
+      }
+
+      if (!f.usuarioNuevo && !f.passNuevo) {
+        f.msg = 'Ingresa un nuevo nombre de usuario o una nueva contraseña.';
+        f.msgTipo = 'error';
+        return;
+      }
+
+      if (f.passNuevo) {
+        if (f.passNuevo.length < 12) {
+          f.msg = 'La nueva contraseña debe tener como mínimo 12 caracteres.';
+          f.msgTipo = 'error';
+          return;
+        }
+        if (!/[A-Za-z]/.test(f.passNuevo) || !/[0-9]/.test(f.passNuevo)) {
+          f.msg = 'La nueva contraseña debe combinar letras y números.';
+          f.msgTipo = 'error';
+          return;
+        }
+        if (f.passNuevo !== f.passConfirm) {
+          f.msg = 'La confirmación de la nueva contraseña no coincide.';
+          f.msgTipo = 'error';
+          return;
+        }
+      }
+
+      f.guardando = true;
+      try {
+        const payload = {
+          passActual: f.passActual,
+          usuarioNuevo: (f.usuarioNuevo || '').trim(),
+          passNuevo: f.passNuevo || '',
+          passConfirm: f.passConfirm || ''
+        };
+        const res = await window.DB.post('usuarios/cambiar_mis_credenciales', payload);
+        if (res && res.ok) {
+          f.msg = res.mensaje || 'Credenciales actualizadas exitosamente.';
+          f.msgTipo = 'exito';
+          if (res.usuario && this.currentUser) {
+            this.currentUser.usuario = res.usuario;
+            this.currentUser.nombre = res.usuario;
+          }
+          f.passActual = '';
+          f.passNuevo = '';
+          f.passConfirm = '';
+          if (typeof this.mostrarToast === 'function') {
+            this.mostrarToast('Tus credenciales se han actualizado con éxito en la base de datos.', 'exito');
+          }
+        } else {
+          f.msg = (res && res.error) ? res.error : 'No se pudo actualizar las credenciales.';
+          f.msgTipo = 'error';
+        }
+      } catch (e) {
+        f.msg = 'Error al comunicar con el servidor: ' + e.message;
+        f.msgTipo = 'error';
+      } finally {
+        f.guardando = false;
+      }
+    },
+
+    async cargarIpsBloqueadasWaf() {
+      if (!this.esAdmin || !this.currentUser) return;
+      try {
+        if (window.DB && window.DB.listo) await window.DB.listo;
+        const res = await window.DB.post('waf/listar', {});
+        if (res && res.ok && Array.isArray(res.bloqueados)) {
+          this.ipsBloqueadasWaf = res.bloqueados;
+        }
+      } catch (e) {}
+    },
+    async bloquearIpManual() {
+      if (!this.esAdmin) return;
+      const ip = (this.ipManualForm.ip || '').trim();
+      if (!ip) {
+        alert('Por favor introduce una dirección IP válida (ej: 198.51.100.12)');
+        return;
+      }
+      try {
+        const res = await window.DB.post('waf/bloquear', {
+          ip: ip,
+          motivo: (this.ipManualForm.motivo || '').trim() || 'Bloqueo manual por el Administrador',
+          horas: parseInt(this.ipManualForm.horas) || 24
+        });
+        if (res && res.ok) {
+          alert(res.mensaje || 'IP bloqueada con éxito.');
+          this.ipManualForm.ip = '';
+          this.ipsBloqueadasWaf = res.bloqueados || [];
+        } else {
+          alert('Error: ' + (res && res.error ? res.error : 'No se pudo bloquear la IP.'));
+        }
+      } catch (e) {
+        alert('Error al bloquear la IP: ' + e.message);
+      }
+    },
+    async desbloquearIpWaf(ip) {
+      if (!this.esAdmin) return;
+      if (!confirm('¿Desbloquear la dirección IP ' + ip + '?')) return;
+      try {
+        const res = await window.DB.post('waf/desbloquear', { ip: ip });
+        if (res && res.ok) {
+          this.ipsBloqueadasWaf = res.bloqueados || [];
+          alert('La IP ' + ip + ' ha sido desbloqueada.');
+        } else {
+          alert('Error al desbloquear: ' + (res && res.error ? res.error : 'desconocido'));
+        }
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    },
+    async desbloquearTodasIpsWaf() {
+      if (!this.esAdmin) return;
+      if (!confirm('¿Estás seguro de que deseas desbloquear TODAS las direcciones IP bloqueadas?')) return;
+      try {
+        const res = await window.DB.post('waf/desbloquear', { ip: 'TODAS' });
+        if (res && res.ok) {
+          this.ipsBloqueadasWaf = [];
+          alert('Todas las direcciones IP han sido desbloqueadas con éxito.');
+        }
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    },
+
     filtroPadresCat: '', busquedaPadresAdmin: '',
     get listaPadres() { void this.adminPadresVersion; return window.DB.obtenerPadres(); },
-    get listaPadresFiltrados() {
+    get listaAdmins() {
       void this.adminPadresVersion;
-      let lista = window.DB.obtenerPadres().slice().sort((a,b) => (a.nombre||'').localeCompare(b.nombre||''));
-      if (this.filtroPadresCat) lista = lista.filter(p => p.hijoCat === this.filtroPadresCat);
-      if (this.busquedaPadresAdmin) {
-        const q = this.busquedaPadresAdmin.toLowerCase();
-        lista = lista.filter(p => (p.nombre||'').toLowerCase().includes(q) || (p.usuario||'').toLowerCase().includes(q));
+      try {
+        return (window.DB && typeof window.DB.obtenerAdministradores === 'function') ? (window.DB.obtenerAdministradores() || []) : [];
+      } catch (e) {
+        return [];
       }
-      return lista;
     },
+    obtenerTotalAdmins() {
+      try {
+        return (this.listaAdmins || []).length;
+      } catch (e) {
+        return 0;
+      }
+    },
+    obtenerCategoriaParaEdad(edad) {
+      const ed = parseInt(edad, 10);
+      if (isNaN(ed) || ed <= 0) return 'sub6';
+      const cats = (Array.isArray(this.categoriasTorneo) && this.categoriasTorneo.length)
+        ? this.categoriasTorneo
+        : (window.DB && typeof window.DB.obtenerCategorias === 'function' ? window.DB.obtenerCategorias() : []);
+      const numCats = [];
+      cats.forEach(c => {
+        const m = (c.key || '').match(/^sub(\d+)$/i);
+        if (m) numCats.push({ key: c.key, maxEdad: parseInt(m[1], 10) });
+      });
+      if (numCats.length > 0) {
+        numCats.sort((a, b) => a.maxEdad - b.maxEdad);
+        for (const nc of numCats) {
+          if (ed <= nc.maxEdad) return nc.key;
+        }
+        return 'submayor';
+      }
+      if (ed <= 6) return 'sub6';
+      if (ed <= 12) return 'sub12';
+      if (ed <= 16) return 'sub16';
+      return 'submayor';
+    },
+    modalLey81: false,
+    paginaPadres: 1, porPaginaPadres: 20,
+      get listaPadresFiltradosTotal() {
+        void this.adminPadresVersion;
+        let lista = window.DB.obtenerPadres().slice().sort((a,b) => (a.nombre||'').localeCompare(b.nombre||''));
+        if (this.filtroPadresCat) { lista = lista.filter(p => p.hijoCat === this.filtroPadresCat);  }
+        if (this.busquedaPadresAdmin) {
+          const q = this.busquedaPadresAdmin.toLowerCase();
+          lista = lista.filter(p => (p.nombre||'').toLowerCase().includes(q) || (p.usuario||'').toLowerCase().includes(q));
+          
+        }
+        return lista;
+      },
+      get totalPaginasPadres() {
+        return Math.ceil(this.listaPadresFiltradosTotal.length / this.porPaginaPadres) || 1;
+      },
+      get listaPadresFiltrados() {
+        const inicio = (this.paginaPadres - 1) * this.porPaginaPadres;
+        return this.listaPadresFiltradosTotal.slice(inicio, inicio + this.porPaginaPadres);
+      },
     
+    autoAsignarSubAdmin() {
+      const edad = parseInt(this.adminRegistro.jugadorEdad, 10);
+      if (isNaN(edad) || edad < 3 || edad > 50) return;
+      const claves = this.categoriasTorneo.map(c => c.key);
+      const numericas = [];
+      claves.forEach(k => {
+        const m = k.match(/^sub_?(\d+)$/i);
+        if (m) numericas.push({ lim: parseInt(m[1], 10), key: k });
+      });
+      numericas.sort((a, b) => a.lim - b.lim);
+      let elegida = '';
+      for (let i = 0; i < numericas.length; i++) {
+        if (edad <= numericas[i].lim) { elegida = numericas[i].key; break; }
+      }
+      if (!elegida) elegida = claves.includes('submayor') ? 'submayor' : (claves[claves.length - 1] || 'sub6');
+      this.adminRegistro.catKey = elegida;
+    },
+    agregarHijoAdmin() {
+      if (!Array.isArray(this.adminRegistro.hijos)) {
+        this.adminRegistro.hijos = [];
+      }
+      this.adminRegistro.hijos.push({ nombre: '', edad: '', catKey: '', pos: 'MED' });
+    },
+    quitarHijoAdmin(idx) {
+      if (!Array.isArray(this.adminRegistro.hijos) || this.adminRegistro.hijos.length <= 1) return;
+      this.adminRegistro.hijos.splice(idx, 1);
+    },
+    autoAsignarSubHijoAdmin(hijo) {
+      const edad = parseInt(hijo.edad, 10);
+      if (isNaN(edad) || edad < 3 || edad > 50) {
+        hijo.catKey = '';
+        return;
+      }
+      const claves = this.categoriasTorneo.map(c => c.key);
+      const numericas = [];
+      claves.forEach(k => {
+        const m = k.match(/^sub_?(\d+)$/i);
+        if (m) numericas.push({ lim: parseInt(m[1], 10), key: k });
+      });
+      numericas.sort((a, b) => a.lim - b.lim);
+      let elegida = null;
+      for (let i = 0; i < numericas.length; i++) {
+        if (edad <= numericas[i].lim) { elegida = numericas[i].key; break; }
+      }
+      if (!elegida) elegida = claves.includes('submayor') ? 'submayor' : (claves[claves.length - 1] || 'sub6');
+      hijo.catKey = elegida;
+    },
     get dorsalLibreParaAdmin() {
       if (!this.adminRegistro.catKey) return '';
       return this.dorsalLibre(this.adminRegistro.catKey);
     },
 
-    registrarUnificado() {
+    verPassManual: false,
+    async registrarUnificado() {
       const r = this.adminRegistro;
-      
-      // 1. Validar Jugador
-      if (!r.jugadorNombre.trim() || !r.catKey) {
-        this.adminRegistroMsg = ' Nombre del jugador y categorÃ­a son obligatorios';
-        setTimeout(() => this.adminRegistroMsg = '', 3000);
-        return;
-      }
-      
-      // 2. Validar Padre (Si aplica)
+
       if (r.tipo === 'con_padre') {
-        if (!r.padreNombre.trim() || !r.padreUsuario.trim() || !r.padrePassword.trim() || !r.telefonoPadre.trim()) {
-          this.adminRegistroMsg = ' Completa todos los datos de la cuenta familiar';
-          setTimeout(() => this.adminRegistroMsg = '', 3000);
+        const hijosLista = (Array.isArray(r.hijos) && r.hijos.length > 0)
+          ? r.hijos
+          : [{ nombre: r.jugadorNombre, edad: r.jugadorEdad, catKey: r.catKey, pos: r.jugadorPos || 'MED' }];
+
+        for (let i = 0; i < hijosLista.length; i++) {
+          const h = hijosLista[i];
+          const num = i + 1;
+          const nom = (h.nombre || '').trim();
+          const ed = parseInt(h.edad, 10);
+          if (!nom) {
+            this.adminRegistroMsg = `⚠️ Ingresa el nombre del hijo #${num}.`;
+            setTimeout(() => this.adminRegistroMsg = '', 3500);
+            return;
+          }
+          if (isNaN(ed) || ed < 3 || ed > 50) {
+            this.adminRegistroMsg = `⚠️ Ingresa una edad válida (3 a 50 años) para el hijo #${num}.`;
+            setTimeout(() => this.adminRegistroMsg = '', 3500);
+            return;
+          }
+          this.autoAsignarSubHijoAdmin(h);
+          if (!h.catKey) {
+            this.adminRegistroMsg = `⚠️ No se pudo asignar categoría al hijo #${num}.`;
+            setTimeout(() => this.adminRegistroMsg = '', 3500);
+            return;
+          }
+        }
+
+        const nombrePadre = (r.padreNombre || '').trim();
+        const passPadre = (r.padrePassword || '').trim();
+        const telPadre = (r.telefonoPadre || '').trim();
+        if (!nombrePadre || !passPadre || !telPadre) {
+          this.adminRegistroMsg = '⚠️ Completa el nombre del padre/madre, teléfono y contraseña.';
+          setTimeout(() => this.adminRegistroMsg = '', 3500);
           return;
         }
-      }
+        if (passPadre.length < 12 || !(/[a-zA-Z]/.test(passPadre) && /[0-9]/.test(passPadre))) {
+          this.adminRegistroMsg = '⚠️ La contraseña debe tener mínimo 12 caracteres combinando letras y números.';
+          setTimeout(() => this.adminRegistroMsg = '', 4000);
+          return;
+        }
 
-      // 3. Crear Jugador Directamente en la Plantilla
-      const arr = this.playersDe(r.catKey);
-      const libre = this.dorsalLibre(r.catKey);
-      let dorsal = parseInt(r.jugadorDorsal) || libre;
-      
-      // Si el dorsal sugerido estÃ¡ ocupado, usar el libre automÃ¡ticamente.
-      if (arr.some(pl => pl.dorsal === dorsal)) dorsal = libre;
-      
-      const player = this.crearOReciclarJugador(r.catKey, r.jugadorNombre, dorsal, r.jugadorPos);
-      arr.push(player);
-      this.persistPlantilla(r.catKey);
-      this.registrarAccion({ tipo: 'add', catKey: r.catKey, playerId: player.id, player });
+        const hijosCreados = [];
+        for (const h of hijosLista) {
+          const arr = this.playersDe(h.catKey);
+          const edadNum = parseInt(h.edad, 10) || 0;
+          const player = this.crearOReciclarJugador(h.catKey, h.nombre.trim(), 0, h.pos || 'MED', edadNum);
+          arr.push(player);
+          this.persistPlantilla(h.catKey);
+          this.registrarAccion({ tipo: 'add', catKey: h.catKey, playerId: player.id, player });
+          hijosCreados.push({
+            id: player.id,
+            nombre: player.name,
+            edad: edadNum,
+            pos: player.pos,
+            dorsal: 0,
+            catKey: h.catKey,
+            sub: h.catKey
+          });
+        }
 
-      // 4. Crear Padre y Vincularlo Inmediatamente
-      if (r.tipo === 'con_padre') {
-        const res = window.DB.registrarPadre(r.padreNombre.trim(), r.padreUsuario.trim(), r.padrePassword, r.catKey, player.id, r.telefonoPadre.trim());
-        if (!res.ok) {
-          this.adminRegistroMsg = ' Error al crear cuenta familiar: ' + res.msg;
+        const res = window.DB.registrarPadre(
+          nombrePadre,
+          nombrePadre,
+          passPadre,
+          hijosCreados[0].catKey,
+          hijosCreados[0].id,
+          telPadre,
+          hijosCreados[0].edad,
+          hijosCreados[0].nombre,
+          hijosCreados[0].pos,
+          hijosCreados
+        );
+
+        if (!res || !res.ok) {
+          this.adminRegistroMsg = '❌ Error al crear cuenta familiar: ' + (res ? res.msg : 'Usuario duplicado');
+          return;
+        }
+
+        this.adminPadresVersion++;
+        this.comentariosVersion++;
+        this.adminRegistroMsg = '✓ Familia y ' + hijosCreados.length + ' hijo(s) inscritos exitosamente.';
+        setTimeout(() => this.adminRegistroMsg = '', 4000);
+
+        this.adminRegistro = {
+          tipo: 'con_padre',
+          hijos: [{ nombre: '', edad: '', catKey: '', pos: 'MED' }],
+          jugadorNombre: '', jugadorEdad: '', catKey: '', jugadorDorsal: '', jugadorPos: 'MED',
+          padreNombre: '', padreUsuario: '', padrePassword: '', telefonoPadre: ''
+        };
+      } else if (r.tipo === 'admin') {
+        // Registro de Personal Administrativo (Máx. 3)
+        if (this.obtenerTotalAdmins() >= 3) {
+          this.adminRegistroMsg = '⚠️ Se ha alcanzado el límite máximo de 3 administradores.';
+          setTimeout(() => this.adminRegistroMsg = '', 4000);
+          return;
+        }
+        const nomAdmin = (r.padreNombre || '').trim();
+        const telAdmin = (r.telefonoPadre || '').trim();
+        const passAdmin = (r.padrePassword || '').trim();
+        if (!nomAdmin || !telAdmin || !passAdmin) {
+          this.adminRegistroMsg = '⚠️ Completa el nombre completo, teléfono y contraseña del nuevo administrador.';
+          setTimeout(() => this.adminRegistroMsg = '', 3500);
+          return;
+        }
+        if (passAdmin.length < 12 || !(/[a-zA-Z]/.test(passAdmin) && /[0-9]/.test(passAdmin))) {
+          this.adminRegistroMsg = '⚠️ La contraseña debe tener mínimo 12 caracteres combinando letras y números.';
+          setTimeout(() => this.adminRegistroMsg = '', 4000);
+          return;
+        }
+        const usuarioAuto = nomAdmin.toLowerCase()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9]/g, '.')
+          .replace(/\.+/g, '.')
+          .replace(/^\.|\.$/g, '');
+
+        const res = await window.DB.registrarAdministrador({
+          nombre: nomAdmin,
+          usuario: usuarioAuto,
+          password: passAdmin,
+          telefono: telAdmin
+        });
+
+        if (res && res.ok) {
+          this.adminRegistroMsg = `✓ Administrador ${nomAdmin} registrado exitosamente (@${usuarioAuto}).`;
+          this.adminPadresVersion++;
+          if (window.DB.sincronizar) await window.DB.sincronizar(this);
+          setTimeout(() => this.adminRegistroMsg = '', 4000);
+          this.adminRegistro = {
+            tipo: 'con_padre',
+            hijos: [{ nombre: '', edad: '', catKey: '', pos: 'MED' }],
+            jugadorNombre: '', jugadorEdad: '', catKey: '', jugadorDorsal: '', jugadorPos: 'MED',
+            padreNombre: '', padreUsuario: '', padrePassword: '', telefonoPadre: ''
+          };
+        } else {
+          this.adminRegistroMsg = '❌ Error al registrar administrador: ' + ((res && res.error) || 'No se pudo crear la cuenta.');
+          setTimeout(() => this.adminRegistroMsg = '', 5000);
+        }
+      } else {
+        // Adulto sin tutor
+        this.autoAsignarSubAdmin();
+        const edadNum = parseInt(r.jugadorEdad, 10) || 0;
+        if (!r.jugadorNombre.trim() || edadNum < 3 || edadNum > 50 || !r.catKey) {
+          this.adminRegistroMsg = '⚠️ Ingresa el nombre y una edad válida (3 a 50 años) para asignar su categoría.';
+          setTimeout(() => this.adminRegistroMsg = '', 3500);
+          return;
+        }
+        const passAdulto = (r.padrePassword || '').trim();
+        const telAdulto = (r.telefonoPadre || '').trim();
+        if (!passAdulto || !telAdulto) {
+          this.adminRegistroMsg = '⚠️ Completa el teléfono y la contraseña del jugador.';
+          setTimeout(() => this.adminRegistroMsg = '', 3500);
+          return;
+        }
+        if (passAdulto.length < 12 || !(/[a-zA-Z]/.test(passAdulto) && /[0-9]/.test(passAdulto))) {
+          this.adminRegistroMsg = '⚠️ La contraseña debe tener mínimo 12 caracteres combinando letras y números.';
+          setTimeout(() => this.adminRegistroMsg = '', 4000);
+          return;
+        }
+
+        const arr = this.playersDe(r.catKey);
+        const player = this.crearOReciclarJugador(r.catKey, r.jugadorNombre.trim(), 0, r.jugadorPos, edadNum);
+        arr.push(player);
+        this.persistPlantilla(r.catKey);
+        this.registrarAccion({ tipo: 'add', catKey: r.catKey, playerId: player.id, player });
+
+        const res = window.DB.registrarPadre(
+          r.jugadorNombre.trim(),
+          r.jugadorNombre.trim(),
+          passAdulto,
+          r.catKey,
+          player.id,
+          telAdulto,
+          edadNum,
+          player.name,
+          player.pos
+        );
+
+        if (!res || !res.ok) {
+          this.adminRegistroMsg = '❌ Error al crear usuario del jugador: ' + (res ? res.msg : 'Usuario duplicado');
           arr.pop(); this.persistPlantilla(r.catKey);
           return;
         }
-        this.adminPadresVersion++; this.comentariosVersion++;
-      }
 
-      // 5. Exito y reset
-      this.adminRegistroMsg = ' ' + player.name + ' registrado exitosamente.';
-      setTimeout(() => this.adminRegistroMsg = '', 4000);
-      
-      this.adminRegistro = {
-        tipo: 'con_padre',
-        jugadorNombre: '', catKey: '', jugadorDorsal: '', jugadorPos: 'MED',
-        padreNombre: '', padreUsuario: '', padrePassword: '', telefonoPadre: ''
-      };
+        this.adminPadresVersion++;
+        this.comentariosVersion++;
+        this.adminRegistroMsg = '✓ ' + player.name + ' inscrito exitosamente en ' + r.catKey.toUpperCase() + '.';
+        setTimeout(() => this.adminRegistroMsg = '', 4000);
+
+        this.adminRegistro = {
+          tipo: 'con_padre',
+          hijos: [{ nombre: '', edad: '', catKey: '', pos: 'MED' }],
+          jugadorNombre: '', jugadorEdad: '', catKey: '', jugadorDorsal: '', jugadorPos: 'MED',
+          padreNombre: '', padreUsuario: '', padrePassword: '', telefonoPadre: ''
+        };
+      }
     },
 
-    eliminarPadre(id) {
-      if (!confirm('Â¿Eliminar este perfil familiar? El jugador seguirÃ¡ existiendo en la plantilla.')) return;
+    async abrirAgregarHijoModal(padre) {
+      if (!padre || !padre.id) return;
+      const nombre = prompt(`Añadir otro hijo a la familia de "${padre.nombre}":\n\nIngresa el Nombre Completo del hijo:`);
+      if (!nombre || !nombre.trim()) return;
+      const edadStr = prompt(`Ingresa la Edad en años de "${nombre.trim()}":`);
+      const edad = parseInt(edadStr, 10);
+      if (isNaN(edad) || edad < 3 || edad > 50) {
+        alert('Edad inválida. Debe ser entre 3 y 50 años.');
+        return;
+      }
+      const pos = prompt(`Posición preferida de "${nombre.trim()}":\n(DEL = Delantero, MED = Mediocampo, DEF = Defensa, POR = Portero)`, 'MED') || 'MED';
+      
+      const res = await window.DB.agregarHijoAPadre(padre.id, {
+        nombre: nombre.trim(),
+        edad: edad,
+        pos: pos.toUpperCase()
+      });
+
+      if (res && res.ok) {
+        if (res.hijo && res.hijo.catKey) {
+          const arr = this.playersDe(res.hijo.catKey);
+          if (!arr.find(p => p.id === res.hijo.id)) {
+            arr.push({
+              id: res.hijo.id,
+              name: res.hijo.nombre,
+              catKey: res.hijo.catKey,
+              edad: res.hijo.edad,
+              dorsal: res.hijo.dorsal || 0,
+              pos: res.hijo.pos || 'MED',
+              foto: 'img/escudo.png'
+            });
+          }
+        }
+        alert(`✓ ${nombre.trim()} agregado con éxito a la familia de ${padre.nombre} en ${res.hijo.catLabel || res.hijo.catKey}.`);
+        if (window.DB && window.DB.sincronizar) {
+          await window.DB.sincronizar(this);
+        }
+        this.adminPadresVersion++;
+      } else {
+        alert('Error: ' + ((res && res.error) || 'No se pudo agregar el hijo.'));
+      }
+    },
+
+    async iniciarCambioSub(player, catOrigen) {
+      const orig = catOrigen || player.catKey || this.categoriaActual;
+      const opciones = this.categoriasTorneo.filter(c => c.key !== orig);
+      const texto = opciones.map((c, i) => `${i + 1}. ${c.label} (${c.key})`).join('\n');
+      const sel = prompt(`Transferir a ${player.name} de Categoría (Sub):\n\nEscribe el número de la categoría destino:\n\n${texto}`);
+      if (!sel) return;
+      let destino = null;
+      const num = parseInt(sel.trim(), 10);
+      if (!isNaN(num) && opciones[num - 1]) {
+        destino = opciones[num - 1].key;
+      } else {
+        const q = sel.trim().toLowerCase();
+        const cFound = opciones.find(c => c.key.toLowerCase() === q || c.label.toLowerCase().includes(q));
+        if (cFound) destino = cFound.key;
+      }
+      if (!destino) {
+        alert('Categoría no válida seleccionada.');
+        return;
+      }
+      await this.confirmarCambioSub(player, destino, orig);
+    },
+
+    async confirmarCambioSub(player, catDestino, catOrigen = null) {
+      const orig = catOrigen || player.catKey || this.categoriaActual;
+      if (!orig || !catDestino || orig === catDestino) return;
+      const cDestObj = this.categoriasTorneo.find(c => c.key === catDestino);
+      const labelDest = cDestObj ? cDestObj.label : catDestino.toUpperCase();
+      const cOrigObj = this.categoriasTorneo.find(c => c.key === orig);
+      const labelOrig = cOrigObj ? cOrigObj.label : orig.toUpperCase();
+
+      if (!confirm(`¿Confirmas transferir a ${player.name} de ${labelOrig} a ${labelDest}?`)) return;
+
+      const res = await window.DB.cambiarCategoriaJugador(orig, catDestino, player.id);
+      if (res && res.ok) {
+        alert(`✓ ${player.name} fue transferido con éxito a ${res.labelDestino || labelDest}.\n\nDorsal asignado: ${res.dorsal > 0 ? ('#' + res.dorsal) : '#S/N (Disponible para asignar)'}`);
+        const arrOrig = this.playersDe(orig);
+        const idx = arrOrig.findIndex(p => p.id === player.id);
+        if (idx >= 0) arrOrig.splice(idx, 1);
+        this.persistPlantilla(orig);
+
+        const arrDest = this.playersDe(catDestino);
+        player.catKey = catDestino;
+        player.dorsal = res.dorsal !== undefined ? res.dorsal : player.dorsal;
+        arrDest.push(player);
+        this.persistPlantilla(catDestino);
+
+        if (this.playerModal && this.playerModal.id === player.id) {
+          this.playerModal = null;
+        }
+        this.subDestinoTransfer = '';
+        this.adminPadresVersion++;
+        setTimeout(() => { if (window.DB && window.DB.sincronizar) window.DB.sincronizar(this); }, 500);
+      } else {
+        alert('Error al transferir: ' + ((res && res.error) || 'No se pudo completar la transferencia.'));
+      }
+    },
+
+    async eliminarPadre(id) {
+      if (!confirm('¿Dar de baja a esta familia (Ley 81)? Se eliminarán definitivamente los datos del padre/madre y los datos del jugador de la base de datos.')) return;
+      const padre = this.listaPadres.find(p => p.id === id);
+      if (padre && padre.hijoCat && padre.hijoId) {
+        const arr = this.playersDe(padre.hijoCat);
+        const idx = arr.findIndex(pl => pl.id === padre.hijoId);
+        if (idx >= 0) arr.splice(idx, 1);
+      }
       window.DB.eliminarPadre(id);
       this.adminPadresVersion++; this.comentariosVersion++;
+      setTimeout(() => { if (window.DB && window.DB.sincronizar) window.DB.sincronizar(this); }, 400);
     },
 
-    /* ========== 15) TEMPORIZADOR QUINCENAL ========== */
+    /* ========== GESTIÓN DE EQUIPO ADMINISTRATIVO (MÁXIMO 3) ========== */
+    async registrarAdmin() {
+      if (!this.esSuperAdmin) {
+        alert('Solo el Administrador Principal puede registrar otros administradores.');
+        return;
+      }
+      this.nuevoAdminMsg = '';
+      const nom = (this.nuevoAdmin.nombre || '').trim();
+      const usu = (this.nuevoAdmin.usuario || '').trim().toLowerCase();
+      const pass = (this.nuevoAdmin.password || '').trim();
+
+      if (!nom) {
+        this.nuevoAdminMsg = 'El nombre completo es obligatorio.';
+        return;
+      }
+      if (!usu) {
+        this.nuevoAdminMsg = 'El usuario de acceso es obligatorio.';
+        return;
+      }
+      if (pass.length < 12) {
+        this.nuevoAdminMsg = 'La contraseña debe tener al menos 12 caracteres.';
+        return;
+      }
+      if (this.listaAdmins.length >= 3) {
+        this.nuevoAdminMsg = 'Límite alcanzado: máximo 3 administradores.';
+        return;
+      }
+
+      const res = await window.DB.registrarAdministrador({
+        nombre: nom,
+        usuario: usu,
+        password: pass
+      });
+
+      if (res && res.ok) {
+        this.nuevoAdmin = { nombre: '', usuario: '', password: '', usuarioManual: false };
+        this.nuevoAdminMsg = '✓ Administrador registrado con éxito.';
+        this.adminPadresVersion++;
+        setTimeout(() => { if (window.DB && window.DB.sincronizar) window.DB.sincronizar(this); }, 400);
+        setTimeout(() => { this.nuevoAdminMsg = ''; }, 3500);
+      } else {
+        this.nuevoAdminMsg = (res && res.error) || 'Error al crear el administrador.';
+      }
+    },
+
+    async eliminarAdmin(id, usuario) {
+      if (!this.esSuperAdmin) {
+        alert('Solo el Administrador Principal puede eliminar cuentas de administrador.');
+        return;
+      }
+      if (this.listaAdmins.length <= 1) {
+        alert('No puedes eliminar al único administrador del sistema.');
+        return;
+      }
+      if (this.currentUser && (this.currentUser.id == id || this.currentUser.usuario == usuario)) {
+        alert('No puedes eliminar tu propia cuenta activa de administrador.');
+        return;
+      }
+      if (!confirm(`¿Estás seguro de que deseas eliminar el acceso administrativo a @${usuario}? Esta acción no se puede deshacer.`)) {
+        return;
+      }
+
+      const res = await window.DB.eliminarAdministrador(id);
+      if (res && res.ok) {
+        this.adminPadresVersion++;
+        setTimeout(() => { if (window.DB && window.DB.sincronizar) window.DB.sincronizar(this); }, 400);
+        alert(`Administrador @${usuario} eliminado exitosamente.`);
+      } else {
+        alert('Error al eliminar administrador: ' + ((res && res.error) || 'No se pudo eliminar.'));
+      }
+    },
+
+    async designarComoSuperAdmin(adm) {
+      if (!this.esSuperAdmin) {
+        alert('Solo el Super Administrador puede designar a otros usuarios como Super Admin.');
+        return;
+      }
+      if (!confirm(`¿Estás seguro de ascender a "${adm.nombre}" (@${adm.usuario}) a Super Administrador? Tendrá acceso total a todas las políticas y configuraciones del club.`)) {
+        return;
+      }
+      const res = await window.DB.designarSuperAdmin(adm.id);
+      if (res && res.ok) {
+        adm.es_top = 1;
+        adm.permisos = ['*'];
+        this.adminPadresVersion++;
+        alert(`✓ "${adm.nombre}" ahora es Super Administrador del club.`);
+      } else {
+        alert('Error: ' + ((res && res.error) || 'No se pudo designar como Super Admin.'));
+      }
+    },
+
+    /* ========== POLÍTICAS DE ACCESO ADMINISTRATIVO (RBAC) ========== */
+    abrirModalPoliticas(adm) {
+      if (!this.esSuperAdmin) {
+        alert('Solo el Administrador Principal puede configurar políticas.');
+        return;
+      }
+      let perms = [];
+      if (Array.isArray(adm.permisos)) {
+        perms = [...adm.permisos];
+      } else if (typeof adm.permisos === 'string') {
+        try { perms = JSON.parse(adm.permisos); } catch(e) { perms = []; }
+      }
+      this.adminEditandoPoliticas = {
+        id: adm.id,
+        nombre: adm.nombre,
+        usuario: adm.usuario,
+        permisos: perms
+      };
+      this.msgPoliticasAdmin = '';
+      this.modalPoliticasAdmin = true;
+    },
+    async guardarPoliticasAdmin() {
+      if (!this.adminEditandoPoliticas || !this.adminEditandoPoliticas.id) return;
+      this.msgPoliticasAdmin = '';
+      const res = await window.DB.actualizarPoliticasAdmin(
+        this.adminEditandoPoliticas.id,
+        this.adminEditandoPoliticas.permisos || []
+      );
+      if (res && res.ok) {
+        this.msgPoliticasAdmin = '✓ Políticas guardadas con éxito.';
+        this.adminPadresVersion++;
+        setTimeout(() => { if (window.DB && window.DB.sincronizar) window.DB.sincronizar(this); }, 300);
+        setTimeout(() => { this.modalPoliticasAdmin = false; }, 1200);
+      } else {
+        this.msgPoliticasAdmin = (res && res.error) || 'Error al guardar políticas.';
+      }
+    },
+
+    /* ========== ACCIONES DESACOPLADAS PARA FAMILIAS (TELÉFONO Y CONTRASEÑA) ========== */
+    abrirModalTelefonoPadre(padre) {
+      if (!padre) return;
+      this.padreTelefonoForm = {
+        id: padre.id,
+        nombre: padre.nombre || '',
+        usuario: padre.usuario || '',
+        telefono: padre.telefono || ''
+      };
+      this.msgTelefonoPadre = '';
+      this.modalTelefonoPadre = true;
+    },
+    async guardarTelefonoPadre() {
+      if (!this.padreTelefonoForm.id) return;
+      this.msgTelefonoPadre = '';
+      const tel = (this.padreTelefonoForm.telefono || '').trim();
+      const res = await window.DB.actualizarTelefonoPadre(this.padreTelefonoForm.id, tel);
+      if (res && res.ok) {
+        this.msgTelefonoPadre = '✓ Teléfono actualizado correctamente.';
+        this.adminPadresVersion++;
+        setTimeout(() => { if (window.DB && window.DB.sincronizar) window.DB.sincronizar(this); }, 300);
+        setTimeout(() => { this.modalTelefonoPadre = false; }, 1200);
+      } else {
+        this.msgTelefonoPadre = (res && res.error) || 'Error al actualizar teléfono.';
+      }
+    },
+
+    abrirModalPasswordPadre(padre) {
+      if (!padre) return;
+      this.padrePasswordForm = {
+        id: padre.id,
+        nombre: padre.nombre || '',
+        usuario: padre.usuario || '',
+        password: '',
+        mostrar: false
+      };
+      this.msgPasswordPadre = '';
+      this.modalPasswordPadre = true;
+    },
+    async guardarPasswordPadre() {
+      if (!this.padrePasswordForm.id) return;
+      this.msgPasswordPadre = '';
+      const pass = (this.padrePasswordForm.password || '').trim();
+      if (!pass || pass.length < 12 || !(/[a-zA-Z]/.test(pass) && /[0-9]/.test(pass))) {
+        this.msgPasswordPadre = 'La contraseña debe tener al menos 12 caracteres combinando letras y números.';
+        return;
+      }
+      const res = await window.DB.restablecerPasswordPadre(this.padrePasswordForm.id, pass);
+      if (res && res.ok) {
+        this.msgPasswordPadre = '✓ Contraseña restablecida con éxito.';
+        this.adminPadresVersion++;
+        setTimeout(() => { this.modalPasswordPadre = false; }, 1200);
+      } else {
+        this.msgPasswordPadre = (res && res.error) || 'Error al restablecer contraseña.';
+      }
+    },
+
+    /* ========== EDICIÓN COMPLETA DE FAMILIAS (TELÉFONO, EDADES, CATEGORÍA, CONTRASEÑA) ========== */
+    abrirModalEditarPadre(padre) {
+      if (!padre) return;
+      let hijos = [];
+      if (Array.isArray(padre.hijos) && padre.hijos.length > 0) {
+        hijos = padre.hijos.map(h => ({
+          id: h.id || 0,
+          nombre: h.nombre || '',
+          edad: parseInt(h.edad, 10) || 0,
+          catKey: h.catKey || padre.hijoCat || 'sub6',
+          sub: h.sub || h.catLabel || '',
+          dorsal: h.dorsal || 0,
+          pos: h.pos || 'MED'
+        }));
+      } else if (padre.hijoId) {
+        hijos = [{
+          id: padre.hijoId,
+          nombre: padre.hijoNombre || '',
+          edad: parseInt(padre.hijoEdad, 10) || 0,
+          catKey: padre.hijoCat || 'sub6',
+          sub: padre.sub || '',
+          dorsal: padre.hijoDorsal || 0,
+          pos: padre.hijoPos || 'MED'
+        }];
+      }
+
+      this.padreEditando = {
+        id: padre.id,
+        nombre: padre.nombre || '',
+        usuario: padre.usuario || '',
+        telefono: padre.telefono || '',
+        nuevaPassword: '',
+        hijos: hijos,
+        hijoCat: padre.hijoCat || 'sub6',
+        metodoPago: padre.metodoPago || 'linea',
+        fechaVencimiento: padre.fechaVencimiento || null
+      };
+      this.mostrarPassPadreEdit = false;
+      this.editPadreMsg = '';
+      this.modalEditarPadre = true;
+    },
+
+    cerrarModalEditarPadre() {
+      this.modalEditarPadre = false;
+      this.padreEditando = null;
+      this.editPadreMsg = '';
+      this.mostrarPassPadreEdit = false;
+    },
+
+    recalcularCatHijo(hijo) {
+      if (!hijo) return;
+      const edad = parseInt(hijo.edad, 10);
+      if (isNaN(edad) || edad < 3 || edad > 50) return;
+      const claves = this.categoriasTorneo.map(c => c.key);
+      const numericas = [];
+      claves.forEach(k => {
+        const m = k.match(/^sub_?(\d+)$/i);
+        if (m) numericas.push({ lim: parseInt(m[1], 10), key: k });
+      });
+      numericas.sort((a, b) => a.lim - b.lim);
+      let elegida = null;
+      for (let i = 0; i < numericas.length; i++) {
+        if (edad <= numericas[i].lim) { elegida = numericas[i].key; break; }
+      }
+      if (!elegida) elegida = claves.includes('submayor') ? 'submayor' : (claves[claves.length - 1] || 'sub6');
+      hijo.catKey = elegida;
+    },
+
+    async guardarEdicionPadre() {
+      if (!this.padreEditando) return;
+      this.editPadreMsg = '';
+
+      const p = this.padreEditando;
+      if (p.nuevaPassword && p.nuevaPassword.trim() !== '') {
+        if (p.nuevaPassword.trim().length < 12) {
+          this.editPadreMsg = 'La nueva contraseña debe tener al menos 12 caracteres.';
+          return;
+        }
+      }
+
+      for (let i = 0; i < (p.hijos || []).length; i++) {
+        const h = p.hijos[i];
+        if (!h.nombre || !h.nombre.trim()) {
+          this.editPadreMsg = `El nombre del hijo #${i + 1} no puede estar vacío.`;
+          return;
+        }
+        const edad = parseInt(h.edad, 10);
+        if (isNaN(edad) || edad < 3 || edad > 50) {
+          this.editPadreMsg = `La edad del hijo #${i + 1} debe estar entre 3 y 50 años.`;
+          return;
+        }
+        if (!h.catKey) {
+          this.recalcularCatHijo(h);
+        }
+      }
+
+      const payload = {
+        id: p.id,
+        rol: 'padre',
+        nombre: p.nombre,
+        usuario: p.usuario,
+        telefono: (p.telefono || '').trim(),
+        password: (p.nuevaPassword || '').trim(),
+        hijoCat: (p.hijos && p.hijos[0] && p.hijos[0].catKey) ? p.hijos[0].catKey : p.hijoCat,
+        hijos: p.hijos,
+        metodoPago: p.metodoPago,
+        fechaVencimiento: p.fechaVencimiento
+      };
+
+      const res = await window.DB.actualizarPadreCompleto(payload);
+      if (res && res.ok) {
+        this.editPadreMsg = '✓ Familia actualizada con éxito.';
+        this.adminPadresVersion++;
+        setTimeout(() => { if (window.DB && window.DB.sincronizar) window.DB.sincronizar(this); }, 400);
+        setTimeout(() => {
+          this.cerrarModalEditarPadre();
+        }, 1200);
+      } else {
+        this.editPadreMsg = (res && res.error) || 'Error al guardar los cambios de la familia.';
+      }
+    },
+
+    /* ========== 15) TEMPORIZADOR MENSUAL (DÍA 30 DE CADA MES) ========== */
+    calcularFechaDia30(avanzarMes = false) {
+      const hoy = new Date();
+      let y = hoy.getFullYear();
+      let m = hoy.getMonth() + 1;
+      if (avanzarMes || hoy.getDate() > 30) {
+        m++;
+        if (m > 12) { m = 1; y++; }
+      }
+      const maxDia = new Date(y, m, 0).getDate();
+      const dia = Math.min(30, maxDia);
+      return y + '-' + String(m).padStart(2, '0') + '-' + String(dia).padStart(2, '0');
+    },
     proximaQuincena() {
       const hoy = new Date();
-      const dia = hoy.getDate();
-      let proxima;
-      if (dia <= 15) {
-        proxima = new Date(hoy.getFullYear(), hoy.getMonth(), 15);
-      } else {
-        const ultimoDia = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
-        proxima = new Date(hoy.getFullYear(), hoy.getMonth(), ultimoDia);
+      let y = hoy.getFullYear();
+      let m = hoy.getMonth();
+      if (hoy.getDate() > 30) {
+        m++;
+        if (m > 11) { m = 0; y++; }
       }
-      if (proxima < hoy) {
-        if (dia <= 15) proxima = new Date(hoy.getFullYear(), hoy.getMonth(), 15);
-        else proxima = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 15);
-      }
+      const maxDia = new Date(y, m + 1, 0).getDate();
+      const proxima = new Date(y, m, Math.min(30, maxDia));
       return proxima.toLocaleDateString('es-PA', { day: '2-digit', month: 'short', year: 'numeric' });
     },
     diasParaQuincena() {
       const hoy = new Date();
       hoy.setHours(0,0,0,0);
-      const dia = hoy.getDate();
-      let proxima;
-      if (dia <= 15) {
-        proxima = new Date(hoy.getFullYear(), hoy.getMonth(), 15);
-      } else {
-        const ultimoDia = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
-        proxima = new Date(hoy.getFullYear(), hoy.getMonth(), ultimoDia);
+      let y = hoy.getFullYear();
+      let m = hoy.getMonth();
+      if (hoy.getDate() > 30) {
+        m++;
+        if (m > 11) { m = 0; y++; }
       }
-      if (proxima < hoy) proxima = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 15);
+      const maxDia = new Date(y, m + 1, 0).getDate();
+      const proxima = new Date(y, m, Math.min(30, maxDia));
       const diff = Math.ceil((proxima - hoy) / (1000 * 60 * 60 * 24));
       return diff < 0 ? 0 : diff;
     },
@@ -1031,6 +2330,7 @@ document.addEventListener('alpine:init', () => {
     filtroMetodoCuenta: '', // ''=todos, 'efectivo', 'linea'
     
     get estadoDeCuentas() {
+      void this.adminPadresVersion; void this.comentariosVersion;
       try {
         let lista = this.listaPadres.map(p => {
            let estado = 'pendiente';
@@ -1046,8 +2346,8 @@ document.addEventListener('alpine:init', () => {
         });
         
         lista.sort((a,b) => {
-           const orden = { 'vencido': 1, 'pendiente': 2, 'aldia': 3 };
-           if (orden[a.estadoPago] !== orden[b.estadoPago]) return orden[a.estadoPago] - orden[b.estadoPago];
+           const orden = { 'amarillo': 0, 'vencido': 1, 'pendiente': 2, 'aldia': 3 };
+           if (orden[a.estadoPago] !== orden[b.estadoPago]) return (orden[a.estadoPago] ?? 9) - (orden[b.estadoPago] ?? 9);
            return (a.nombre || '').localeCompare(b.nombre || '');
         });
         
@@ -1063,7 +2363,7 @@ document.addEventListener('alpine:init', () => {
     },
 
     cambiarMetodoPago(padreId, nuevoMetodo) {
-      if (!confirm(`Â¿Cambiar mÃ©todo de pago a ${nuevoMetodo === "efectivo" ? "Efectivo" : "En LÃ­nea"}?`)) return;
+      if (!confirm(`¿Cambiar método de pago a ${nuevoMetodo === "efectivo" ? "Efectivo" : "En Línea"}?`)) return;
       const padre = this.listaPadres.find(p => p.id == padreId);
       if (!padre) return;
       padre.metodoPago = nuevoMetodo;
@@ -1079,11 +2379,11 @@ document.addEventListener('alpine:init', () => {
     registrarPagoManual() {
       if (!this.esAdmin) return;
       if (!this.pagoManual.padreId) { alert(' Selecciona un padre'); return; }
-      if (!this.pagoManual.monto || this.pagoManual.monto <= 0) { alert(' Ingresa un monto vÃ¡lido'); return; }
+      if (!this.pagoManual.monto || this.pagoManual.monto <= 0) { alert(' Ingresa un monto válido'); return; }
       const padre = this.listaPadres.find(p => p.id == this.pagoManual.padreId);
       if (!padre) { alert(' Padre no encontrado'); return; }
       
-      const conceptoLabel = this.pagoManual.concepto === 'inscripcion' ? 'InscripciÃ³n' : (this.pagoManual.concepto === 'mensualidad' ? 'Mensualidad' : 'Otro');
+      const conceptoLabel = this.pagoManual.concepto === 'inscripcion' ? 'Inscripción' : (this.pagoManual.concepto === 'mensualidad' ? 'Mensualidad' : 'Otro');
       const metodo = this.pagoManualTipo;
       
       // Guardar el historial de pago
@@ -1098,10 +2398,8 @@ document.addEventListener('alpine:init', () => {
         estado: 'validado'
       });
 
-      // Actualizar fecha de vencimiento +15 dÃ­as
-      const d = new Date(this.pagoManual.fecha);
-      d.setDate(d.getDate() + 15);
-      const nuevaFecha = d.toISOString().slice(0,10);
+      // Actualizar fecha de vencimiento +15 días
+      const nuevaFecha = this.calcularFechaDia30(true);
       
       padre.fechaVencimiento = nuevaFecha;
       padre.metodoPago = metodo;
@@ -1113,25 +2411,10 @@ document.addEventListener('alpine:init', () => {
 
       this.adminPadresVersion++; this.comentariosVersion++;
       this.pagoManual = { padreId: '', concepto: 'mensualidad', monto: 15, fecha: new Date().toISOString().slice(0,10), referencia: '', metodo: 'efectivo' };
-      alert('Pago registrado correctamente. PrÃ³ximo vencimiento: ' + nuevaFecha);
+      alert('Pago registrado correctamente. Próximo vencimiento: ' + nuevaFecha);
     },
     
-    bloquearCuentaPadre(padreId) {
-      if (!confirm('Â¿Bloquear el acceso de esta cuenta a la plataforma? (El niÃ±o solo tendrÃ¡ 1 dÃ­a de entreno)')) return;
-      window.DB.actualizarPadre(padreId, { password: 'BLOQUEADO_' + Date.now() });
-      this.adminPadresVersion++; this.comentariosVersion++;
-      alert('Cuenta bloqueada exitosamente.');
-    },
     
-    desbloquearCuentaPadre(padreId) {
-      if (!confirm('Â¿Desbloquear esta cuenta? Se restaurar? su contraseÃ±a a su nÃºmero de usuario (DNI).')) return;
-      const padre = this.listaPadres.find(p => p.id == padreId);
-      if (padre) {
-        window.DB.actualizarPadre(padreId, { password: padre.usuario });
-        this.adminPadresVersion++; this.comentariosVersion++;
-        alert('Cuenta desbloqueada. Su nueva contraseÃ±a es su nÃºmero de usuario.');
-      }
-    },
     
           filtroEfectivo: 'todos', // todos, aldia, pendientes, vencidos
       get padresParaCobroEfectivoFiltrados() {
@@ -1149,7 +2432,7 @@ document.addEventListener('alpine:init', () => {
       },
             filtroLinea: 'todos', // todos, aldia, pendientes, vencidos
       get padresParaCobroLineaFiltrados() {
-          let lista = this.estadoDeCuentas.filter(p => p.metodoPago === 'linea');
+          let lista = this.estadoDeCuentas.filter(p => p.metodoPago === 'linea' || p.estadoPago === 'amarillo');
           if (this.filtroLinea === 'aldia') lista = lista.filter(p => p.estadoPago === 'aldia');
           else if (this.filtroLinea === 'pendientes') lista = lista.filter(p => p.estadoPago === 'pendiente');
           else if (this.filtroLinea === 'vencidos') lista = lista.filter(p => p.estadoPago === 'vencido');
@@ -1171,7 +2454,7 @@ document.addEventListener('alpine:init', () => {
           if (comp) {
               this.comprobanteActivo = comp;
           } else {
-              alert('Este padre no tiene comprobantes pendientes de validaciÃ³n.');
+              alert('Este padre no tiene comprobantes pendientes de validación.');
           }
       },
       cerrarComprobante() {
@@ -1197,17 +2480,35 @@ document.addEventListener('alpine:init', () => {
               this.adminPadresVersion++; this.comentariosVersion++;
           }
       },
-      deshacerPago(padreId) {
-          if (!confirm('Â¿EstÃ¡s seguro de deshacer este pago y marcar al usuario como PENDIENTE?')) return;
+      async deshacerPago(padreId) {
+          if (!confirm('¿Estás seguro de deshacer este pago y marcar al usuario como PENDIENTE?')) return;
           const padre = this.listaPadres.find(p => p.id == padreId);
           if (padre) {
               const f = new Date();
-              f.setDate(f.getDate() - 15);
-              padre.fechaVencimiento = f.toISOString().slice(0,10);
-              if(window.DB.post) {
-                  window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
+              f.setDate(f.getDate() - 35);
+              const fechaPasada = f.toISOString().slice(0, 10);
+              padre.fechaVencimiento = fechaPasada;
+
+              if (window.DB && typeof window.DB.deshacerPagoPadre === 'function') {
+                  window.DB.deshacerPagoPadre(padre.id, fechaPasada);
+              }
+
+              if (window.DB && window.DB.post) {
+                  await window.DB.post('usuarios/actualizarPago', {
+                      id: padre.id,
+                      telefono: padre.telefono,
+                      fechaVencimiento: fechaPasada,
+                      metodoPago: padre.metodoPago || padre.metodo_pago,
+                      deshacer: true
+                  });
               }
               this.adminPadresVersion++; this.comentariosVersion++;
+
+              const toast = document.createElement('div');
+              toast.className = 'fixed top-4 right-4 bg-amber-500 text-black font-black py-2.5 px-4 rounded-xl shadow-2xl z-50 border border-black/20';
+              toast.innerText = '✓ Pago deshecho. Estado actualizado a Pendiente / Vencido';
+              document.body.appendChild(toast);
+              setTimeout(() => toast.remove(), 2500);
           }
       },
       aprobarPagoDirecto(padreId) {
@@ -1217,9 +2518,7 @@ document.addEventListener('alpine:init', () => {
           }
           const padre = this.listaPadres.find(p => p.id == padreId);
           if (padre) {
-              const f = new Date();
-              f.setDate(f.getDate() + 15);
-              padre.fechaVencimiento = f.toISOString().slice(0,10);
+              padre.fechaVencimiento = this.calcularFechaDia30(true);
               // Save to database directly
               if(window.DB.post) {
                   window.DB.post('usuarios/actualizarPago', { id: padre.id, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
@@ -1236,24 +2535,22 @@ document.addEventListener('alpine:init', () => {
       procesarComprobanteDirecto(padreId, aprobar) {
           const comp = window.DB.obtenerComprobantes().find(c => c.padreId == padreId && (c.estado === 'en_revision' || c.estado === 'pendiente'));
           if(!comp) return;
-          if(!aprobar && !confirm('Â¿EstÃ¡s seguro de rechazar este pago?')) return;
+          if(!aprobar && !confirm('¿Estás seguro de rechazar este pago?')) return;
           
           window.DB.validarComprobante(comp.id, aprobar);
           
           if (aprobar) {
               const padre = this.listaPadres.find(p => p.id == padreId);
               if (padre) {
-                  const f = new Date();
-                  f.setDate(f.getDate() + 15);
-                  padre.fechaVencimiento = f.toISOString().slice(0,10);
+                  padre.fechaVencimiento = this.calcularFechaDia30(true);
                   if(window.DB.post) {
                       window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
                   }
                   this.adminPadresVersion++; this.comentariosVersion++;
-                  // Muestra una notificaciÃ³n rÃ¡pida sin bloquear (toast)
+                  // Muestra una notificación rápida sin bloquear (toast)
                   const toast = document.createElement('div');
                   toast.className = 'fixed top-4 right-4 bg-nico-green text-white font-bold py-2 px-4 rounded-xl shadow-lg z-50 animate-bounce';
-                  toast.innerText = 'Pago Aprobado (Al DÃ­a)';
+                  toast.innerText = 'Pago Aprobado (Al Día)';
                   document.body.appendChild(toast);
                   setTimeout(() => toast.remove(), 2000);
               }
@@ -1266,17 +2563,15 @@ document.addEventListener('alpine:init', () => {
           if (aprobar) {
               const padre = this.listaPadres.find(p => p.id == this.comprobanteActivo.padreId);
               if (padre) {
-                  const f = new Date();
-                  f.setDate(f.getDate() + 15);
-                  padre.fechaVencimiento = f.toISOString().slice(0,10);
+                  padre.fechaVencimiento = this.calcularFechaDia30(true);
                   if(window.DB.post) {
                       window.DB.post('usuarios/actualizarPago', { id: padre.id, telefono: padre.telefono, fechaVencimiento: padre.fechaVencimiento, metodoPago: padre.metodo_pago });
                   }
                   this.adminPadresVersion++; this.comentariosVersion++;
-                  alert('Pago aprobado. El estado del padre ha cambiado a Pagado (Al dÃ­a).');
+                  alert('Pago aprobado. El estado del padre ha cambiado a Pagado (Al día).');
               }
           } else {
-              alert('Comprobante rechazado. El padre deberÃ¡ subirlo de nuevo.');
+              alert('Comprobante rechazado. El padre deberá subirlo de nuevo.');
           }
           this.cerrarComprobante();
       },
@@ -1290,28 +2585,70 @@ document.addEventListener('alpine:init', () => {
       cerrarModalPago() {
           this.modalPagoActivo = false;
       },
-      guardarPagoModal() {
+      async guardarPagoModal() {
           if(!this.pagoActual.id) return;
           const padre = this.listaPadres.find(p => p.id == this.pagoActual.id);
           if(!padre) return;
-          const f = new Date(this.pagoActual.fecha);
-          f.setDate(f.getDate() + 15);
-          padre.fechaVencimiento = f.toISOString().slice(0,10);
-          this.adminPadresVersion++; this.comentariosVersion++;
-          alert('Pago registrado correctamente. El estado pasarÃ¡ a VERDE.');
-          this.cerrarModalPago();
+          const fechaVenc = this.calcularFechaDia30(true);
+          try {
+              const res = await window.DB.post('usuarios/actualizarPago', {
+                  id: padre.id,
+                  metodoPago: this.pagoActual.metodo || 'linea',
+                  telefono: padre.telefono || '',
+                  fechaVencimiento: fechaVenc
+              });
+              if (res && res.ok) {
+                  padre.fechaVencimiento = res.fechaVencimiento || fechaVenc;
+                  padre.metodoPago = this.pagoActual.metodo || 'linea';
+                  if (window.DB && typeof window.DB.obtenerPadres === 'function') {
+                      const pDb = window.DB.obtenerPadres().find(x => x.id == padre.id);
+                      if (pDb) {
+                          pDb.fechaVencimiento = padre.fechaVencimiento;
+                          pDb.metodoPago = padre.metodoPago;
+                      }
+                  }
+                  if (window.DB && typeof window.DB.guardarPagoClub === 'function') {
+                      window.DB.guardarPagoClub({
+                          padreId: padre.id,
+                          padreNombre: padre.nombre,
+                          monto: this.pagoActual.monto || 15.00,
+                          metodo: this.pagoActual.metodo || 'linea',
+                          fecha: new Date().toISOString().split('T')[0]
+                      });
+                  }
+                  this.adminPadresVersion++; this.comentariosVersion++;
+                  alert('Pago registrado correctamente. El estado pasará a VERDE.');
+                  this.cerrarModalPago();
+              } else {
+                  alert('Error al registrar pago en base de datos: ' + ((res && res.error) || 'Error de conexión'));
+              }
+          } catch(e) {
+              alert('Error de conexión al registrar pago.');
+          }
       },
-      bloquearCuenta(id) {
-          if(!confirm('Â¿Bloquear la cuenta de esta familia? No podrÃ¡n acceder a la plataforma.')) return;
-          alert('Cuenta bloqueada exitosamente.');
-      },
+      async bloquearCuenta(id, estado = true) { 
+        if(estado && !confirm('Bloquear la cuenta?')) return; 
+        if(!estado && !confirm('Desbloquear cuenta?')) return; 
+        try {
+            const res = await window.DB.post('usuarios/bloquear', {id: id, estado: estado ? 1 : 0}); 
+            if (res && res.ok) {
+                const u = window.DB.obtenerPadres().find(x => x.id == id); 
+                if (u) u.bloqueado = estado ? 1 : 0; 
+                this.adminPadresVersion++; this.comentariosVersion++; 
+            } else {
+                alert('Error al actualizar en el servidor.');
+            }
+        } catch(e) {
+            
+        }
+    },
       recordatorioMasivo() {
       const padresPendientes = [...this.padresParaCobroEfectivoFiltrados, ...this.padresParaCobroLineaFiltrados].filter(p => p.estadoPago !== 'aldia' && p.estadoPago !== 'amarillo');
       if (padresPendientes.length === 0) { alert('No hay padres con pagos pendientes o vencidos.'); return; }
-      if (!confirm('Se prepararÃ¡n mensajes para ' + padresPendientes.length + ' familias pendientes. Â¿Deseas continuar?')) return;
+      if (!confirm('Se prepararán mensajes para ' + padresPendientes.length + ' familias pendientes. ¿Deseas continuar?')) return;
       let i = 0;
       const next = () => {
-        if (i >= padresPendientes.length) { alert('Â¿Todos los recordatorios fueron preparados!'); return; }
+        if (i >= padresPendientes.length) { alert('¿Todos los recordatorios fueron preparados!'); return; }
         const p = padresPendientes[i];
         this.recordatorioWhatsapp(p.id, 'ambos');
         i++;
@@ -1320,28 +2657,36 @@ document.addEventListener('alpine:init', () => {
       next();
     },
     recordatorioWhatsapp(padreId, tipo) {
-          const padre = this.listaPadres.find(p => p.id == padreId);
-          if (!padre) return;
-          const telf = padre.telefono || '';
-          if (!telf) { alert('Este padre no tiene nÃºmero de telÃ©fono registrado.'); return; }
-          let msg = '';
-          if (tipo === 'efectivo') {
-              msg = `Hola ${padre.nombre}, le recordamos desde la Academia Nico Sport que su pago estÃ¡ pendiente. Por favor acÃ©rquese a nuestras instalaciones para realizar su pago en efectivo.`;
-          } else {
-              msg = `Hola ${padre.nombre}, le recordamos desde la Academia Nico Sport que su ciclo de pago estÃ¡ por vencer. Por favor realice su pago en lÃ­nea.`;
-          }
-          window.open(`https://wa.me/${telf}?text=${encodeURIComponent(msg)}`, '_blank');
-      },
-      recordatorioWhatsappViejo(padreId) {
       const padre = this.listaPadres.find(p => p.id == padreId);
       if (!padre) return;
       const telf = padre.telefono || '';
-      if (!telf) { alert('Este padre no tiene nÃºmero de telÃ©fono registrado.'); return; }
-      const msg = `Hola ${padre.nombre}, le recordamos desde la Academia Nico Sport que su fecha de pago ha vencido. Por favor, regularice su situaciÃ³n.`;
-      window.open(`https://wa.me/${telf}?text=${encodeURIComponent(msg)}`, '_blank');
+      if (!telf) { alert('Este padre no tiene número de teléfono registrado.'); return; }
+      const webUrl = this.obtenerUrlSitio();
+      const yapeStr = this.numeroYape ? `\n📲 *Pagar por Yape al:* ${this.numeroYape}` : '';
+      let msg = '';
+      if (tipo === 'efectivo') {
+        msg = `⚽ *ACADEMIA NICO SPORT*\n\nHola *${padre.nombre}*, le recordamos cordialmente que la mensualidad oficial de la academia se encuentra pendiente.\n\nPuede acercarse a las instalaciones para realizar su pago en efectivo o consultar su estado en nuestro sitio web:\n🌐 *Sitio Web:* ${webUrl}`;
+      } else {
+        msg = `⚽ *ACADEMIA NICO SPORT*\n\nHola *${padre.nombre}*, le recordamos cordialmente que la mensualidad oficial está pendiente o próxima a vencer.\n\nPuede realizar su pago fácilmente por Yape y adjuntar el comprobante en nuestro portal:\n${yapeStr}\n🌐 *Accede a tu cuenta aquí:* ${webUrl}`;
+      }
+      let cleanTelf = telf.replace(/\D/g, '');
+      if (cleanTelf.length === 8) cleanTelf = '507' + cleanTelf;
+      window.open(`https://wa.me/${cleanTelf}?text=${encodeURIComponent(msg)}`, '_blank');
+    },
+    recordatorioWhatsappViejo(padreId) {
+      const padre = this.listaPadres.find(p => p.id == padreId);
+      if (!padre) return;
+      const telf = padre.telefono || '';
+      if (!telf) { alert('Este padre no tiene número de teléfono registrado.'); return; }
+      const webUrl = this.obtenerUrlSitio();
+      const yapeStr = this.numeroYape ? `\n📲 *Pagar por Yape al:* ${this.numeroYape}` : '';
+      const msg = `⚽ *ACADEMIA NICO SPORT*\n\nHola *${padre.nombre}*, le recordamos desde la Academia Nico Sport que su fecha de mensualidad ha vencido.\n\nPor favor regularice su pago vía Yape ingresando a nuestro portal:\n${yapeStr}\n🌐 *Portal Web:* ${webUrl}`;
+      let cleanTelf = telf.replace(/\D/g, '');
+      if (cleanTelf.length === 8) cleanTelf = '507' + cleanTelf;
+      window.open(`https://wa.me/${cleanTelf}?text=${encodeURIComponent(msg)}`, '_blank');
     },
     cambiarMetodoPago(padreId, nuevoMetodo) {
-      if (!confirm(`Â¿Cambiar mÃ©todo de pago a ${nuevoMetodo === "efectivo" ? "Efectivo" : "En LÃ­nea"}?`)) return;
+      if (!confirm(`¿Cambiar método de pago a ${nuevoMetodo === "efectivo" ? "Efectivo" : "En Línea"}?`)) return;
       const padre = this.listaPadres.find(p => p.id == padreId);
       if (!padre) return;
       padre.metodoPago = nuevoMetodo;
@@ -1363,104 +2708,425 @@ document.addEventListener('alpine:init', () => {
       window.DB.validarComprobante(id, aprobar);
       alert(aprobar ? ' Comprobante aprobado y registrado' : ' Comprobante rechazado');
     },
-    historialPagosClub() {
+    historialPagosClub() { void this.adminPadresVersion;
       return window.DB.obtenerPagosClub().slice().reverse();
     },
 
-    /* ========== 18) GESTIÃ“N DE ENTRENADORES ========== */
-    nuevoEntrenador: { nombre: '', usuario: '', password: '', catKey: '' },
+        /* ========== 18) GESTIÓN DE ENTRENADORES ========== */
+    nuevoEntrenador: { nombre: '', usuario: '', password: '', catKey: '', categorias: [] },
+    mostrarPassEntrenador: false,
     entrenadorMsg: '',
     entrenadoresVersion: 0,
+
+    modalEditarNombreDT: false,
+    dtNombreForm: { id: null, nombre: '', nombreActual: '' },
+    msgNombreDT: '',
+
+    modalEditarTelefonoDT: false,
+    dtTelefonoForm: { id: null, nombre: '', telefono: '' },
+    msgTelefonoDT: '',
+
+    modalEditarCategoriasDT: false,
+    dtCategoriasForm: { id: null, nombre: '', categorias: [] },
+    msgCategoriasDT: '',
+
+    modalEditarPasswordDT: false,
+    dtPasswordForm: { id: null, nombre: '', password: '', mostrar: false },
+    msgPasswordDT: '',
     get listaEntrenadores() {
       void this.entrenadoresVersion;
       return window.DB.obtenerEntrenadores();
     },
-    registrarEntrenador() {
+    sincronizarUsuarioEntrenador() {
+      this.nuevoEntrenador.usuario = this.nuevoEntrenador.nombre;
+    },
+    async registrarEntrenador() {
       if (!this.esAdmin) return;
       const d = this.nuevoEntrenador;
-      if (!d.nombre.trim() || !d.usuario.trim() || !d.password.trim() || !d.catKey) {
-        this.entrenadorMsg = ' Todos los campos son obligatorios';
+      const nombre = (d.nombre || '').trim();
+      const usuario = (d.usuario && d.usuario.trim()) || nombre;
+      const password = (d.password || '').trim();
+      let cats = Array.isArray(d.categorias) ? d.categorias : [];
+      if (cats.length === 0 && d.catKey) {
+        cats = [d.catKey];
+      }
+      if (!nombre || !password || cats.length === 0) {
+        this.entrenadorMsg = '⚠️ Todos los campos son obligatorios (Nombre, Contraseña y al menos una Categoría).';
         return;
       }
-      const cat = this.categoriasTorneo.find(c => c.key === d.catKey);
-      const res = window.DB.registrarEntrenador({
-        nombre: d.nombre.trim(),
-        usuario: d.usuario.trim(),
-        password: d.password,
-        catKey: d.catKey,
-        catLabel: cat ? cat.label : d.catKey
+      if (password.length < 12 || !(/[a-zA-Z]/.test(password) && /[0-9]/.test(password))) {
+        this.entrenadorMsg = '⚠️ La contraseña debe tener mínimo 12 caracteres combinando letras y números.';
+        return;
+      }
+      const mapLabels = {};
+      (this.categoriasTorneo || []).forEach(c => { mapLabels[c.key] = c.label; });
+      const labelStr = cats.map(k => mapLabels[k] || k.toUpperCase()).join(', ');
+
+      const res = await window.DB.registrarEntrenador({
+        nombre: nombre,
+        usuario: usuario,
+        password: password,
+        catKey: cats[0],
+        catLabel: labelStr,
+        categorias: cats
       });
-      this.entrenadorMsg = res.ok ? ' ' + res.msg : ' ' + res.msg;
-      if (res.ok) {
-        this.nuevoEntrenador = { nombre: '', usuario: '', password: '', catKey: '' };
+      this.entrenadorMsg = (res && res.ok) ? '✓ ' + (res.msg || 'Entrenador registrado con éxito') : '⚠️ ' + ((res && (res.error || res.msg)) || 'Error al registrar entrenador');
+      if (res && res.ok) {
+        this.nuevoEntrenador = { nombre: '', usuario: '', password: '', catKey: '', categorias: [] };
         this.entrenadoresVersion++;
+        setTimeout(() => { if (window.DB && window.DB.sincronizar) window.DB.sincronizar(this); }, 300);
       }
     },
-    editarEntrenador(dt) {
+
+    abrirModalEditarEntrenador(dt) {
       if (!this.esAdmin) return;
-      const nombre = prompt('Nombre:', dt.nombre); if (nombre === null) return;
-      const usuario = prompt('Usuario:', dt.usuario); if (usuario === null) return;
-      const password = prompt('ContraseÃ±a (dejar igual para no cambiar):', '');
-      const cat = this.categoriasTorneo.find(c => c.key === dt.catKey);
-      const data = { nombre, usuario, catLabel: cat ? cat.label : dt.catKey };
-      if (password && password.trim()) data.password = password.trim();
-      window.DB.editarEntrenador(dt.id, data);
-      this.entrenadoresVersion++;
-      alert(' Entrenador actualizado');
+      let cats = [];
+      if (Array.isArray(dt.categorias) && dt.categorias.length > 0) {
+        cats = [...dt.categorias];
+      } else if (dt.catKey) {
+        cats = [dt.catKey];
+      }
+      this.entrenadorEditando = {
+        id: dt.id,
+        nombre: dt.nombre || '',
+        usuario: dt.usuario || dt.nombre || '',
+        telefono: dt.telefono || '',
+        catKey: dt.catKey || (cats[0] || 'sub6'),
+        categorias: cats,
+        nuevaPassword: '',
+        mostrarPass: false
+      };
+      this.msgEditarEntrenador = '';
+      this.modalEditarEntrenador = true;
+    },
+
+    async guardarEdicionEntrenador() {
+      if (!this.entrenadorEditando || !this.entrenadorEditando.id) return;
+      this.msgEditarEntrenador = '';
+      const nom = (this.entrenadorEditando.nombre || '').trim();
+      if (!nom) {
+        this.msgEditarEntrenador = 'El nombre no puede estar vacío.';
+        return;
+      }
+      let cats = Array.isArray(this.entrenadorEditando.categorias) ? this.entrenadorEditando.categorias : [];
+      if (cats.length === 0 && this.entrenadorEditando.catKey) {
+        cats.push(this.entrenadorEditando.catKey);
+      }
+      if (cats.length === 0) {
+        this.msgEditarEntrenador = 'Debes asignar al menos una categoría al entrenador.';
+        return;
+      }
+      const mapLabels = {};
+      (this.categoriasTorneo || []).forEach(c => { mapLabels[c.key] = c.label; });
+      const labelStr = cats.map(k => mapLabels[k] || k.toUpperCase()).join(', ');
+
+      const payload = {
+        nombre: nom,
+        usuario: nom,
+        telefono: (this.entrenadorEditando.telefono || '').trim(),
+        catKey: cats[0],
+        catLabel: labelStr,
+        categorias: cats
+      };
+
+      const pass = (this.entrenadorEditando.nuevaPassword || '').trim();
+      if (pass !== '') {
+        if (pass.length < 12 || !(/[a-zA-Z]/.test(pass) && /[0-9]/.test(pass))) {
+          this.msgEditarEntrenador = 'La contraseña debe tener al menos 12 caracteres combinando letras y números.';
+          return;
+        }
+        payload.password = pass;
+      }
+
+      const res = await window.DB.editarEntrenador(this.entrenadorEditando.id, payload);
+      if (res && res.ok) {
+        this.msgEditarEntrenador = '✓ Entrenador actualizado con éxito.';
+        this.entrenadoresVersion++;
+        setTimeout(() => { if (window.DB && window.DB.sincronizar) window.DB.sincronizar(this); }, 300);
+        setTimeout(() => { this.modalEditarEntrenador = false; }, 1200);
+      } else {
+        this.msgEditarEntrenador = (res && res.error) || 'Error al actualizar el entrenador.';
+      }
+    },
+
+    abrirEditarNombreDT(dt) {
+      if (!this.esAdmin) return;
+      this.dtNombreForm = { id: dt.id, nombre: dt.nombre || '', nombreActual: dt.nombre || '' };
+      this.msgNombreDT = '';
+      this.modalEditarNombreDT = true;
+    },
+    async guardarNombreDT() {
+      if (!this.dtNombreForm.id) return;
+      const nom = (this.dtNombreForm.nombre || '').trim();
+      if (!nom) { this.msgNombreDT = '❌ El nombre no puede estar vacío.'; return; }
+      const res = await window.DB.actualizarNombreEntrenador(this.dtNombreForm.id, nom);
+      if (res && res.ok) {
+        this.msgNombreDT = '✓ Nombre actualizado con éxito.';
+        this.entrenadoresVersion++;
+        setTimeout(() => { this.modalEditarNombreDT = false; }, 800);
+      } else {
+        this.msgNombreDT = '❌ ' + ((res && res.error) || 'Error al actualizar nombre.');
+      }
+    },
+
+    abrirEditarTelefonoDT(dt) {
+      if (!this.esAdmin) return;
+      this.dtTelefonoForm = { id: dt.id, nombre: dt.nombre || '', telefono: dt.telefono || '' };
+      this.msgTelefonoDT = '';
+      this.modalEditarTelefonoDT = true;
+    },
+    async guardarTelefonoDT() {
+      if (!this.dtTelefonoForm.id) return;
+      const tel = (this.dtTelefonoForm.telefono || '').trim();
+      const res = await window.DB.actualizarTelefonoEntrenador(this.dtTelefonoForm.id, tel);
+      if (res && res.ok) {
+        this.msgTelefonoDT = '✓ Teléfono actualizado con éxito.';
+        this.entrenadoresVersion++;
+        setTimeout(() => { this.modalEditarTelefonoDT = false; }, 800);
+      } else {
+        this.msgTelefonoDT = '❌ ' + ((res && res.error) || 'Error al actualizar teléfono.');
+      }
+    },
+
+    abrirEditarCategoriasDT(dt) {
+      if (!this.esAdmin) return;
+      let cats = [];
+      if (Array.isArray(dt.categorias) && dt.categorias.length > 0) {
+        cats = [...dt.categorias];
+      } else if (dt.catKey) {
+        cats = [dt.catKey];
+      }
+      this.dtCategoriasForm = { id: dt.id, nombre: dt.nombre || '', categorias: cats };
+      this.msgCategoriasDT = '';
+      this.modalEditarCategoriasDT = true;
+    },
+    async guardarCategoriasDT() {
+      if (!this.dtCategoriasForm.id) return;
+      const cats = Array.isArray(this.dtCategoriasForm.categorias) ? this.dtCategoriasForm.categorias : [];
+      if (cats.length === 0) {
+        this.msgCategoriasDT = '❌ Selecciona al menos una categoría.';
+        return;
+      }
+      const res = await window.DB.actualizarCategoriasEntrenador(this.dtCategoriasForm.id, cats);
+      if (res && res.ok) {
+        this.msgCategoriasDT = '✓ Categorías actualizadas con éxito.';
+        this.entrenadoresVersion++;
+        setTimeout(() => { this.modalEditarCategoriasDT = false; }, 800);
+      } else {
+        this.msgCategoriasDT = '❌ ' + ((res && res.error) || 'Error al actualizar categorías.');
+      }
+    },
+
+    abrirEditarPasswordDT(dt) {
+      if (!this.esAdmin) return;
+      this.dtPasswordForm = { id: dt.id, nombre: dt.nombre || '', password: '', mostrar: false };
+      this.msgPasswordDT = '';
+      this.modalEditarPasswordDT = true;
+    },
+    async guardarPasswordDT() {
+      if (!this.dtPasswordForm.id) return;
+      const pass = (this.dtPasswordForm.password || '').trim();
+      if (pass.length < 12 || !(/[a-zA-Z]/.test(pass) && /[0-9]/.test(pass))) {
+        this.msgPasswordDT = '❌ La contraseña debe tener al menos 12 caracteres combinando letras y números.';
+        return;
+      }
+      const res = await window.DB.actualizarPasswordEntrenador(this.dtPasswordForm.id, pass);
+      if (res && res.ok) {
+        this.msgPasswordDT = '✓ Contraseña restablecida con éxito.';
+        this.entrenadoresVersion++;
+        setTimeout(() => { this.modalEditarPasswordDT = false; }, 800);
+      } else {
+        this.msgPasswordDT = '❌ ' + ((res && res.error) || 'Error al actualizar contraseña.');
+      }
+    },
+
+    editarEntrenador(dt) {
+      this.abrirModalEditarEntrenador(dt);
     },
     eliminarEntrenador(id) {
       if (!this.esAdmin) return;
-      if (!confirm('Â¿Eliminar este entrenador?')) return;
+      if (!confirm('¿Eliminar este entrenador?')) return;
       window.DB.eliminarEntrenador(id);
       this.entrenadoresVersion++;
       alert(' Entrenador eliminado');
     },
 
-    /* ========== 19) PORTAL DE PADRES ========== */
-          tarifaOficialMensualidad: 15.00,
+    /* ========== 19) PORTAL DE PADRES Y CONFIGURACIÓN YAPE ========== */
+      tarifaOficialMensualidad: 15.00,
       tarifaOficialInscripcion: 15.00,
-      cargarTarifas() {
-          const conf = window.DB.obtenerConfiguraciones ? window.DB.obtenerConfiguraciones() : {};
-          if(conf['tarifa_mensualidad']) this.tarifaOficialMensualidad = parseFloat(conf['tarifa_mensualidad']);
-          if(conf['tarifa_inscripcion']) this.tarifaOficialInscripcion = parseFloat(conf['tarifa_inscripcion']);
+      numeroYape: '6000-0000',
+      titularYape: 'Academia Nico Sport',
+      detallesYape: '',
+      yapeGuardadoMsg: '',
+      copiadoYapeMsg: '',
+      configuracionesCargadas: false,
+      yapeEditando: false,
+
+      copiarNumeroYape() {
+        if (!this.numeroYape) return;
+        navigator.clipboard.writeText(this.numeroYape).then(() => {
+          this.copiadoYapeMsg = '¡Copiado!';
+          setTimeout(() => { this.copiadoYapeMsg = ''; }, 2000);
+        }).catch(() => {});
       },
-      guardarTarifas() {
-          window.DB.post('configuraciones/guardar', {
-              mensualidad: this.tarifaOficialMensualidad,
-              inscripcion: this.tarifaOficialInscripcion
+
+      cargarConfiguraciones(forzar = false) {
+        if (this.configuracionesCargadas && !forzar) return;
+        const conf = (window.DB && typeof window.DB.obtenerConfiguraciones === 'function')
+          ? window.DB.obtenerConfiguraciones()
+          : {};
+        if (conf['tarifa_mensualidad'] !== undefined) this.tarifaOficialMensualidad = parseFloat(conf['tarifa_mensualidad']) || 15.00;
+        if (conf['tarifa_inscripcion'] !== undefined) this.tarifaOficialInscripcion = parseFloat(conf['tarifa_inscripcion']) || 15.00;
+        
+        if (!this.yapeEditando || forzar) {
+          if (conf['numero_yape'] !== undefined && conf['numero_yape'] !== null) {
+            this.numeroYape = conf['numero_yape'];
+          } else if (conf['banco_yappy'] !== undefined && conf['banco_yappy'] !== null) {
+            this.numeroYape = conf['banco_yappy'];
+          } else if (!this.configuracionesCargadas) {
+            this.numeroYape = '6000-0000';
+          }
+          if (conf['titular_yape'] !== undefined) this.titularYape = conf['titular_yape'];
+          if (conf['detalles_yape'] !== undefined) this.detallesYape = conf['detalles_yape'];
+        }
+        if (Object.keys(conf).length > 0) {
+          this.configuracionesCargadas = true;
+        }
+      },
+      cargarTarifas() {
+        this.cargarConfiguraciones(true);
+      },
+      async guardarTarifas() {
+        this.yapeEditando = false;
+        if (window.DB && typeof window.DB.guardarConfiguraciones === 'function') {
+          await window.DB.guardarConfiguraciones({
+            mensualidad: this.tarifaOficialMensualidad,
+            inscripcion: this.tarifaOficialInscripcion,
+            numero_yape: this.numeroYape,
+            titular_yape: this.titularYape,
+            detalles_yape: this.detallesYape
           });
-          const toast = document.createElement('div');
-          toast.className = 'fixed top-4 right-4 bg-nico-green text-white font-bold py-2 px-4 rounded-xl shadow-lg z-50 animate-bounce';
-          toast.innerText = 'Tarifas Guardadas (Refresca para sincronizar global)';
-          document.body.appendChild(toast);
-          setTimeout(() => toast.remove(), 3000);
+        }
+        this.configuracionesCargadas = true;
+        const toast = document.createElement('div');
+        toast.className = 'fixed top-4 right-4 bg-nico-green text-black font-black py-2.5 px-4 rounded-xl shadow-2xl z-50 border border-black/20';
+        toast.innerText = 'Tarifas y Yape Guardados con Éxito';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      },
+      async guardarYape() {
+        this.yapeEditando = false;
+        const payload = {
+          numero_yape: this.numeroYape || '',
+          titular_yape: this.titularYape || '',
+          detalles_yape: this.detallesYape || '',
+          whatsapp_admin: this.numeroYape || ''
+        };
+        if (window.DB && typeof window.DB.guardarConfiguraciones === 'function') {
+          await window.DB.guardarConfiguraciones(payload);
+        }
+        this.configuracionesCargadas = true;
+        this.yapeGuardadoMsg = '¡Número de Yape actualizado con éxito!';
+        setTimeout(() => { this.yapeGuardadoMsg = ''; }, 3500);
       },
       reportePago: { concepto: 'Mensualidad', monto: 15, fecha: new Date().toISOString().slice(0,10), referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' },
-    handleComprobantePadre(e) {
+    async handleComprobantePadre(e) {
       const file = e.target.files[0];
       if (!file) return;
+      this.reportePago.comprobanteNombre = 'Subiendo...';
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        if (this.reportePago.comprobanteData && this.reportePago.comprobanteData.startsWith('uploads/comprobantes/')) {
+          fd.append('old_path', this.reportePago.comprobanteData);
+        }
+        let res = null;
+        if (window.DB && typeof window.DB.subirComprobante === 'function') {
+          res = await window.DB.subirComprobante(fd);
+        }
+        if (res && (res.url || res.path)) {
+          this.reportePago.comprobanteData = res.url || res.path;
+          this.reportePago.comprobanteNombre = file.name;
+          return;
+        }
+      } catch (err) {}
       const reader = new FileReader();
       reader.onload = (ev) => {
-        this.reportePago.comprobanteNombre = file.name;
-        this.reportePago.comprobanteData = ev.target.result;
+        const img = new Image();
+        img.onload = () => {
+          const maxW = 900;
+          let w = img.width, h = img.height;
+          if (w > maxW) { h = Math.round(h * (maxW / w)); w = maxW; }
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          this.reportePago.comprobanteData = canvas.toDataURL('image/jpeg', 0.72);
+          this.reportePago.comprobanteNombre = file.name;
+        };
+        img.src = ev.target.result;
       };
       reader.readAsDataURL(file);
     },
-          comprobantesDelPadre() {
+          comprobantesDelPadre() { void this.adminPadresVersion;
           if (!this.currentUser || this.currentUser.rol !== 'padre') return [];
           return window.DB.obtenerComprobantes().filter(c => c.padreId == this.currentUser.id && (c.estado === 'en_revision' || c.estado === 'pendiente'));
       },
-      get hijoPlayer() {
-      if (!this.currentUser || !this.currentUser.hijoCat || !this.currentUser.hijoId) return null;
-      return this.playersDe(this.currentUser.hijoCat).find(p => p.id === this.currentUser.hijoId) || null;
+    get misHijos() {
+      if (!this.currentUser) return [];
+      if (Array.isArray(this.currentUser.hijos) && this.currentUser.hijos.length > 0) {
+        return this.currentUser.hijos;
+      }
+      if (this.currentUser.hijoCat && this.currentUser.hijoId) {
+        return [{
+          id: this.currentUser.hijoId,
+          nombre: this.currentUser.hijoNombre || 'Mi Hijo(a)',
+          catKey: this.currentUser.hijoCat,
+          catLabel: this.currentUser.sub || this.currentUser.hijoCat,
+          sub: this.currentUser.sub || this.currentUser.hijoCat,
+          dorsal: this.currentUser.hijoDorsal || 0,
+          pos: this.currentUser.hijoPos || 'MED'
+        }];
+      }
+      return [];
+    },
+    get hijoSeleccionado() {
+      const lista = this.misHijos;
+      if (lista.length === 0) return null;
+      const idx = Math.min(Math.max(0, this.hijoActivoIndex || 0), lista.length - 1);
+      return lista[idx] || null;
+    },
+    get hijoPlayer() {
+      const hSel = this.hijoSeleccionado;
+      if (!hSel) {
+        if (!this.currentUser || !this.currentUser.hijoCat || !this.currentUser.hijoId) return null;
+        return this.playersDe(this.currentUser.hijoCat).find(p => p.id === this.currentUser.hijoId) || null;
+      }
+      const cat = hSel.catKey || this.currentUser.hijoCat;
+      const hid = hSel.id || this.currentUser.hijoId;
+      if (!cat || !hid) return null;
+      return this.playersDe(cat).find(p => p.id === hid) || {
+        id: hid,
+        name: hSel.nombre || 'Mi Hijo(a)',
+        catKey: cat,
+        dorsal: hSel.dorsal || 0,
+        pos: hSel.pos || 'MED',
+        foto: null
+      };
     },
     get hijoCatLabel() {
-      if (!this.currentUser || !this.currentUser.hijoCat) return '';
-      const c = this.categoriasTorneo.find(x => x.key === this.currentUser.hijoCat);
-      return c ? c.label : this.currentUser.hijoCat;
+      const hSel = this.hijoSeleccionado;
+      const catKey = hSel ? (hSel.catKey || this.currentUser.hijoCat) : (this.currentUser ? this.currentUser.hijoCat : '');
+      if (!catKey) return '';
+      const c = this.categoriasTorneo.find(x => x.key === catKey);
+      return c ? c.label : catKey.toUpperCase();
     },
-    estadoCuentaPadre() {
+    estadoCuentaPadre() { void this.adminPadresVersion;
       if (!this.currentUser || this.currentUser.rol !== 'padre') return 'Vigente';
+      if (this.currentUser.fechaVencimiento) {
+        const hoy = new Date(); hoy.setHours(0,0,0,0);
+        const venc = new Date(this.currentUser.fechaVencimiento + 'T00:00:00');
+        return venc >= hoy ? 'Vigente' : 'Vencido';
+      }
       const pagos = window.DB.obtenerPagosPadre(this.padreIdActual);
       const validados = pagos.filter(p => p.estado === 'validado');
       if (validados.length === 0) return 'Vencido';
@@ -1468,86 +3134,115 @@ document.addEventListener('alpine:init', () => {
       const fechaUlt = new Date(ultimo.fecha);
       const hoy = new Date();
       const diff = Math.floor((hoy - fechaUlt) / (1000 * 60 * 60 * 24));
-      return diff <= 15 ? 'Vigente' : 'Vencido';
+      return diff <= 30 ? 'Vigente' : 'Vencido';
     },
-          enviarReportePago() {
-        if (!this.currentUser || this.currentUser.rol !== 'padre') { alert(' Inicia sesiÃ³n como padre'); return; }
+      async enviarReportePago() {
+        if (!this.currentUser || this.currentUser.rol !== 'padre') { alert(' Inicia sesión como padre'); return; }
         if (!this.reportePago.comprobanteNombre || this.reportePago.comprobanteNombre === 'Subiendo...') { alert(' Adjunta el comprobante'); return; }
         
         const fechaActual = new Date().toISOString().slice(0,10);
-        const montoOficial = this.tarifaOficialMensualidad;
+        const montoOficial = parseFloat(this.tarifaOficialMensualidad) || 15;
         const conceptoStr = 'Mensualidad';
+        const refStr = (this.reportePago.referencia || '').trim() || ('REF-' + Date.now().toString().slice(-6));
 
-        window.DB.guardarPagoPadre(this.padreIdActual, {
-          concepto: conceptoStr,
-          monto: montoOficial,
-          fecha: fechaActual,
-          referencia: this.reportePago.referencia,
-          observaciones: this.reportePago.observaciones || '',
-          comprobante: this.reportePago.comprobanteData
-        });
-        window.DB.guardarComprobante({
-          padreId: this.padreIdActual,
-          padreNombre: this.currentUser.nombre,
-          concepto: conceptoStr,
-          monto: montoOficial,
-          fecha: fechaActual,
-          referencia: this.reportePago.referencia,
-          observaciones: this.reportePago.observaciones || '',
-          comprobante: this.reportePago.comprobanteData
-        });
+        await Promise.all([
+          window.DB.guardarPagoPadre(this.padreIdActual, {
+            concepto: conceptoStr,
+            monto: montoOficial,
+            fecha: fechaActual,
+            referencia: refStr,
+            observaciones: this.reportePago.observaciones || '',
+            comprobante: this.reportePago.comprobanteData,
+            estado: 'en_revision'
+          }),
+          window.DB.guardarComprobante({
+            padreId: this.padreIdActual,
+            padreNombre: this.currentUser.nombre,
+            concepto: conceptoStr,
+            monto: montoOficial,
+            fecha: fechaActual,
+            referencia: refStr,
+            observaciones: this.reportePago.observaciones || '',
+            comprobante: this.reportePago.comprobanteData,
+            estado: 'en_revision'
+          })
+        ]);
+
+        await window.DB.sincronizar(this);
+        this.adminPadresVersion++; this.comentariosVersion++;
+
         const msg = encodeURIComponent(
           ' *NICO SPORT - Reporte de Pago*\n' +
           ' Padre: ' + this.currentUser.nombre + '\n' +
           ' Concepto: ' + conceptoStr + '\n' +
           ' Monto: $' + montoOficial.toFixed(2) + '\n' +
           ' Fecha: ' + new Date().toLocaleDateString('es-PA') + '\n' +
-          ' Ref: ' + (this.reportePago.referencia || '') + '\n' +
-          ' Comprobante enviado. Pendiente de validaciÃ³n.'
+          ' Ref: ' + refStr + '\n' +
+          ' Comprobante enviado. Pendiente de validación.'
         );
-        window.open('https://wa.me/50760000000?text=' + msg, '_blank');
-        alert(' Reporte enviado + NotificaciÃ³n por WhatsApp al administrador');
-        this.reportePago = { concepto: 'Mensualidad', monto: 15, fecha: fechaActual, referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' };
-        this.adminPadresVersion++; this.comentariosVersion++; // Forzar actualizaciÃ³n reactiva en Alpine
+        this.reportePago = { concepto: 'Mensualidad', monto: montoOficial, fecha: fechaActual, referencia: '', observaciones: '', comprobanteNombre: '', comprobanteData: '' };
+        const webUrl = this.obtenerUrlSitio();
+        const msgYape = encodeURIComponent(
+          '⚽ *ACADEMIA NICO SPORT — Reporte de Pago*\n\n' +
+          '👤 *Padre:* ' + this.currentUser.nombre + '\n' +
+          '📋 *Concepto:* ' + conceptoStr + '\n' +
+          '💵 *Monto:* $' + montoOficial.toFixed(2) + '\n' +
+          '📅 *Fecha:* ' + new Date().toLocaleDateString('es-PA') + '\n' +
+          '🔢 *Ref / N° Operación:* ' + refStr + '\n' +
+          '📱 *Método:* Yape\n\n' +
+          '📎 Comprobante adjuntado en la plataforma.\n' +
+          '🌐 *Portal Web:* ' + webUrl
+        );
+        const adminPhone = (this.numeroYape ? this.numeroYape.replace(/\D/g, '') : '50760000000');
+        const phoneFormatted = adminPhone.length === 8 ? ('507' + adminPhone) : adminPhone;
+        window.open('https://wa.me/' + phoneFormatted + '?text=' + msgYape, '_blank');
+        alert('✓ Reporte enviado y guardado en tu historial.');
       },
-      misPagos() {
+      misPagos() { void this.adminPadresVersion;
       if (!this.currentUser || this.currentUser.rol !== 'padre') return [];
       return window.DB.obtenerPagosPadre(this.padreIdActual).slice().reverse();
     },
 
-    /* ========== 20) NAVEGACIÃ“N Y CARGA ========== */
+    /* ========== 20) NAVEGACIÓN Y CARGA ========== */
     switchTab(tab, event) {
       this.mainTab = tab;
+      if (tab === 'admin' && this.esAdmin && this.currentUser) {
+        if (!this.adminCredsForm.usuarioNuevo) this.adminCredsForm.usuarioNuevo = this.currentUser.usuario || '';
+      }
       if (event && window.triggerParticles && event.clientX !== undefined) window.triggerParticles(event.clientX, event.clientY);
       this.$nextTick(() => {
-        const target = document.getElementById('contenido-dinamico');
-        if (target) {
-          const offset = window.innerWidth < 640 ? 90 : 160;
-          const y = target.getBoundingClientRect().top + window.scrollY - offset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }
-        const nav = document.querySelector('#mobileNav .nav-scroll');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const nav = document.getElementById('mobNavScroll') || document.querySelector('#mobileNav .nav-scroll');
         const btn = document.querySelector('[data-mobtab="' + tab + '"]');
         if (nav && btn) {
-          nav.scrollTo({ left: btn.offsetLeft - (nav.clientWidth / 2) + (btn.clientWidth / 2), behavior: 'smooth' });
+          const targetLeft = Math.max(0, btn.offsetLeft - (nav.clientWidth / 2) + (btn.clientWidth / 2));
+          nav.scrollTo({ left: targetLeft, behavior: 'smooth' });
+        }
+        if (!this.modoEdicion) {
+          this.aplicarTextos();
+        } else {
+          this.habilitarEdicionEnDOM();
         }
       });
     },
     cargarPersistidos() {
+      if (this.modoEdicion || this.staffEditModal) return;
       const t = window.DB.obtenerTorneo();
       if (t && t.length) {
         this.categoriasTorneo = t.map(c => Object.assign(catTorneo(), c));
       }
       const cats = window.DB.obtenerCategorias();
       if (cats && cats.length) this.aplicarCategoriasGuardadas(cats);
+      this.categoriasVitrinaTabs = this.categoriasTorneo;
       const s = window.DB.obtenerStaff();
       if (s && s.length) this.staffList = s;
       this.categoriasTorneo.forEach(c => {
-        const p = window.DB.obtenerPlantilla(c.key);
-        if (p && p.length) { p.sort((a, b) => a.dorsal - b.dorsal); this._setPlantilla(c.key, p); }
+        const p = window.DB.obtenerPlantilla(c.key) || [];
+        p.sort((a, b) => ((a.dorsal || 0) === 0 ? 9999 : a.dorsal) - ((b.dorsal || 0) === 0 ? 9999 : b.dorsal));
+        this._setPlantilla(c.key, p);
       });
-      // FIX REACTIVO: forzar que Alpine re-evalÃºe listaPadres y categorÃ­as
-      // despuÃ©s de que la BD cargÃ³ asÃ­ncronamente
+      // FIX REACTIVO: forzar que Alpine re-evalúe listaPadres y categorías
+      // después de que la BD cargó asíncronamente
       this.adminPadresVersion++; this.comentariosVersion++;
       this.catAdminVersion++;
     },
@@ -1563,7 +3258,7 @@ document.addEventListener('alpine:init', () => {
             return; 
         }
         if(!this.feedbackForm.asunto.trim()) { 
-            this.mostrarFeedback('Ingresa un asunto o tÃ­tulo', true); 
+            this.mostrarFeedback('Ingresa un asunto o título', true); 
             return; 
         }
         if(!this.feedbackForm.mensaje.trim()) { 
@@ -1585,7 +3280,7 @@ document.addEventListener('alpine:init', () => {
         window.DB.guardarComentario(f); this.comentariosVersion++;
         
         this.feedbackForm = { tipo: '', asunto: '', mensaje: '', es_anonimo: false };
-        this.mostrarFeedback('Â¡Mensaje enviado con Ã©xito al club! Gracias por tus comentarios.', false);
+        this.mostrarFeedback('¡Mensaje enviado con éxito al club! Gracias por tus comentarios.', false);
       },
       mostrarFeedback(msg, error = false) {
           this.feedbackStatus = { show: true, msg, error };
@@ -1593,10 +3288,21 @@ document.addEventListener('alpine:init', () => {
       },
       get comentariosPadres() { void this.comentariosVersion; return window.DB.obtenerComentarios(); },
       borrarComentario(id) {
-        if(confirm('Â¿Seguro que deseas borrar este comentario?')) {
+          if(confirm('¿Seguro que deseas borrar este comentario?')) {
             window.DB.borrarComentario(id); this.comentariosVersion++;
-        }
-      },
+          }
+        },
+        async marcarLeido(id) {
+            await window.DB.post('comentarios/marcar_leido', {id: id});
+            const c = window.DB.obtenerComentarios().find(x => x.id == id);
+            if(c) { c.estado = 'leido'; this.comentariosVersion++; }
+        },
+        async marcarTodoLeido() {
+            if(!confirm('¿Marcar todos los mensajes como leídos?')) return;
+            await window.DB.post('comentarios/marcar_todo_leido', {});
+            window.DB.obtenerComentarios().forEach(x => x.estado = 'leido');
+            this.comentariosVersion++;
+        },
       estadoComentarioColor(tipo) {
         if (tipo === 'sugerencia') return 'text-blue-400 border-blue-400/30';
         if (tipo === 'critica_constructiva') return 'text-amber-400 border-amber-400/30';
@@ -1606,72 +3312,128 @@ document.addEventListener('alpine:init', () => {
       },
       
       iniciarCarga() {
-      let intervalo = setInterval(() => {
-        this.progress += 2;
-        if (this.progress >= 100) {
-          this.progress = 100; clearInterval(intervalo);
+        this.selectedTrophy = this.trophiesList[0];
+        this.cargarPersistidos();
+        this.aplicarTextos();
+        const finishLoad = () => {
+          this.progress = 100;
           setTimeout(() => {
             this.loading = false;
-            this.selectedTrophy = this.trophiesList[0];
-            this.cargarPersistidos();
-            this.aplicarTextos();
-          }, 800);
+            this.reloadSpamMsg = '';
+          }, 180);
+        };
+        if (this._cooldownDelay && this._cooldownDelay > 0) {
+          setTimeout(finishLoad, this._cooldownDelay);
+        } else {
+          finishLoad();
         }
-      }, 50);
     },
         init() {
-        window.nicoAppAdmin = this;
-        
-        // --- AUTH PERSISTENCE (HYDRATION) ---
-        const savedUser = localStorage.getItem('ns_currentUser');
-        if (savedUser) {
-            try {
-                const u = JSON.parse(savedUser);
-                this.currentUser = u;
-                if(u.rol === 'admin') document.body.classList.add('is-admin');
-                
-                const savedTab = localStorage.getItem('ns_mainTab');
-                const savedCat = localStorage.getItem('ns_catTab');
-                
-                if (savedTab) this.mainTab = savedTab;
-                else {
-                    if (u.rol === 'admin') this.mainTab = 'admin';
-                    else if (u.rol === 'padre') this.mainTab = (u.hijoCat && u.hijoId) ? 'categorias' : 'portal';
-                    else if (u.rol === 'entrenador') this.mainTab = 'categorias';
-                }
-                if (savedCat) this.catTab = savedCat;
-                else if (u.rol === 'padre' && u.hijoCat) this.catTab = u.hijoCat;
-                else if (u.rol === 'entrenador' && u.catKey) this.catTab = u.catKey;
-            } catch(e) {}
-        }
+        this.modoEdicion = false;
+        this.currentUser = null;
+        try { localStorage.removeItem('ns_currentUser'); } catch(e) {}
+
+        // Escuchador desacoplado para edición de medios sin exponer window.nicoAppAdmin
+        window.addEventListener('ns-edit-media', (e) => {
+          if (this.esAdmin && this.modoEdicion && e.detail) {
+            this.editarTextoMediaGlobal(e.detail.clave, e.detail.defaultUrl);
+          }
+        });
+
+        // Delegación global de clics para medios en modo CMS
+        document.addEventListener('click', (e) => {
+          const target = e.target.closest('[data-ns-media]');
+          if (target && this.esAdmin && this.modoEdicion) {
+            e.preventDefault();
+            e.stopPropagation();
+            const clave = target.getAttribute('data-ns-media');
+            const defaultUrl = target.getAttribute('data-ns-default') || '';
+            this.editarTextoMediaGlobal(clave, defaultUrl);
+          }
+        }, true);
+
+        // Protección anti-spam de recargas rápidas (F5 / Ctrl+R repetidos)
+        this._cooldownDelay = 0;
+        try {
+          const now = Date.now();
+          let hist = JSON.parse(sessionStorage.getItem('ns_reload_hist') || '[]').filter(t => (now - t) < 8000);
+          hist.push(now);
+          sessionStorage.setItem('ns_reload_hist', JSON.stringify(hist));
+          if (hist.length >= 4) {
+            this.reloadSpamMsg = 'ESPERA UN MOMENTO ANTES DE RECARGAR...';
+            this._cooldownDelay = 2200;
+          }
+        } catch(e) {}
+
+        // Bloquear F5 / Ctrl+R mientras la pantalla de carga ya está activa para evitar sobrecarga
+        window.addEventListener('keydown', (ev) => {
+          if ((ev.key === 'F5' || ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'r')) && this.loading) {
+            ev.preventDefault();
+          }
+        });
+
+        // Animación progresiva suave de la barra de carga (0% -> 90%)
+        const progTimer = setInterval(() => {
+          if (!this.loading) { clearInterval(progTimer); return; }
+          if (this.progress < 85) this.progress += 15;
+        }, 90);
 
         // Watchers for saving state dynamically
         this.$watch('mainTab', val => localStorage.setItem('ns_mainTab', val));
         this.$watch('catTab', val => localStorage.setItem('ns_catTab', val));
 
-        this.cargarTarifas();
-        
         const self = this;
         Promise.resolve(window.DB.listo).then(async function () {
-          // --- ASYNC AUTH VERIFICATION ---
-          if (self.currentUser) {
-              const realUser = await window.DB.verificarSesion();
-              if (realUser) {
-                  self.currentUser = realUser;
-                  localStorage.setItem('ns_currentUser', JSON.stringify(realUser));
-              } else {
-                  self.cerrarSesion();
+          // 1. Verificación asíncrona de sesión con el backend (Fuente única de verdad: HttpOnly Session Cookie)
+          try {
+            const realUser = await window.DB.verificarSesion();
+            if (realUser && realUser.rol) {
+              self.currentUser = realUser;
+              if (realUser.rol === 'admin') document.body.classList.add('is-admin');
+              
+              const savedTab = localStorage.getItem('ns_mainTab');
+              const savedCat = localStorage.getItem('ns_catTab');
+              
+              if (savedTab) self.mainTab = savedTab;
+              else {
+                if (realUser.rol === 'admin') self.mainTab = 'admin';
+                else if (realUser.rol === 'padre') self.mainTab = (realUser.hijoCat && realUser.hijoId) ? 'categorias' : 'portal';
+                else if (realUser.rol === 'entrenador') self.mainTab = 'categorias';
               }
+              if (savedCat) self.catTab = savedCat;
+              else if (realUser.rol === 'padre' && realUser.hijoCat) self.catTab = realUser.hijoCat;
+              else if (realUser.rol === 'entrenador' && realUser.catKey) self.catTab = realUser.catKey;
+              if (realUser.rol === 'admin' && !self.adminCredsForm.usuarioNuevo) {
+                self.adminCredsForm.usuarioNuevo = realUser.usuario || '';
+              }
+            } else {
+              self.currentUser = null;
+              document.body.classList.remove('is-admin');
+              if (self.mainTab === 'admin' || self.mainTab === 'portal') {
+                self.mainTab = 'historia';
+              }
+            }
+          } catch (e) {
+            self.currentUser = null;
+            document.body.classList.remove('is-admin');
           }
+
+          // 2. Hidratar estado de MySQL hacia la reactividad de Alpine
+          self.dbCargado = true;
+          self.trofeosVersion++;
+          self.cargarConfiguraciones();
+          self.cargarPersistidos();
+          self.aplicarTextos();
+
+          // 3. Finalizar la pantalla de carga de manera sincronizada y limpia
           self.iniciarCarga();
 
-          // --- AUTO SYNC EN TIEMPO REAL (Polleo silencioso) ---
+          // 4. Polleo silencioso cada 15 segundos SOLO para usuarios autenticados
           setInterval(() => {
-            if (window.DB && typeof window.DB.sincronizar === 'function') {
-                window.DB.sincronizar(self);
+            if (self.currentUser && window.DB && typeof window.DB.sincronizar === 'function') {
+              window.DB.sincronizar(self);
             }
           }, 15000);
-
         });
     }
   }));

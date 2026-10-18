@@ -4,12 +4,12 @@
 <button @click="playerModal = null" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">✕</button>
 <div class="relative w-28 h-28 mx-auto rounded-2xl bg-gradient-to-b from-amber-400 via-amber-600 to-amber-900 p-[2px] shadow-2xl">
 <div class="bg-black w-full h-full rounded-[14px] flex items-center justify-center overflow-hidden relative">
-<div class="absolute top-2 left-2 text-xs font-black text-white" x-text="'#' + (playerModal ? playerModal.dorsal : '')"></div>
-<img onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY2NiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==';" :src="playerModal ? (playerModal.foto || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY2NiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==' + playerModal.catKey + '/' + playerModal.dorsal + '.png') : ''" alt="Jugador" class="h-24 object-contain">
+<div class="absolute top-2 left-2 text-xs font-black px-1.5 py-0.5 rounded cursor-pointer" :class="playerModal && playerModal.dorsal > 0 ? 'text-white bg-white/10 hover:bg-nico-orange' : 'text-amber-300 bg-amber-500/20'" @click="if(playerModal && puedeEditarCategoria(playerModal.catKey)) editarDorsal(playerModal)" title="Cambiar dorsal" x-text="playerModal ? (playerModal.dorsal > 0 ? ('#' + playerModal.dorsal) : '#S/N') : ''"></div>
+<img @error.once="$event.target.src='img/escudo.png'" :src="playerModal ? getMediaUrl(playerModal.foto, 'img/escudo.png') : ''" alt="Jugador" class="h-24 object-contain">
 </div>
 </div>
 <div>
-<span class="text-xs font-bold text-nico-orange uppercase tracking-widest block" x-text="playerModal ? playerModal.pos : ''"></span>
+<span class="text-xs font-bold text-nico-orange uppercase tracking-widest block" x-text="playerModal ? (playerModal.pos + (playerModal.edad > 0 ? ' • ' + playerModal.edad + ' AÑOS' : '')) : ''"></span>
 <h3 class="text-2xl font-black text-white uppercase mt-1" x-text="playerModal ? playerModal.name : ''"></h3>
 <span class="text-[11px] text-gray-400">Academia Nico Sport • Plantilla Oficial</span>
 </div>
@@ -20,12 +20,21 @@
 </div>
 <template x-if="playerModal && puedeEditarCategoria(playerModal.catKey)">
 <div class="bg-black/60 p-3 rounded-2xl border border-nico-green/30 space-y-2">
-<span class="text-[10px] font-black text-nico-green uppercase tracking-widest block text-center"><i class="fas fa-pen"></i> Editar Estadísticas</span>
+<div class="flex items-center justify-between gap-2 pb-1 border-b border-white/10 flex-wrap">
+  <span class="text-[10px] font-black text-nico-green uppercase tracking-widest"><i class="fas fa-pen"></i> Panel del Profesor / Admin</span>
+  <div class="flex items-center gap-1.5 flex-wrap">
+    <button type="button" @click="editarDorsal(playerModal)" class="bg-nico-orange hover:bg-nico-orangeDark text-white font-black text-[10px] uppercase px-2.5 py-1 rounded-lg transition-colors cursor-pointer">
+      <i class="fas fa-shirt mr-1"></i> Dorsal (<span x-text="playerModal && playerModal.dorsal > 0 ? ('#' + playerModal.dorsal) : '#S/N'"></span>)
+    </button>
+    <button type="button" @click="editarEdadJugadorDirecto(playerModal)" class="bg-nico-blue hover:bg-blue-600 text-white font-black text-[10px] uppercase px-2.5 py-1 rounded-lg transition-colors cursor-pointer" title="Modificar edad del jugador">
+      <i class="fas fa-calendar-alt mr-1"></i> Edad (<span x-text="playerModal ? (playerModal.edad || 0) + ' a' : ''"></span>)
+    </button>
+  </div>
+</div>
 <div class="flex items-center justify-center gap-2 flex-wrap">
 <div class="stat-editor"><button @click="cambiarStat(playerModal,'goles',-1)">−</button><span>⚽<span x-text="getStats(playerModal).goles"></span></span><button @click="cambiarStat(playerModal,'goles',1)">+</button></div>
 <div class="stat-editor"><button @click="cambiarStat(playerModal,'asistencias',-1)">−</button><span>🎯<span x-text="getStats(playerModal).asistencias"></span></span><button @click="cambiarStat(playerModal,'asistencias',1)">+</button></div>
 <div class="stat-editor"><button @click="cambiarStat(playerModal,'mvp',-1)">−</button><span>🏅<span x-text="getStats(playerModal).mvp"></span></span><button @click="cambiarStat(playerModal,'mvp',1)">+</button></div>
-</div>
 </div>
 </template>
 <template x-if="playerModal && currentUser">
@@ -52,6 +61,51 @@
 </template>
 <button x-show="playerModal && currentUser" @click="abrirEvalVer(playerModal)" class="w-full bg-amber-400 hover:bg-amber-500 text-black font-black py-3 rounded-xl text-xs uppercase"><i class="fas fa-file-lines"></i> Ver Hoja de Evaluación</button>
 <button x-show="esAdmin || (esEntrenador && playerModal && puedeEditarCategoria(playerModal.catKey))" @click="abrirEvaluacion(playerModal)" class="w-full bg-nico-green hover:bg-nico-greenDark text-white font-black py-3 rounded-xl text-xs uppercase"><i class="fas fa-clipboard-check"></i> Evaluar al Jugador</button>
+
+
 <button @click="playerModal = null" class="w-full bg-nico-orange hover:bg-nico-orangeDark text-white font-black py-3 rounded-xl text-xs uppercase">Cerrar Ficha</button>
 </div>
 </div>
+
+<!-- ==================== MODAL: CAMBIAR EDAD Y CATEGORÍA DEL JUGADOR ==================== -->
+<div x-show="modalEditarEdad" x-transition class="fixed inset-0 z-[85] bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto" style="display: none;">
+  <div class="glass-box p-5 sm:p-6 rounded-3xl max-w-sm w-full border border-nico-orange/60 relative shadow-2xl space-y-4 my-8" @click.outside="modalEditarEdad = false">
+    <button @click="modalEditarEdad = false" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg cursor-pointer">✕</button>
+    <div class="text-center space-y-1">
+      <span class="text-[10px] font-black text-nico-orange uppercase tracking-widest"><i class="fas fa-calendar-alt"></i> Asignación de Edad y Categoría</span>
+      <h3 class="text-lg font-black text-white uppercase" x-text="jugadorEdadForm.name"></h3>
+      <p class="text-[11px] text-gray-400">Actualiza la edad. El sistema calculará y moverá automáticamente al jugador a la categoría correspondiente.</p>
+    </div>
+
+    <form @submit.prevent="guardarEdadJugador()" class="space-y-3">
+      <div>
+        <label class="text-xs font-bold text-gray-300 block mb-1">Edad Actual del Jugador (Años) *</label>
+        <input type="number" min="3" max="50" class="admin-input !text-white !font-black !text-base !py-2 text-center"
+               x-model.number="jugadorEdadForm.edad"
+               @input="jugadorEdadForm.catDestino = obtenerCategoriaParaEdad(jugadorEdadForm.edad)"
+               required>
+      </div>
+
+      <div class="p-3 bg-black/60 rounded-xl border border-white/10 text-center space-y-1">
+        <span class="text-[10px] font-bold text-gray-400 uppercase block">Categoría Asignada por Edad:</span>
+        <span class="text-sm font-black text-nico-orange uppercase tracking-wider block"
+              x-text="(categoriasTorneo.find(c => c.key === (jugadorEdadForm.catDestino || obtenerCategoriaParaEdad(jugadorEdadForm.edad))) || {}).label || (jugadorEdadForm.catDestino || obtenerCategoriaParaEdad(jugadorEdadForm.edad)).toUpperCase()"></span>
+      </div>
+
+      <div class="pt-2 flex items-center gap-2">
+        <button type="submit" class="admin-btn flex-1 bg-nico-orange hover:bg-nico-orangeDark text-white font-black py-2.5 rounded-xl text-xs uppercase cursor-pointer shadow-lg flex items-center justify-center gap-1.5">
+          <i class="fas fa-save"></i> Guardar y Mover
+        </button>
+        <button type="button" @click="modalEditarEdad = false" class="bg-white/10 hover:bg-white/20 text-gray-300 font-black py-2.5 px-4 rounded-xl text-xs uppercase cursor-pointer">
+          Cancelar
+        </button>
+      </div>
+    </form>
+
+    <div x-show="msgEdadJugador" class="text-center pt-1">
+      <span class="text-xs font-bold" :class="msgEdadJugador.includes('✓') ? 'text-nico-green' : 'text-nico-red'" x-text="msgEdadJugador"></span>
+    </div>
+  </div>
+</div>
+
+

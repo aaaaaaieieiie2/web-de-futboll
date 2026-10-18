@@ -14,3 +14,4 @@
 <button @click="imageModal = null" class="w-full bg-white text-black font-black py-3 rounded-xl text-xs uppercase">Entendido</button>
 </div>
 </div>
+

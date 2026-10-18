@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Allow: /index.php
+Allow: /public/
+Allow: /img/
+Allow: /css/
+Allow: /js/
+Allow: /sitemap.xml
+Allow: /.well-known/security.txt
+
+# Bloqueo genérico de directorios de sistema (sin listar archivos específicos)
+Disallow: /core/
+Disallow: /private/
+
+Sitemap: https://academianicosport.com/sitemap.xml

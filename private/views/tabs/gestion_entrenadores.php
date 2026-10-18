@@ -9,8 +9,8 @@
 <h4 class="text-xs font-black text-nico-blue uppercase flex items-center gap-2"><i class="fas fa-user-plus"></i> Registrar Nuevo Entrenador</h4>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 <input type="text" class="admin-input" placeholder="Nombre completo" x-model="nuevoEntrenador.nombre">
-<input type="text" class="admin-input" placeholder="Usuario (ej: dt.sub6)" x-model="nuevoEntrenador.usuario">
-<input type="password" class="admin-input" placeholder="Contraseña" x-model="nuevoEntrenador.password">
+<input type="text" autocomplete="username" class="admin-input" placeholder="Usuario (ej: dt.sub6)" x-model="nuevoEntrenador.usuario">
+<input type="password" autocomplete="new-password" class="admin-input" placeholder="Contraseña" x-model="nuevoEntrenador.password">
 <select class="admin-input" x-model="nuevoEntrenador.catKey">
 <option value="">Categoría asignada...</option>
 <template x-for="cat in categoriasTorneo" :key="cat.key"><option :value="cat.key" x-text="cat.label"></option></template>
@@ -75,3 +75,4 @@
 </div>
 </div>
 </div>
+

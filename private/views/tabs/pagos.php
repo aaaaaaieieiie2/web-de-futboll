@@ -3,7 +3,7 @@
 <div class="text-center space-y-2">
 <span class="text-xs font-black text-white border border-white/20 bg-black px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">Gestión Financiera</span>
 <h3 class="text-2xl font-black text-white uppercase">Pagos del Club</h3>
-<p class="text-xs text-gray-400">Registra cobros presenciales y valida comprobantes digitales · Cuota: $15.00 quincenal</p>
+<p class="text-xs text-gray-400">Registra cobros presenciales y valida comprobantes digitales · Cuota: Mensual (Cada día 30 del mes)</p>
 </div>
 <div class="timer-box p-5 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
 <div class="flex items-center gap-4">
@@ -11,7 +11,7 @@
 <i class="fas fa-clock text-white text-2xl"></i>
 </div>
 <div>
-<h4 class="text-sm font-black text-white uppercase tracking-wider">Ciclo de Cobro Quincenal</h4>
+<h4 class="text-sm font-black text-white uppercase tracking-wider">Ciclo de Cobro Mensual (Día 30)</h4>
 <p class="text-[11px] text-gray-300 mt-1">Próximo corte oficial: <span class="text-white bg-nico-orange/20 px-2 py-0.5 rounded border border-nico-orange/50 font-bold ml-1" x-text="proximaQuincena()"></span></p>
 </div>
 </div>
@@ -99,3 +99,4 @@
 </div>
 </div>
 </div>
+

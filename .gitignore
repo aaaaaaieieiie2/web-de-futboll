@@ -1,0 +1,7 @@
+parche-cms-seo.tar.gz
+parche-cms-seo.zip
+scratch/
+uploads/ratelimit/
+uploads/analytics/
+uploads/logs_archive/
+*.recovered

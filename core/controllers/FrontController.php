@@ -2,7 +2,15 @@
 class FrontController {
     public static function render() {
         require_once __DIR__ . '/../conexion.php';
+        if (!headers_sent()) {
+            header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+            header('Pragma: no-cache');
+        }
         $rol = $_SESSION['ns_rol'] ?? 'publico';
+        $esAdmin = ($rol === 'admin');
+        $esEntrenador = ($rol === 'entrenador');
+        $esPadre = ($rol === 'padre');
+        $esAutenticado = in_array($rol, ['admin', 'entrenador', 'padre'], true);
 
         include __DIR__ . '/../../private/views/layout/header.php';
 
@@ -29,6 +37,8 @@ class FrontController {
         }
 
         echo '</div></main>';
+        include __DIR__ . '/../../private/views/layout/footer.php';
+        include __DIR__ . '/../../private/views/layout/mobile_nav.php';
 
         include __DIR__ . '/../../private/views/modals/login_modal.php';
         include __DIR__ . '/../../private/views/modals/imagen_modal.php';
@@ -43,6 +53,7 @@ class FrontController {
 
         if ($rol === 'admin') {
             include __DIR__ . '/../../private/views/modals/edit_media_modal.php';
+            include __DIR__ . '/../../private/views/modals/staff_form_modal.php';
         }
 
         echo '</body></html>';

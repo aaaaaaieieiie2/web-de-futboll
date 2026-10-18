@@ -1,4 +1,4 @@
-﻿<!-- ==================== MODAL EDITAR MEDIA (URL) ==================== -->
+<!-- ==================== MODAL EDITAR MEDIA (URL) ==================== -->
 <div x-show="editMediaModal.open" style="display: none;" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
   <div x-show="editMediaModal.open" x-transition.opacity class="absolute inset-0 bg-black/90 backdrop-blur-sm" @click="closeMediaEditModal()"></div>
   <div x-show="editMediaModal.open" x-transition.scale.duration.300ms class="relative w-full max-w-md bg-gradient-to-b from-gray-900 to-black rounded-3xl border-2 border-nico-orange shadow-[0_0_40px_rgba(255,85,0,0.4)] overflow-hidden">
@@ -29,7 +29,7 @@
       <!-- Preview (Optional) -->
       <div x-show="editMediaModal.url && editMediaModal.type === 'image'" class="mt-4 border border-white/10 rounded-xl p-2 bg-black/50">
         <span class="text-[10px] text-gray-500 font-bold uppercase mb-2 block text-center">Vista Previa</span>
-        <img :src="editMediaModal.url" class="w-full h-32 object-contain rounded-lg" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY2NiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==';">
+        <img :src="editMediaModal.url" class="w-full h-32 object-contain rounded-lg" @error.once="$event.target.src='img/escudo.png'">
       </div>
     </div>
     
@@ -44,3 +44,5 @@
     </div>
   </div>
 </div>
+
+

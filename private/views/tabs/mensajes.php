@@ -1,5 +1,5 @@
 <!-- ==================== SECCION 7: MENSAJES ==================== -->
-<div x-show="mainTab === 'mensajes' && esAdmin"" class="space-y-6 anim-entry">
+<div x-show="mainTab === 'mensajes' && esAdmin" class="space-y-6 anim-entry">
 
   <div class="text-center space-y-2">
     <span class="text-xs font-black text-white border border-white/20 bg-black px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">Bandeja de Entrada</span>
@@ -20,7 +20,8 @@
           </div>
           <div class="flex items-center gap-3">
             <span class="text-[10px] text-gray-500 font-bold" x-text="c.created_at ? new Date(c.created_at).toLocaleString() : ''"></span>
-            <button @click="borrarComentario(c.id)" class="text-red-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button>
+            <button x-show="c.estado !== 'leido'" @click="marcarLeido(c.id)" class="text-nico-green hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" title="Marcar leído"><i class="fas fa-check-circle"></i></button>
+            <button @click="borrarComentario(c.id)" class="text-red-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity" title="Eliminar"><i class="fas fa-trash"></i></button>
           </div>
         </div>
         <div class="space-y-1">
@@ -35,3 +36,4 @@
     </template>
   </div>
 </div>
+
